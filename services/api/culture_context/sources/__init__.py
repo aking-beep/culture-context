@@ -1,6 +1,6 @@
 from .disruptions import Gdacs, ReliefWeb
 from .frankfurter import Frankfurter
 from .govuk import GovUkTravelAdvice
-from .restcountries import RestCountries
+from .restcountries import CountryMetadata
 
-__all__ = ["GovUkTravelAdvice", "RestCountries", "Frankfurter", "Gdacs", "ReliefWeb"]
+__all__ = ["GovUkTravelAdvice", "CountryMetadata", "Frankfurter", "Gdacs", "ReliefWeb"]

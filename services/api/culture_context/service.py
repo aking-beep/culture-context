@@ -4,7 +4,7 @@ import os
 from datetime import datetime, timezone
 
 from .applicability import to_brief_item
-from .destinations import resolve_destination
+from .destinations import currency_for, resolve_destination
 from .explain import explain_items
 from .models import (
     BriefItem,
@@ -14,7 +14,7 @@ from .models import (
     SourceStatus,
     TravelerProfile,
 )
-from .sources import Frankfurter, Gdacs, GovUkTravelAdvice, ReliefWeb, RestCountries
+from .sources import CountryMetadata, Frankfurter, Gdacs, GovUkTravelAdvice, ReliefWeb
 from .store import persist_snapshot
 
 
@@ -30,14 +30,14 @@ class BriefService:
     def __init__(
         self,
         govuk: GovUkTravelAdvice | None = None,
-        restcountries: RestCountries | None = None,
+        countries: CountryMetadata | None = None,
         frankfurter: Frankfurter | None = None,
         gdacs: Gdacs | None = None,
         reliefweb: ReliefWeb | None = None,
         persist: bool = True,
     ):
         self.govuk = govuk or GovUkTravelAdvice()
-        self.restcountries = restcountries or RestCountries()
+        self.countries = countries or CountryMetadata()
         self.frankfurter = frankfurter or Frankfurter()
         self.gdacs = gdacs or Gdacs()
         self.reliefweb = reliefweb or ReliefWeb()
@@ -65,18 +65,19 @@ class BriefService:
         self._persist(govuk_meta)
 
         country_rules, country_meta = await self._safe_fetch(
-            "restcountries",
-            self.restcountries.authority,
+            "iso-reference",
+            self.countries.authority,
             SourceClass.REFERENCE_DATA,
-            lambda: self.restcountries.fetch(traveler),
+            lambda: self.countries.fetch(traveler),
             statuses,
             warnings,
         )
         rules.extend(country_rules)
         self._persist(country_meta)
 
-        home_cur, dest_cur = _currencies(country_meta)
-        if home_cur and dest_cur:
+        home_cur = currency_for(traveler.residence_country or traveler.nationality)
+        dest_cur = currency_for(traveler.destination_country)
+        if home_cur and dest_cur and home_cur != dest_cur:
             fx_rules, fx_meta = await self._safe_fetch(
                 "frankfurter",
                 self.frankfurter.authority,
@@ -193,11 +194,3 @@ class BriefService:
         except Exception:
             # Snapshot persistence must not block a brief.
             return
-
-
-def _currencies(country_meta: dict) -> tuple[str | None, str | None]:
-    dest = (country_meta or {}).get("destination") or {}
-    home = (country_meta or {}).get("home") or {}
-    dest_codes = list((dest.get("currencies") or {}).keys())
-    home_codes = list((home.get("currencies") or {}).keys())
-    return (home_codes[0] if home_codes else None, dest_codes[0] if dest_codes else None)

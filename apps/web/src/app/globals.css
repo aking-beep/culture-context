@@ -43,14 +43,19 @@ h1 { font-size: clamp(2.4rem, 6vw, 4.6rem); line-height: 0.92; margin: 0; font-w
   border-radius: 22px;
   padding: 18px;
   box-shadow: var(--shadow);
+  position: relative;
 }
 .stamp {
+  position: absolute;
+  top: 14px;
+  right: 14px;
   display: inline-flex; align-items: center; justify-content: center;
   border: 2px solid var(--accent); color: var(--accent);
   text-transform: uppercase; letter-spacing: 0.12em;
   font-family: ui-sans-serif, system-ui, sans-serif;
   font-size: 11px; font-weight: 800; padding: 6px 10px; border-radius: 999px;
   transform: rotate(-8deg);
+  background: var(--panel);
 }
 label { display: grid; gap: 6px; font-family: ui-sans-serif, system-ui, sans-serif; font-size: 13px; font-weight: 700; }
 .field, select.field {

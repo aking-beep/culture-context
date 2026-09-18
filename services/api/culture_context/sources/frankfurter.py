@@ -9,7 +9,7 @@ import httpx
 from ..models import RuleKind, RuleRecord, SourceClass, SourceRef
 from ..text import compact
 
-URL = "https://api.frankfurter.dev/v1/latest"
+URL = "https://api.frankfurter.app/latest"
 
 
 class Frankfurter:
@@ -29,7 +29,7 @@ class Frankfurter:
             headers={"user-agent": "CultureContext/0.1"},
         )
         try:
-            response = await client.get(URL, params={"base": home_currency.upper(), "symbols": dest_currency.upper()})
+            response = await client.get(URL, params={"from": home_currency.upper(), "to": dest_currency.upper()})
             response.raise_for_status()
             payload = response.json()
         finally:
@@ -45,7 +45,7 @@ class Frankfurter:
         source = SourceRef(
             id=f"frankfurter:{home_currency}:{dest_currency}:{content_hash[:12]}",
             authority=self.authority,
-            url="https://api.frankfurter.dev",
+            url="https://api.frankfurter.app",
             jurisdiction=jurisdiction,
             source_class=SourceClass.REFERENCE_DATA,
             retrieved_at=retrieved,
@@ -60,13 +60,13 @@ class Frankfurter:
             title=f"Reference FX: {home_currency.upper()} to {dest_currency.upper()}",
             summary=compact(
                 f"Reference rate on {date_label}: 1 {home_currency.upper()} = {rate} {dest_currency.upper()}. "
-                "This is market reference data, not a quote, fee schedule, or legal requirement."
+                "This is market reference data, not a quote, fee schedule, or legal obligation."
             ),
             sources=[source],
         )
         meta = {
             "source_id": "frankfurter",
-            "url": "https://api.frankfurter.dev",
+            "url": "https://api.frankfurter.app",
             "normalized_text": raw,
             "content_hash": content_hash,
             "retrieved_at": retrieved,

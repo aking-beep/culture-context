@@ -60,7 +60,7 @@ async def test_govuk_records_remain_advisory(tmp_path, monkeypatch):
     async def boom(*_a, **_k):
         raise RuntimeError("skip")
 
-    service.restcountries.fetch = boom  # type: ignore[method-assign]
+    service.countries.fetch = boom  # type: ignore[method-assign]
     brief = await service.build(_profile())
     govuk_items = [i for i in brief.items if i.sources and i.sources[0].authority.startswith("UK Foreign")]
     assert govuk_items
@@ -87,7 +87,8 @@ async def test_unavailable_source_does_not_invent_facts(tmp_path, monkeypatch):
     async def boom(*_a, **_k):
         raise RuntimeError("skip")
 
-    service.restcountries.fetch = boom  # type: ignore[method-assign]
+    service.countries.fetch = boom  # type: ignore[method-assign]
+    service.frankfurter.fetch = boom  # type: ignore[method-assign]
     brief = await service.build(_profile())
     assert brief.items == []
     assert any(status.status == "unavailable" for status in brief.source_statuses)
@@ -105,7 +106,7 @@ async def test_every_item_has_a_source():
     async def boom(*_a, **_k):
         raise RuntimeError("skip")
 
-    service.restcountries.fetch = boom  # type: ignore[method-assign]
+    service.countries.fetch = boom  # type: ignore[method-assign]
     brief = await service.build(_profile())
     assert brief.items
     assert all(item.sources for item in brief.items)
@@ -115,6 +116,17 @@ def test_html_strips_scripts():
     text = html_to_text("<p>Safe</p><script>document.cookie</script><style>x{}</style>")
     assert "Safe" in text
     assert "cookie" not in text
+
+
+@pytest.mark.asyncio
+async def test_iso_reference_survives_worldbank_failure():
+    from culture_context.sources.restcountries import CountryMetadata
+    failing = httpx.AsyncClient(transport=httpx.MockTransport(lambda r: httpx.Response(503)))
+    rules, _meta = await CountryMetadata(client=failing).fetch(_profile())
+    assert rules
+    assert all(rule.kind == RuleKind.CONTEXT for rule in rules)
+    assert all(source.source_class == SourceClass.REFERENCE_DATA for rule in rules for source in rule.sources)
+    assert "Japanese yen" in rules[0].summary
 
 
 def test_end_date_cannot_precede_start_date():

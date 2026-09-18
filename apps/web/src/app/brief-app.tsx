@@ -130,7 +130,7 @@ export function BriefApp() {
       <div className="layout">
         <form className="card" onSubmit={onSubmit}>
           <div className="stamp">Partial coverage</div>
-          <h2>Traveler</h2>
+          <h2 style={{ paddingRight: 92 }}>Traveler</h2>
           <div className="destinations" role="group" aria-label="Launch destinations">
             {DESTINATIONS.map((destination) => (
               <button

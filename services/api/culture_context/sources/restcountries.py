@@ -6,66 +6,83 @@ import json
 
 import httpx
 
+from ..destinations import iso_row
 from ..models import RuleKind, RuleRecord, SourceClass, SourceRef, TravelerProfile
 from ..text import compact
 
-URL = "https://restcountries.com/v3.1/alpha/{code}"
+WORLD_BANK = "https://api.worldbank.org/v2/country/{code}"
+ISO_URL = "https://www.iso.org/iso-3166-country-codes.html"
 
 
-class RestCountries:
-    authority = "REST Countries"
-    source_id = "restcountries"
+class CountryMetadata:
+    """ISO reference table plus optional World Bank country metadata. Never law."""
+
+    authority = "ISO 3166 / ISO 4217 reference table"
+    source_id = "iso-reference"
 
     def __init__(self, client: httpx.AsyncClient | None = None):
         self.client = client
 
     async def fetch(self, traveler: TravelerProfile) -> tuple[list[RuleRecord], dict]:
-        dest = await self._country(traveler.destination_country)
+        dest = iso_row(traveler.destination_country)
+        if not dest:
+            raise ValueError("no local ISO reference for destination")
         home_code = traveler.residence_country or traveler.nationality
-        home = None
-        if home_code and home_code.upper() != traveler.destination_country.upper():
-            home = await self._country(home_code)
-
+        home = iso_row(home_code) if home_code and home_code.upper() != traveler.destination_country.upper() else None
         retrieved = datetime.now(timezone.utc)
-        payload = {"destination": dest, "home": home}
-        raw = json.dumps(payload, sort_keys=True, ensure_ascii=False, separators=(",", ":"))
+        wb_dest = await self._worldbank(traveler.destination_country)
+        payload = {"destination": dest, "home": home, "worldbank": wb_dest}
+        raw = json.dumps(payload, sort_keys=True, ensure_ascii=False, separators=(",", ":"), default=str)
         content_hash = hashlib.sha256(raw.encode("utf-8")).hexdigest()
-        source = SourceRef(
-            id=f"restcountries:{traveler.destination_country}:{content_hash[:12]}",
+        iso_source = SourceRef(
+            id=f"iso:{traveler.destination_country}:{content_hash[:12]}",
             authority=self.authority,
-            url="https://restcountries.com",
+            url=ISO_URL,
             jurisdiction=traveler.destination_country,
             source_class=SourceClass.REFERENCE_DATA,
             retrieved_at=retrieved,
             content_hash=content_hash,
         )
-        dest_summary = _summarize(dest)
+        sources = [iso_source]
+        if wb_dest:
+            sources.append(
+                SourceRef(
+                    id=f"worldbank:{traveler.destination_country}:{content_hash[:12]}",
+                    authority="World Bank country API",
+                    url=WORLD_BANK.format(code=traveler.destination_country.lower()),
+                    jurisdiction=traveler.destination_country,
+                    source_class=SourceClass.REFERENCE_DATA,
+                    retrieved_at=retrieved,
+                    content_hash=content_hash,
+                )
+            )
+        summary = _summarize(dest, wb_dest)
         rules = [
             RuleRecord(
-                id=f"restcountries:{traveler.destination_country}:context:{content_hash[:10]}",
+                id=f"iso:{traveler.destination_country}:context:{content_hash[:10]}",
                 jurisdiction=traveler.destination_country,
                 category="context",
                 kind=RuleKind.CONTEXT,
-                title=f"Country reference: {_name(dest)}",
-                summary=dest_summary,
-                sources=[source],
+                title=f"Country reference: {dest['name']}",
+                summary=summary,
+                sources=sources,
             )
         ]
         if home:
             rules.append(
                 RuleRecord(
-                    id=f"restcountries:compare:{home_code}:{traveler.destination_country}:{content_hash[:10]}",
+                    id=f"iso:compare:{home_code}:{traveler.destination_country}:{content_hash[:10]}",
                     jurisdiction=traveler.destination_country,
                     category="context",
                     kind=RuleKind.CONTEXT,
-                    title=f"Home vs destination: {_name(home)} and {_name(dest)}",
+                    title=f"Home vs destination: {home['name']} and {dest['name']}",
                     summary=_compare(home, dest),
-                    sources=[source],
+                    sources=[iso_source],
                 )
             )
         meta = {
-            "source_id": "restcountries",
-            "url": "https://restcountries.com",
+            "source_id": "iso-reference",
+            "url": ISO_URL,
             "normalized_text": raw,
             "content_hash": content_hash,
             "retrieved_at": retrieved,
@@ -75,7 +92,7 @@ class RestCountries:
         }
         return rules, meta
 
-    async def _country(self, iso2: str) -> dict:
+    async def _worldbank(self, iso2: str) -> dict | None:
         own = self.client is None
         client = self.client or httpx.AsyncClient(
             timeout=6.0,
@@ -83,56 +100,44 @@ class RestCountries:
             headers={"user-agent": "CultureContext/0.1"},
         )
         try:
-            response = await client.get(
-                URL.format(code=iso2.lower()),
-                params={"fields": "name,cca2,cca3,currencies,languages,region,subregion,capital,idd,car"},
-            )
+            response = await client.get(WORLD_BANK.format(code=iso2.lower()), params={"format": "json"})
             response.raise_for_status()
             payload = response.json()
+        except Exception:
+            return None
         finally:
             if own:
                 await client.aclose()
-        if isinstance(payload, list):
-            payload = payload[0]
-        if not isinstance(payload, dict):
-            raise ValueError("unexpected REST Countries payload")
-        return payload
+        rows = payload[1] if isinstance(payload, list) and len(payload) > 1 else None
+        if not isinstance(rows, list) or not rows or not isinstance(rows[0], dict):
+            return None
+        return rows[0]
 
 
-def _name(country: dict) -> str:
-    name = country.get("name") or {}
-    if isinstance(name, dict):
-        return str(name.get("common") or name.get("official") or "Unknown")
-    return str(name)
-
-
-def _summarize(country: dict) -> str:
-    languages = ", ".join((country.get("languages") or {}).values()) or "not listed"
-    currencies = country.get("currencies") or {}
-    currency = ", ".join(
-        f"{meta.get('name', code)} ({code})" for code, meta in currencies.items()
-    ) or "not listed"
-    capital = ", ".join(country.get("capital") or []) or "not listed"
-    region = " / ".join(x for x in [country.get("region"), country.get("subregion")] if x) or "not listed"
-    side = ((country.get("car") or {}).get("side")) or "not listed"
-    return compact(
-        f"Reference data only. Common name: {_name(country)}. Capital: {capital}. "
-        f"Region: {region}. Languages: {languages}. Currency: {currency}. "
-        f"Driving side: {side}."
-    )
+def _summarize(row: dict, worldbank: dict | None) -> str:
+    languages = ", ".join(row.get("languages") or []) or "not listed"
+    bits = [
+        "Reference data only, not law.",
+        f"Common name: {row.get('name')}.",
+        f"Capital: {row.get('capital')}.",
+        f"Languages: {languages}.",
+        f"Currency: {row.get('currency_name')} ({row.get('currency')}).",
+        f"Driving side: {row.get('driving')}.",
+    ]
+    if worldbank:
+        region = ((worldbank.get("region") or {}).get("value")) if isinstance(worldbank.get("region"), dict) else None
+        wb_capital = worldbank.get("capitalCity")
+        if region:
+            bits.append(f"World Bank region: {region}.")
+        if wb_capital:
+            bits.append(f"World Bank capital: {wb_capital}.")
+    return compact(" ".join(bits))
 
 
 def _compare(home: dict, dest: dict) -> str:
-    home_cur = ", ".join((home.get("currencies") or {}).keys()) or "not listed"
-    dest_cur = ", ".join((dest.get("currencies") or {}).keys()) or "not listed"
-    home_lang = ", ".join((home.get("languages") or {}).values()) or "not listed"
-    dest_lang = ", ".join((dest.get("languages") or {}).values()) or "not listed"
-    home_side = (home.get("car") or {}).get("side") or "not listed"
-    dest_side = (dest.get("car") or {}).get("side") or "not listed"
-    bits = [
-        f"This comparison uses public country reference data only and does not describe culture or law.",
-        f"Currency: {home_cur} at home vs {dest_cur} at destination.",
-        f"Listed languages: {home_lang} vs {dest_lang}.",
-        f"Driving side: {home_side} vs {dest_side}.",
-    ]
-    return compact(" ".join(bits))
+    return compact(
+        "This comparison uses ISO country/currency reference data only and does not describe culture or law. "
+        f"Currency: {home.get('currency')} at home vs {dest.get('currency')} at destination. "
+        f"Listed languages: {', '.join(home.get('languages') or [])} vs {', '.join(dest.get('languages') or [])}. "
+        f"Driving side: {home.get('driving')} vs {dest.get('driving')}."
+    )

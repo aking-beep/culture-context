@@ -167,6 +167,8 @@ def _derived_cards(
     text: str,
 ) -> list[RuleRecord]:
     extra: list[RuleRecord] = []
+    if any(n in part_title.lower() for n in ("warning", "insurance", "getting help")):
+        return extra
     culture = excerpt_around(text, CULTURE_NEEDLES)
     if culture:
         extra.append(
