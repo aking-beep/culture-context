@@ -1,0 +1,14 @@
+---
+description: Culture Context software factory rules
+globs:
+  - "**/*"
+---
+
+Read `factory/CONTRACT.md`, `factory/PROJECT.md`, and `specs/culture-context-mvp.md` before building.
+
+- Edge (Next/mobile) renders and validates. It does not scrape sources or decide applicability.
+- Python owns adapters, normalization, provenance, and briefs.
+- A user-facing law or restriction must include a source record. Missing source is unavailable, not permission to invent.
+- Government advisories stay advisories. Do not upgrade source class.
+- AI may explain curated records. It must not create a law or silently change a source class.
+- Do not put passport numbers or travel-document images in the traveler profile.

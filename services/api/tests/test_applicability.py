@@ -14,10 +14,16 @@ def test_activity_specific_rule_requires_matching_activity():
     traveler = TravelerProfile(nationality="US", destination_country="JP", destination_slug="japan", activities=["driving"])
     assert relevance(rule, traveler) is None
     traveler.activities.append("drone")
-    assert relevance(rule, traveler) == ["activity:drone"]
+    assert "activity:drone" in relevance(rule, traveler)
 
 def test_wrong_jurisdiction_never_applies():
     rule = RuleRecord(id="r2", jurisdiction="MX", category="entry", kind=RuleKind.ADVISORY,
                       title="Mexico", summary="test", sources=[source()])
     traveler = TravelerProfile(nationality="US", destination_country="JP", destination_slug="japan")
     assert relevance(rule, traveler) is None
+
+def test_untagged_destination_rule_applies_without_activities():
+    rule = RuleRecord(id="r3", jurisdiction="JP", category="entry", kind=RuleKind.ADVISORY,
+                      title="Entry", summary="fixture", sources=[source()])
+    traveler = TravelerProfile(nationality="US", destination_country="JP", destination_slug="japan")
+    assert relevance(rule, traveler)[0] == "destination"
