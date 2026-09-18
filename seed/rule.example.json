@@ -1,0 +1,21 @@
+{
+  "id": "example-only",
+  "jurisdiction": "JP",
+  "category": "laws-customs",
+  "kind": "advisory",
+  "title": "Example sourced record",
+  "summary": "Synthetic fixture only; not legal advice.",
+  "activity_tags": [
+    "filming"
+  ],
+  "sources": [
+    {
+      "id": "fixture",
+      "authority": "Synthetic fixture",
+      "url": "https://example.invalid",
+      "jurisdiction": "JP",
+      "source_class": "reference_data",
+      "retrieved_at": "2026-09-18T00:00:00Z"
+    }
+  ]
+}

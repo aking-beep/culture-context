@@ -1,0 +1,11 @@
+{
+  "nationality": "US",
+  "destination_country": "JP",
+  "destination_slug": "japan",
+  "city": "Tokyo",
+  "purpose": "tourism",
+  "activities": [
+    "driving",
+    "filming"
+  ]
+}

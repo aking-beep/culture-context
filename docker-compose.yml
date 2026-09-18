@@ -1,0 +1,7 @@
+services:
+  api:
+    build: ../services/api
+    ports: ["8580:8580"]
+    environment:
+      CULTURE_API_HOST: 0.0.0.0
+      CULTURE_API_PORT: 8580

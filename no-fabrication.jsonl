@@ -1,0 +1,2 @@
+{"case":"source-unavailable","input":{"source_status":"unavailable"},"must_not_contain":["fine","penalty","illegal","required"],"expected":"explicit unavailable state"}
+{"case":"advisory-provenance","input":{"source_class":"government_advisory"},"expected":"must remain advisory"}
