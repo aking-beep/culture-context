@@ -28,10 +28,19 @@ export const sourceClassLabels = {
 } as const;
 
 export const categoryLabels: Record<string, string> = {
-  entry: 'Entry',
-  'laws-customs': 'Laws & restrictions',
-  safety: 'Safety',
-  culture: 'Culture & context',
-  disruption: 'Live disruption',
-  context: 'Reference context',
+  entry: 'Getting in',
+  'laws-customs': 'Rules to know',
+  safety: 'Staying safe',
+  culture: 'Local customs',
+  disruption: 'Right now',
+  context: 'Helpful extras',
 };
+
+export const sourceClassPlain = {
+  primary_law: 'Official law',
+  regulator_guidance: 'Official guidance',
+  government_advisory: 'Official travel advice',
+  intergovernmental_alert: 'International alert',
+  reference_data: 'Background facts',
+  community_context: 'Local context',
+} as const;

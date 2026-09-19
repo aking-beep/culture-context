@@ -4,7 +4,7 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: 'Culture Context',
-  description: 'Sourced destination briefs with provenance. Not a chatbot, not legal advice.',
+  description: 'Plain-language trip notes from official sources. Easy to read. Not legal advice.',
   manifest: '/manifest.json',
   appleWebApp: { capable: true, title: 'Culture Context', statusBarStyle: 'default' },
 };
