@@ -198,10 +198,11 @@ export function BriefApp() {
   const facts = useMemo(() => {
     const localized = localizeFacts(englishFacts, tr);
     if (!textMap) return localized;
-    return localized.map((fact, index) => ({
-      ...fact,
-      value: textMap.get(englishFacts[index]?.value ?? '') ?? fact.value,
-    }));
+    return localized.map((fact, index) => {
+      const original = englishFacts[index]?.value ?? '';
+      if (fact.value !== original) return fact;
+      return { ...fact, value: textMap.get(original) ?? fact.value };
+    });
   }, [englishFacts, tr, textMap]);
   const highlights = glance(cards);
   const alerts = liveAlerts(cards);
@@ -495,7 +496,7 @@ export function BriefApp() {
         {step === 'guide' && brief && !pending && (
           <>
             <div className="hero">
-              <h1 ref={headingRef} tabIndex={-1}>{tr('notesTitle', { destination: brief.destination_name || destinationLabel })}</h1>
+              <h1 ref={headingRef} tabIndex={-1}>{tr('notesTitle', { destination: destinationLabel || brief.destination_name })}</h1>
               <p className="trip-line">
                 {form.nationality ? tr('fromPassport', { country: displayCountryName(form.nationality, locale) }) : tr('fromPassportFallback')}
                 {form.city ? ` · ${tr('visiting', { city: form.city })}` : ''}
