@@ -22,6 +22,7 @@
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
+html[dir="rtl"] { text-align: start; }
 body { background: var(--bg); font-size: 20px; margin: 0; }
 html.large-type body { font-size: 24px; }
 button, input, select, textarea { font: inherit; color: inherit; }
@@ -29,9 +30,9 @@ a { color: var(--action); }
 :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
 
 .skip {
-  position: absolute; left: -999px; top: 8px;
+  position: absolute; inset-inline-start: -999px; top: 8px;
 }
-.skip:focus { left: 8px; background: #fff; padding: 8px 12px; z-index: 10; }
+.skip:focus { inset-inline-start: 8px; background: #fff; padding: 8px 12px; z-index: 10; }
 
 .top {
   position: sticky; top: 0; z-index: 5;
@@ -62,6 +63,7 @@ a { color: var(--action); }
 .hero .ghost { margin: 0 0 20px; }
 .hero h1:focus { outline: none; }
 .trip-line { color: var(--ink) !important; font-weight: 700; margin-bottom: 8px !important; }
+.language-banner { color: var(--ink) !important; font-weight: 700; }
 
 .subhead { margin: 18px 0 8px; font-size: 1.15rem; }
 .hint { margin: 0 0 10px; color: var(--muted); font-size: 1rem; }
@@ -72,7 +74,7 @@ a { color: var(--action); }
 .choices { display: grid; gap: 10px; }
 .choice, .check, .resume {
   display: flex; align-items: center; gap: 12px;
-  text-align: left; width: 100%;
+  text-align: start; width: 100%;
   background: var(--card); border: 2px solid var(--line);
   border-radius: var(--radius); padding: 14px 16px; min-height: 64px;
   cursor: pointer;
@@ -147,7 +149,7 @@ label.field-label { display: grid; gap: 8px; font-weight: 700; margin-top: 14px;
   padding: 18px; margin-bottom: 22px; box-shadow: var(--shadow);
 }
 .glance h2 { margin: 0 0 8px; font-size: 1.35rem; }
-.glance ol { margin: 8px 0 0; padding-left: 0; list-style: none; }
+.glance ol { margin: 8px 0 0; padding-inline-start: 0; list-style: none; }
 .glance li { margin: 0; border-top: 1px solid var(--line); }
 .glance li:first-child { border-top: 0; }
 .glance a {
@@ -163,9 +165,9 @@ label.field-label { display: grid; gap: 8px; font-weight: 700; margin-top: 14px;
   padding: 16px 16px 14px; margin: 0 0 12px; box-shadow: var(--shadow);
   scroll-margin-top: 96px;
 }
-.card.need { border-left: 6px solid var(--need); }
-.card.useful { border-left: 6px solid var(--action); }
-.card.extra { border-left: 6px solid #90a0b0; }
+.card.need { border-inline-start: 6px solid var(--need); }
+.card.useful { border-inline-start: 6px solid var(--action); }
+.card.extra { border-inline-start: 6px solid #90a0b0; }
 .badge {
   display: inline-block; font-size: 0.8rem; font-weight: 800;
   padding: 4px 10px; border-radius: 999px; margin-bottom: 8px;

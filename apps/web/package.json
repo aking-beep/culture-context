@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start -p 3010",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "node --test"
+    "test": "node --test --experimental-strip-types src/lib/*.test.ts"
   },
   "dependencies": {
     "@culture-context/domain": "*",

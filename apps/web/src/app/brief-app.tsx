@@ -1,27 +1,60 @@
 'use client';
 
 import type { BriefResponse, TravelerProfile } from '@culture-context/domain';
-import { POPULAR_DESTINATIONS, POPULAR_PASSPORTS, countryByIso, countryName, findCountries, flagEmoji, type WorldCountry } from '@/lib/countries';
-import { downSources, glance, liveAlerts, readingCards, toGuideCards, tripFacts, type GuideCard } from '@/lib/present';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import {
+  POPULAR_DESTINATIONS,
+  POPULAR_PASSPORTS,
+  countryByIso,
+  displayCountryName,
+  findCountries,
+  flagEmoji,
+  type WorldCountry,
+} from '@/lib/countries';
+import {
+  englishCatalog,
+  hasUiDictionary,
+  htmlLang,
+  isEnglish,
+  isRtl,
+  languageName,
+  localeFromBrowser,
+  localeFromPassport,
+  setMessageOverlay,
+  t,
+  type MessageKey,
+  type Messages,
+} from '@/lib/i18n';
+import {
+  applyTextMap,
+  downSources,
+  glance,
+  liveAlerts,
+  localizeCards,
+  localizeFacts,
+  readingCards,
+  toGuideCards,
+  tripFacts,
+  type GuideCard,
+} from '@/lib/present';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-const ACTIVITIES = [
-  { id: 'driving', label: 'I may drive a car' },
-  { id: 'medication', label: 'I take prescription medicine' },
-  { id: 'nightlife', label: 'I may go out at night' },
-  { id: 'hiking', label: 'I may hike' },
-  { id: 'filming', label: 'I take a lot of photos or video' },
-  { id: 'drone', label: 'I may bring a drone' },
-  { id: 'camping', label: 'I may camp' },
-  { id: 'surfing', label: 'I may swim or surf' },
+const ACTIVITY_KEYS = [
+  { id: 'driving', key: 'actDriving' },
+  { id: 'medication', key: 'actMedication' },
+  { id: 'nightlife', key: 'actNightlife' },
+  { id: 'hiking', key: 'actHiking' },
+  { id: 'filming', key: 'actFilming' },
+  { id: 'drone', key: 'actDrone' },
+  { id: 'camping', key: 'actCamping' },
+  { id: 'surfing', key: 'actSurfing' },
 ] as const;
 
-const PURPOSES = [
-  { id: 'tourism', label: 'Vacation' },
-  { id: 'business', label: 'Work trip' },
-  { id: 'study', label: 'Study' },
-  { id: 'remote_work', label: 'Working from there' },
-  { id: 'other', label: 'Something else' },
+const PURPOSE_KEYS = [
+  { id: 'tourism', key: 'purposeTourism' },
+  { id: 'business', key: 'purposeBusiness' },
+  { id: 'study', key: 'purposeStudy' },
+  { id: 'remote_work', key: 'purposeRemote' },
+  { id: 'other', key: 'purposeOther' },
 ] as const;
 
 const STORAGE_BRIEF = 'culture-context:last-brief';
@@ -37,7 +70,7 @@ type FormState = {
   destination_country: string;
   destination_slug: string;
   city: string;
-  purpose: (typeof PURPOSES)[number]['id'];
+  purpose: (typeof PURPOSE_KEYS)[number]['id'];
   activities: string[];
 };
 
@@ -52,6 +85,30 @@ const INITIAL: FormState = {
   activities: [],
 };
 
+async function requestTranslations(locale: string, texts: string[]): Promise<string[]> {
+  if (isEnglish(locale) || texts.length === 0) return texts;
+  const out = texts.slice();
+  for (let index = 0; index < texts.length; index += 20) {
+    const slice = texts.slice(index, index + 20);
+    try {
+      const response = await fetch('/api/translate', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ locale, texts: slice }),
+      });
+      if (!response.ok) continue;
+      const data = await response.json() as { translations?: string[] };
+      slice.forEach((_, offset) => {
+        const next = data.translations?.[offset];
+        if (next) out[index + offset] = next;
+      });
+    } catch {
+      /* keep original text */
+    }
+  }
+  return out;
+}
+
 export function BriefApp() {
   const [form, setForm] = useState<FormState>(INITIAL);
   const [brief, setBrief] = useState<BriefResponse | null>(null);
@@ -63,9 +120,20 @@ export function BriefApp() {
   const [showAlerts, setShowAlerts] = useState(false);
   const [largeType, setLargeType] = useState(false);
   const [saved, setSaved] = useState<{ destination: string } | null>(null);
+  const [browserLocale, setBrowserLocale] = useState('en');
+  const [overlayTick, setOverlayTick] = useState(0);
+  const [textMap, setTextMap] = useState<Map<string, string> | null>(null);
+  const [translating, setTranslating] = useState(false);
   const headingRef = useRef<HTMLHeadingElement>(null);
 
+  const locale = form.nationality ? localeFromPassport(form.nationality) : browserLocale;
+  const tr = useCallback(
+    (key: MessageKey, vars?: Record<string, string | number>) => t(locale, key, vars),
+    [locale, overlayTick],
+  );
+
   useEffect(() => {
+    setBrowserLocale(localeFromBrowser());
     try {
       setLargeType(localStorage.getItem(STORAGE_TYPE) === '1');
       const savedProfile = localStorage.getItem(STORAGE_PROFILE);
@@ -90,9 +158,51 @@ export function BriefApp() {
     try { localStorage.setItem(STORAGE_TYPE, largeType ? '1' : '0'); } catch { /* ignore */ }
   }, [largeType]);
 
+  useEffect(() => {
+    document.documentElement.lang = htmlLang(locale);
+    document.documentElement.dir = isRtl(locale) ? 'rtl' : 'ltr';
+  }, [locale]);
+
+  useEffect(() => {
+    if (isEnglish(locale) || hasUiDictionary(locale)) return;
+    const cacheKey = `culture-context:ui:${locale}`;
+    try {
+      const cached = sessionStorage.getItem(cacheKey);
+      if (cached) {
+        setMessageOverlay(locale, JSON.parse(cached) as Partial<Messages>);
+        setOverlayTick((value) => value + 1);
+        return;
+      }
+    } catch {
+      /* ignore */
+    }
+    let cancelled = false;
+    const catalog = englishCatalog();
+    void requestTranslations(locale, catalog.map(([, value]) => value)).then((translated) => {
+      if (cancelled) return;
+      const partial: Partial<Messages> = {};
+      catalog.forEach(([key], index) => {
+        const next = translated[index];
+        if (next) partial[key] = next;
+      });
+      setMessageOverlay(locale, partial);
+      try { sessionStorage.setItem(cacheKey, JSON.stringify(partial)); } catch { /* ignore */ }
+      setOverlayTick((value) => value + 1);
+    });
+    return () => { cancelled = true; };
+  }, [locale]);
+
   const allCards = useMemo(() => (brief ? toGuideCards(brief) : []), [brief]);
   const cards = useMemo(() => readingCards(allCards), [allCards]);
-  const facts = useMemo(() => tripFacts(allCards), [allCards]);
+  const englishFacts = useMemo(() => tripFacts(allCards), [allCards]);
+  const facts = useMemo(() => {
+    const localized = localizeFacts(englishFacts, tr);
+    if (!textMap) return localized;
+    return localized.map((fact, index) => ({
+      ...fact,
+      value: textMap.get(englishFacts[index]?.value ?? '') ?? fact.value,
+    }));
+  }, [englishFacts, tr, textMap]);
   const highlights = glance(cards);
   const alerts = liveAlerts(cards);
   const visible = cards.filter((card) => {
@@ -102,8 +212,47 @@ export function BriefApp() {
   });
   const extraCount = cards.filter((card) => card.priority === 'extra').length;
   const destination = countryByIso(form.destination_country);
+  const destinationLabel = displayCountryName(form.destination_country, locale) || destination?.name || '';
   const missing = brief ? downSources(brief) : [];
   const stepIndex = step === 'where' ? 1 : step === 'who' ? 2 : 3;
+
+  useEffect(() => {
+    if (!brief || isEnglish(locale)) {
+      setTextMap(null);
+      setTranslating(false);
+      return;
+    }
+    const sourceCards = toGuideCards(brief);
+    const unique: string[] = [];
+    const seen = new Set<string>();
+    for (const card of sourceCards) {
+      for (const part of [...card.paragraphs, card.blurb]) {
+        if (part && !seen.has(part)) {
+          seen.add(part);
+          unique.push(part);
+        }
+      }
+    }
+    for (const fact of tripFacts(sourceCards)) {
+      if (fact.value && !seen.has(fact.value)) {
+        seen.add(fact.value);
+        unique.push(fact.value);
+      }
+    }
+    let cancelled = false;
+    setTranslating(true);
+    void requestTranslations(locale, unique).then((translated) => {
+      if (cancelled) return;
+      const map = new Map<string, string>();
+      unique.forEach((source, index) => {
+        const next = translated[index];
+        if (next && next !== source) map.set(source, next);
+      });
+      setTextMap(map.size ? map : null);
+      setTranslating(false);
+    });
+    return () => { cancelled = true; };
+  }, [brief, locale]);
 
   async function loadNotes() {
     if (!form.destination_slug || !form.nationality) return;
@@ -125,7 +274,7 @@ export function BriefApp() {
         body: JSON.stringify(payload),
       });
       const data = await response.json();
-      if (!response.ok) throw new Error(data.error || 'We could not load your notes.');
+      if (!response.ok) throw new Error(data.error || tr('loadErrorShort'));
       setBrief(data);
       setStep('guide');
       setShowExtra(false);
@@ -136,7 +285,7 @@ export function BriefApp() {
       localStorage.setItem(STORAGE_PROFILE, JSON.stringify(form));
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'We could not load your notes. Please try again.');
+      setError(err instanceof Error ? err.message : tr('loadError'));
     } finally {
       setPending(false);
     }
@@ -149,16 +298,22 @@ export function BriefApp() {
     else if (step === 'what') void loadNotes();
   }
 
+  const shown = localizeCards(visible, tr).map((card) => applyTextMap(card, textMap));
+  const shownHighlights = localizeCards(highlights, tr).map((card) => applyTextMap(card, textMap));
+
   const grouped = new Map<string, GuideCard[]>();
-  for (const card of visible) {
+  for (const card of shown) {
     const list = grouped.get(card.section) ?? [];
     list.push(card);
     grouped.set(card.section, list);
   }
 
+  const missingLabel = missing.map((item) => tr(item === 'no_page' ? 'missingNoPage' : 'missingAdvice')).join(` ${tr('andJoin')} `);
+  const purposeLabel = PURPOSE_KEYS.find((item) => item.id === form.purpose);
+
   return (
     <>
-      <a className="skip" href="#main">Skip to the notes</a>
+      <a className="skip" href="#main">{tr('skip')}</a>
       <header className="top">
         <div className="top-inner">
           <div className="brand">Culture Context</div>
@@ -169,7 +324,7 @@ export function BriefApp() {
                 type="button"
                 onClick={() => setStep(step === 'what' ? 'who' : 'where')}
               >
-                Back
+                {tr('back')}
               </button>
             )}
             <button
@@ -178,7 +333,7 @@ export function BriefApp() {
               aria-pressed={largeType}
               onClick={() => setLargeType((value) => !value)}
             >
-              {largeType ? 'Smaller type' : 'Bigger type'}
+              {largeType ? tr('smallerType') : tr('biggerType')}
             </button>
           </div>
         </div>
@@ -187,13 +342,13 @@ export function BriefApp() {
       <main id="main" className="shell">
         {step !== 'guide' && (
           <form onSubmit={onSubmit}>
-            <p className="progress" aria-live="polite">Question {stepIndex} of 3</p>
+            <p className="progress" aria-live="polite">{tr('questionOf', { n: stepIndex })}</p>
 
             {step === 'where' && (
               <>
                 <div className="hero">
-                  <h1 ref={headingRef} tabIndex={-1}>Where are you going?</h1>
-                  <p>Type any country in the world. Or tap a popular trip below.</p>
+                  <h1 ref={headingRef} tabIndex={-1}>{tr('whereTitle')}</h1>
+                  <p>{tr('whereHint')}</p>
                 </div>
 
                 {saved && (
@@ -202,17 +357,19 @@ export function BriefApp() {
                     className="resume"
                     onClick={() => { setStep('guide'); window.scrollTo({ top: 0 }); }}
                   >
-                    <b>Open your last notes</b>
-                    <span>You already have notes for {saved.destination}.</span>
+                    <b>{tr('resumeTitle')}</b>
+                    <span>{tr('resumeHint', { destination: saved.destination })}</span>
                   </button>
                 )}
 
                 <CountryPicker
                   value={form.destination_country}
+                  locale={locale}
                   popular={POPULAR_DESTINATIONS}
-                  popularLabel="Popular trips"
-                  searchLabel="Find any country"
-                  searchPlaceholder="Nigeria, Brazil, Italy, Japan…"
+                  popularLabel={tr('popularTrips')}
+                  searchLabel={tr('findAnyCountry')}
+                  searchPlaceholder={tr('countryPlaceholder')}
+                  noMatch={tr}
                   onChange={(country) => setForm((current) => ({
                     ...current,
                     destination_country: country.iso2,
@@ -223,7 +380,7 @@ export function BriefApp() {
 
                 <div className="dock">
                   <button className="primary" type="submit" disabled={!form.destination_slug}>
-                    Next: where are you from?
+                    {tr('nextFrom')}
                   </button>
                 </div>
               </>
@@ -232,15 +389,17 @@ export function BriefApp() {
             {step === 'who' && (
               <>
                 <div className="hero">
-                  <h1 ref={headingRef} tabIndex={-1}>What country is on your passport?</h1>
-                  <p>This helps us compare home and {destination?.name || 'your destination'}. It does not decide if you can enter.</p>
+                  <h1 ref={headingRef} tabIndex={-1}>{tr('whoTitle')}</h1>
+                  <p>{tr('whoHint', { destination: destinationLabel || tr('fromPassportFallback') })}</p>
                 </div>
                 <CountryPicker
                   value={form.nationality}
+                  locale={locale}
                   popular={POPULAR_PASSPORTS}
-                  popularLabel="Often used passports"
-                  searchLabel="Find any passport country"
-                  searchPlaceholder="Type a country name"
+                  popularLabel={tr('popularPassports')}
+                  searchLabel={tr('findPassport')}
+                  searchPlaceholder={tr('typeCountry')}
+                  noMatch={tr}
                   onChange={(country) => setForm((current) => ({
                     ...current,
                     nationality: country.iso2,
@@ -257,24 +416,26 @@ export function BriefApp() {
                       residence_country: event.target.checked ? form.nationality : form.residence_country,
                     })}
                   />
-                  I live in the same country
+                  {tr('sameHome')}
                 </label>
                 {!form.sameHome && (
                   <div className="nested">
-                    <h2 className="subhead">Where do you live now?</h2>
+                    <h2 className="subhead">{tr('liveTitle')}</h2>
                     <CountryPicker
                       value={form.residence_country}
+                      locale={locale}
                       popular={POPULAR_PASSPORTS}
-                      popularLabel="Often used countries"
-                      searchLabel="Find the country where you live"
-                      searchPlaceholder="Type a country name"
+                      popularLabel={tr('popularHome')}
+                      searchLabel={tr('findHome')}
+                      searchPlaceholder={tr('typeCountry')}
+                      noMatch={tr}
                       onChange={(country) => setForm({ ...form, residence_country: country.iso2 })}
                     />
                   </div>
                 )}
                 <div className="dock">
                   <button className="primary" type="submit" disabled={!form.nationality || (!form.sameHome && !form.residence_country)}>
-                    Next: what will you do?
+                    {tr('nextWhat')}
                   </button>
                 </div>
               </>
@@ -283,21 +444,21 @@ export function BriefApp() {
             {step === 'what' && !pending && (
               <>
                 <div className="hero">
-                  <h1 ref={headingRef} tabIndex={-1}>What will you do in {destination?.name || 'this country'}?</h1>
-                  <p>Pick the kind of trip. Then tap anything else that is true. Skip what does not apply.</p>
+                  <h1 ref={headingRef} tabIndex={-1}>{tr('whatTitle', { destination: destinationLabel || '' })}</h1>
+                  <p>{tr('whatHint')}</p>
                 </div>
-                <h2 className="subhead">Kind of trip</h2>
-                <div className="choices" role="group" aria-label="Trip purpose">
-                  {PURPOSES.map((item) => (
+                <h2 className="subhead">{tr('kindOfTrip')}</h2>
+                <div className="choices" role="group" aria-label={tr('kindOfTrip')}>
+                  {PURPOSE_KEYS.map((item) => (
                     <button type="button" className="choice" key={item.id} aria-pressed={form.purpose === item.id} onClick={() => setForm({ ...form, purpose: item.id })}>
-                      <b>{item.label}</b>
+                      <b>{tr(item.key)}</b>
                     </button>
                   ))}
                 </div>
-                <h2 className="subhead">Anything else to look up?</h2>
-                <p className="hint">Optional. Tap every line that is true.</p>
-                <div className="choices" role="group" aria-label="Activities">
-                  {ACTIVITIES.map((item) => {
+                <h2 className="subhead">{tr('anythingElse')}</h2>
+                <p className="hint">{tr('optionalHint')}</p>
+                <div className="choices" role="group" aria-label={tr('anythingElse')}>
+                  {ACTIVITY_KEYS.map((item) => {
                     const on = form.activities.includes(item.id);
                     return (
                       <button
@@ -310,7 +471,7 @@ export function BriefApp() {
                           activities: on ? form.activities.filter((value) => value !== item.id) : [...form.activities, item.id],
                         })}
                       >
-                        <b>{item.label}</b>
+                        <b>{tr(item.key)}</b>
                       </button>
                     );
                   })}
@@ -318,14 +479,14 @@ export function BriefApp() {
                 <div className="dock">
                   {error && <div className="banner warn" role="alert"><p>{error}</p></div>}
                   <button className="primary" type="submit" disabled={pending}>
-                    {pending ? `Looking up notes for ${destination?.name}…` : `Show my notes for ${destination?.name}`}
+                    {pending ? tr('lookingUp', { destination: destinationLabel }) : tr('showNotes', { destination: destinationLabel })}
                   </button>
                 </div>
               </>
             )}
             {step === 'what' && pending && (
               <div className="loading" aria-live="polite">
-                <p>Looking up official notes for {destination?.name}. This can take a few seconds. Please wait.</p>
+                <p>{tr('lookingUpLong', { destination: destinationLabel })}</p>
               </div>
             )}
           </form>
@@ -334,20 +495,26 @@ export function BriefApp() {
         {step === 'guide' && brief && !pending && (
           <>
             <div className="hero">
-              <h1 ref={headingRef} tabIndex={-1}>Your notes for {brief.destination_name || destination?.name}</h1>
+              <h1 ref={headingRef} tabIndex={-1}>{tr('notesTitle', { destination: brief.destination_name || destinationLabel })}</h1>
               <p className="trip-line">
-                {countryName(form.nationality) ? `From ${countryName(form.nationality)}` : 'From your passport country'}
-                {form.city ? ` · visiting ${form.city}` : ''}
-                {` · ${PURPOSES.find((item) => item.id === form.purpose)?.label || 'Trip'}`}
+                {form.nationality ? tr('fromPassport', { country: displayCountryName(form.nationality, locale) }) : tr('fromPassportFallback')}
+                {form.city ? ` · ${tr('visiting', { city: form.city })}` : ''}
+                {` · ${purposeLabel ? tr(purposeLabel.key) : tr('purposeOther')}`}
               </p>
-              <p>Short notes from official sources. Easy to read. Not a visa decision or legal advice.</p>
+              <p>{tr('notesIntro')}</p>
+              {!isEnglish(locale) && (
+                <p className="language-banner">{tr('languageBanner', {
+                  language: languageName(locale, locale),
+                  country: displayCountryName(form.nationality, locale),
+                })}</p>
+              )}
               <button className="ghost" type="button" onClick={() => { setStep('where'); window.scrollTo({ top: 0 }); }}>
-                Change trip
+                {tr('changeTrip')}
               </button>
             </div>
 
             {facts.length > 0 && (
-              <section className="facts" aria-label="Quick facts">
+              <section className="facts" aria-label={tr('factsLabel')}>
                 {facts.map((fact) => (
                   <div className="fact" key={fact.label}>
                     <span>{fact.label}</span>
@@ -357,38 +524,47 @@ export function BriefApp() {
               </section>
             )}
 
+            {translating && !isEnglish(locale) && (
+              <div className="banner ok" role="status">
+                <p>{tr('translating')}</p>
+              </div>
+            )}
+
+            {textMap && !translating && !isEnglish(locale) && (
+              <div className="banner ok" role="status">
+                <p>{tr('translationNote')}</p>
+              </div>
+            )}
+
             {missing.length > 0 && (
               <div className="banner warn" role="status">
-                <p>We could not load {missing.join(' and ')} just now. We did not fill the gap with guesses.</p>
+                <p>{tr('missingSources', { sources: missingLabel })}</p>
               </div>
             )}
 
             {cards.length === 0 && (
               <div className="banner warn" role="status">
-                <p>We could not find official notes for this trip. We did not invent any.</p>
+                <p>{tr('noNotes')}</p>
               </div>
             )}
 
             {alerts.length > 0 && (
               <div className="banner warn" role="status">
-                <p>
-                  There {alerts.length === 1 ? 'is a current alert' : `are ${alerts.length} current alerts`} listed for this country.
-                  Check local news as well.
-                </p>
+                <p>{alerts.length === 1 ? tr('alertOne') : tr('alertMany', { n: alerts.length })}</p>
                 {!showAlerts && (
                   <button className="ghost" type="button" onClick={() => setShowAlerts(true)}>
-                    Read the current alerts
+                    {tr('readAlerts')}
                   </button>
                 )}
               </div>
             )}
 
-            {highlights.length > 0 && (
+            {shownHighlights.length > 0 && (
               <section className="glance">
-                <h2>Start here</h2>
-                <p className="hint">The few things most people should read first. Tap a line to jump to it.</p>
+                <h2>{tr('startHere')}</h2>
+                <p className="hint">{tr('startHint')}</p>
                 <ol>
-                  {highlights.map((item) => (
+                  {shownHighlights.map((item) => (
                     <li key={item.id}>
                       <a href={`#note-${item.id}`}>
                         <strong>{item.title}</strong>
@@ -408,6 +584,14 @@ export function BriefApp() {
                     key={card.id}
                     card={card}
                     expanded={!!open[card.id]}
+                    labels={{
+                      need: tr('needToKnow'),
+                      useful: tr('goodToKnow'),
+                      extra: tr('background'),
+                      less: tr('showLess'),
+                      more: tr('readMore'),
+                      official: tr('openOfficial'),
+                    }}
                     onToggle={() => setOpen((current) => ({ ...current, [card.id]: !current[card.id] }))}
                   />
                 ))}
@@ -416,15 +600,11 @@ export function BriefApp() {
 
             {extraCount > 0 && !showExtra && (
               <button className="ghost wide" type="button" onClick={() => setShowExtra(true)}>
-                Show {extraCount} extra background notes
+                {tr('extraNotes', { n: extraCount })}
               </button>
             )}
 
-            <p className="footer-note">
-              UK travel advice is written mainly for British travelers. Some entry rules may be different for you.
-              For anything high-stakes, open the official page on the card and, if needed, ask the destination’s embassy.
-              Culture Context does not replace that.
-            </p>
+            <p className="footer-note">{tr('footer')}</p>
           </>
         )}
       </main>
@@ -434,21 +614,25 @@ export function BriefApp() {
 
 function CountryPicker({
   value,
+  locale,
   onChange,
   popular,
   searchLabel,
   searchPlaceholder,
   popularLabel,
+  noMatch,
 }: {
   value: string;
+  locale: string;
   onChange: (country: WorldCountry) => void;
   popular: readonly string[];
   popularLabel: string;
   searchLabel: string;
   searchPlaceholder: string;
+  noMatch: (key: MessageKey, vars?: Record<string, string | number>) => string;
 }) {
   const [query, setQuery] = useState('');
-  const matches = findCountries(query);
+  const matches = findCountries(query, locale);
   const selected = countryByIso(value);
   const popularCountries = popular.map((iso2) => countryByIso(iso2)).filter((item): item is WorldCountry => !!item);
   const showSelected = Boolean(selected && !popular.includes(selected.iso2));
@@ -456,6 +640,10 @@ function CountryPicker({
   function choose(country: WorldCountry) {
     onChange(country);
     setQuery('');
+  }
+
+  function label(country: WorldCountry) {
+    return displayCountryName(country.iso2, locale) || country.name;
   }
 
   return (
@@ -471,7 +659,7 @@ function CountryPicker({
         />
       </label>
       {query.trim() && (
-        <div className="choices" role="listbox" aria-label="Country matches">
+        <div className="choices" role="listbox" aria-label={noMatch('countryMatches')}>
           {matches.map((country) => (
             <button
               type="button"
@@ -482,12 +670,12 @@ function CountryPicker({
             >
               <span className="flag" aria-hidden="true">{flagEmoji(country.iso2)}</span>
               <span>
-                <b>{country.name}</b>
+                <b>{label(country)}</b>
                 {country.capital ? <span>{country.capital}</span> : null}
               </span>
             </button>
           ))}
-          {matches.length === 0 && <p className="hint">No country matches “{query}”. Try the English name or a 2-letter code.</p>}
+          {matches.length === 0 && <p className="hint">{noMatch('noMatch', { query })}</p>}
         </div>
       )}
       {!query.trim() && (
@@ -498,7 +686,7 @@ function CountryPicker({
               <button type="button" className="choice place" aria-pressed="true" onClick={() => choose(selected)}>
                 <span className="flag" aria-hidden="true">{flagEmoji(selected.iso2)}</span>
                 <span>
-                  <b>{selected.name}</b>
+                  <b>{label(selected)}</b>
                   {selected.capital ? <span>{selected.capital}</span> : null}
                 </span>
               </button>
@@ -513,7 +701,7 @@ function CountryPicker({
               >
                 <span className="flag" aria-hidden="true">{flagEmoji(country.iso2)}</span>
                 <span>
-                  <b>{country.name}</b>
+                  <b>{label(country)}</b>
                   {country.capital ? <span>{country.capital}</span> : null}
                 </span>
               </button>
@@ -525,10 +713,20 @@ function CountryPicker({
   );
 }
 
-function GuideCardView({ card, expanded, onToggle }: { card: GuideCard; expanded: boolean; onToggle: () => void }) {
+function GuideCardView({
+  card,
+  expanded,
+  onToggle,
+  labels,
+}: {
+  card: GuideCard;
+  expanded: boolean;
+  onToggle: () => void;
+  labels: { need: string; useful: string; extra: string; less: string; more: string; official: string };
+}) {
   const long = card.paragraphs.length > 1 || (card.paragraphs[0]?.length || 0) > 220;
   const preview = expanded ? card.paragraphs : card.paragraphs.slice(0, 1);
-  const label = card.priority === 'need' ? 'Need to know' : card.priority === 'useful' ? 'Good to know' : 'Background';
+  const label = card.priority === 'need' ? labels.need : card.priority === 'useful' ? labels.useful : labels.extra;
   return (
     <article className={`card ${card.priority}${expanded ? ' expanded' : ''}`} id={`note-${card.id}`}>
       <span className="badge">{label}</span>
@@ -544,9 +742,9 @@ function GuideCardView({ card, expanded, onToggle }: { card: GuideCard; expanded
       <p className="source-kind">{card.sourceKind}</p>
       <div className="links">
         {long && (
-          <button type="button" onClick={onToggle}>{expanded ? 'Show less' : 'Read more'}</button>
+          <button type="button" onClick={onToggle}>{expanded ? labels.less : labels.more}</button>
         )}
-        <a href={card.url} target="_blank" rel="noreferrer">Open official page</a>
+        <a href={card.url} target="_blank" rel="noreferrer">{labels.official}</a>
       </div>
     </article>
   );

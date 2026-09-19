@@ -1,4 +1,5 @@
 import type { BriefItem, BriefResponse, SourceClass, SourceRef } from '@culture-context/domain';
+import type { MessageKey } from './i18n';
 
 export type Priority = 'need' | 'useful' | 'extra';
 
@@ -283,12 +284,153 @@ export function liveAlerts(cards: GuideCard[]): GuideCard[] {
   return cards.filter((card) => card.section === 'Right now');
 }
 
-export function downSources(brief: BriefResponse): string[] {
+export type MissingSource = 'no_page' | 'advice';
+
+export function downSources(brief: BriefResponse): MissingSource[] {
   return brief.source_statuses
     .filter((status) => status.status === 'unavailable' && status.id === 'govuk')
-    .map((status) => (
-      status.detail === 'no_page'
-        ? 'UK foreign travel advice for this country (it is not published)'
-        : 'official travel advice'
-    ));
+    .map((status) => (status.detail === 'no_page' ? 'no_page' : 'advice'));
+}
+
+type TFunc = (key: MessageKey, vars?: Record<string, string | number>) => string;
+
+const TITLE_KEYS: Record<string, MessageKey> = {
+  'Getting into the country': 'titleEntry',
+  'Before you go': 'titleBefore',
+  'Staying safe': 'titleSafe',
+  'Places with extra caution': 'titleRegional',
+  'Health and medicine': 'titleHealth',
+  'If you need help': 'titleHelp',
+  'Everyday manners': 'titleManners',
+  Tattoos: 'titleTattoos',
+  'LGBT+ travelers': 'titleLgbt',
+  'If you plan to drive': 'titleDrive',
+  'If you take medicine': 'titleMedicine',
+  'If you bring a drone': 'titleDrone',
+  'Photos and filming': 'titlePhotos',
+  'Nights out': 'titleNights',
+  Hiking: 'titleHiking',
+  Climbing: 'titleClimbing',
+  'Beaches and water': 'titleWater',
+  Camping: 'titleCamping',
+  'Money, language, and driving side': 'titleMoneyLang',
+  'How this compares with home': 'titleCompare',
+  'Today’s exchange rate': 'titleFx',
+  'Humanitarian update': 'titleHumanitarian',
+};
+
+const SECTION_KEYS: Record<string, MessageKey> = {
+  'Getting in': 'sectionGettingIn',
+  'Rules to know': 'sectionRules',
+  'Staying safe': 'sectionSafe',
+  'Local customs': 'sectionCustoms',
+  'Right now': 'sectionNow',
+  'Helpful extras': 'sectionExtras',
+};
+
+const SOURCE_NAME_KEYS: Record<string, MessageKey> = {
+  'UK government travel advice': 'srcGovuk',
+  'World Bank country facts': 'srcWorldBank',
+  'Country facts (currency, language, driving)': 'srcIso',
+  'Reference exchange rate': 'srcFx',
+  'International disaster alerts': 'srcGdacs',
+  'UN humanitarian updates': 'srcRelief',
+  'Official travel advice': 'srcAdvisory',
+  'Background facts': 'srcRef',
+  'International alert': 'srcAlert',
+};
+
+const SOURCE_KIND_KEYS: Record<string, MessageKey> = {
+  'Advice from another government. Not the destination’s own law.': 'kindAdvisory',
+  'Official law from the destination.': 'kindLaw',
+  'Guidance from a regulator.': 'kindRegulator',
+  'An international alert. Not a local law.': 'kindAlert',
+  'Background facts, not rules.': 'kindRef',
+  'Local context. Not a law.': 'kindLocal',
+};
+
+const WHY_KEYS: Record<string, MessageKey> = {
+  'Shown because you said you may drive.': 'whyDriving',
+  'Shown because you said you take medicine.': 'whyMedication',
+  'Shown because you said you may bring a drone.': 'whyDrone',
+  'Shown because you said you may take photos or film.': 'whyFilming',
+  'Shown because you said you may go out at night.': 'whyNightlife',
+  'Shown because you said you may hike.': 'whyHiking',
+  'Shown because you said you may climb.': 'whyClimbing',
+  'Shown because you said you may go in the water.': 'whySurfing',
+  'Shown because you said you may camp.': 'whyCamping',
+};
+
+const FACT_LABEL_KEYS: Record<string, MessageKey> = {
+  Money: 'factMoney',
+  Language: 'factLanguage',
+  Driving: 'factDriving',
+  Exchange: 'factExchange',
+};
+
+export function localizeTitle(title: string, tr: TFunc): string {
+  if (TITLE_KEYS[title]) return tr(TITLE_KEYS[title]);
+  if (title.startsWith('Current alert: ')) {
+    return tr('titleAlert', { name: title.slice('Current alert: '.length) });
+  }
+  return title;
+}
+
+function localizeWhy(why: string | null, tr: TFunc): string | null {
+  if (!why) return null;
+  return why
+    .split(/(?<=\.)\s+/)
+    .map((part) => {
+      const key = WHY_KEYS[part];
+      if (key) return tr(key);
+      const extra = part.match(/^Shown because of:\s*(.+)\.$/);
+      if (extra?.[1]) return tr('whyOther', { activity: extra[1] });
+      return part;
+    })
+    .join(' ');
+}
+
+function localizeChecked(label: string, tr: TFunc): string {
+  if (label === 'Checked recently') return tr('checkedRecently');
+  if (label === 'Checked today') return tr('checkedToday');
+  if (label === 'Checked yesterday') return tr('checkedYesterday');
+  const match = label.match(/^Checked\s+(.+)$/);
+  if (match?.[1]) return tr('checkedOn', { date: match[1] });
+  return label;
+}
+
+export function localizeCards(cards: GuideCard[], tr: TFunc): GuideCard[] {
+  return cards.map((card) => ({
+    ...card,
+    title: localizeTitle(card.title, tr),
+    section: SECTION_KEYS[card.section] ? tr(SECTION_KEYS[card.section]!) : card.section,
+    whyYou: localizeWhy(card.whyYou, tr),
+    sourceName: SOURCE_NAME_KEYS[card.sourceName] ? tr(SOURCE_NAME_KEYS[card.sourceName]!) : card.sourceName,
+    sourceKind: SOURCE_KIND_KEYS[card.sourceKind] ? tr(SOURCE_KIND_KEYS[card.sourceKind]!) : card.sourceKind,
+    checked: localizeChecked(card.checked, tr),
+  }));
+}
+
+function localizeFactValue(value: string, tr: TFunc): string {
+  return value
+    .replace('Drive on the left', tr('driveLeft'))
+    .replace('Drive on the right', tr('driveRight'))
+    .replace('different from home', tr('differentFromHome'));
+}
+
+export function localizeFacts(facts: Fact[], tr: TFunc): Fact[] {
+  return facts.map((fact) => ({
+    label: FACT_LABEL_KEYS[fact.label] ? tr(FACT_LABEL_KEYS[fact.label]!) : fact.label,
+    value: localizeFactValue(fact.value, tr),
+  }));
+}
+
+export function applyTextMap(card: GuideCard, map: Map<string, string> | null): GuideCard {
+  if (!map || map.size === 0) return card;
+  return {
+    ...card,
+    title: map.get(card.title) ?? card.title,
+    blurb: map.get(card.blurb) ?? card.blurb,
+    paragraphs: card.paragraphs.map((paragraph) => map.get(paragraph) ?? paragraph),
+  };
 }
