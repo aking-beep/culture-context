@@ -8,10 +8,15 @@ def test_health():
     assert payload["ok"] is True
     assert payload["explain_enabled"] is False
 
-def test_destinations_are_five_launch_countries():
+def test_destinations_cover_the_world():
     payload = client.get("/v1/destinations").json()
     slugs = {item["slug"] for item in payload["destinations"]}
-    assert slugs == {"japan", "mexico", "france", "thailand", "morocco"}
+    iso2 = {item["iso2"] for item in payload["destinations"]}
+    assert len(payload["destinations"]) >= 180
+    assert {"japan", "nigeria", "brazil", "italy", "usa", "india"} <= slugs
+    assert {"JP", "NG", "BR", "IT", "US", "IN", "GB", "CN"} <= iso2
+    featured = {item["iso2"] for item in payload["featured"]}
+    assert "JP" in featured
 
 def test_explain_disabled_is_unavailable():
     item = {

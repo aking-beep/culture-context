@@ -66,6 +66,7 @@ a { color: var(--action); }
 .hint { margin: 0 0 10px; color: var(--muted); font-size: 1rem; }
 .nested { margin-top: 12px; padding-top: 8px; border-top: 1px solid var(--line); }
 .picker { display: grid; gap: 12px; }
+.picker .field-label { margin-top: 0; }
 
 .choices { display: grid; gap: 10px; }
 .choice, .check, .resume {

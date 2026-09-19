@@ -115,15 +115,19 @@ class CountryMetadata:
 
 
 def _summarize(row: dict, worldbank: dict | None) -> str:
-    languages = ", ".join(row.get("languages") or []) or "not listed"
+    languages = ", ".join(row.get("languages") or [])
     bits = [
         "Reference data only, not law.",
         f"Common name: {row.get('name')}.",
-        f"Capital: {row.get('capital')}.",
-        f"Languages: {languages}.",
-        f"Currency: {row.get('currency_name')} ({row.get('currency')}).",
-        f"Driving side: {row.get('driving')}.",
     ]
+    if row.get("capital"):
+        bits.append(f"Capital: {row.get('capital')}.")
+    if languages:
+        bits.append(f"Languages: {languages}.")
+    if row.get("currency_name") and row.get("currency"):
+        bits.append(f"Currency: {row.get('currency_name')} ({row.get('currency')}).")
+    if row.get("driving"):
+        bits.append(f"Driving side: {row.get('driving')}.")
     if worldbank:
         region = ((worldbank.get("region") or {}).get("value")) if isinstance(worldbank.get("region"), dict) else None
         wb_capital = worldbank.get("capitalCity")
@@ -135,9 +139,15 @@ def _summarize(row: dict, worldbank: dict | None) -> str:
 
 
 def _compare(home: dict, dest: dict) -> str:
-    return compact(
-        "This comparison uses ISO country/currency reference data only and does not describe culture or law. "
-        f"Currency: {home.get('currency')} at home vs {dest.get('currency')} at destination. "
-        f"Listed languages: {', '.join(home.get('languages') or [])} vs {', '.join(dest.get('languages') or [])}. "
-        f"Driving side: {home.get('driving')} vs {dest.get('driving')}."
-    )
+    bits = [
+        "This comparison uses ISO country/currency reference data only and does not describe culture or law."
+    ]
+    if home.get("currency") and dest.get("currency"):
+        bits.append(f"Currency: {home.get('currency')} at home vs {dest.get('currency')} at destination.")
+    home_lang = ", ".join(home.get("languages") or [])
+    dest_lang = ", ".join(dest.get("languages") or [])
+    if home_lang and dest_lang:
+        bits.append(f"Listed languages: {home_lang} vs {dest_lang}.")
+    if home.get("driving") and dest.get("driving"):
+        bits.append(f"Driving side: {home.get('driving')} vs {dest.get('driving')}.")
+    return compact(" ".join(bits))

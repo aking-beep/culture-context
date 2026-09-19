@@ -53,14 +53,30 @@ class BriefService:
         statuses: list[SourceStatus] = []
         rules = []
 
-        govuk_rules, govuk_meta = await self._safe_fetch(
-            "govuk",
-            self.govuk.authority,
-            SourceClass.GOVERNMENT_ADVISORY,
-            lambda: self.govuk.fetch(traveler.destination_slug, traveler.destination_country),
-            statuses,
-            warnings,
-        )
+        govuk_slug = destination.govuk_slug if destination and destination.govuk_slug else ""
+        if govuk_slug:
+            govuk_rules, govuk_meta = await self._safe_fetch(
+                "govuk",
+                self.govuk.authority,
+                SourceClass.GOVERNMENT_ADVISORY,
+                lambda: self.govuk.fetch(govuk_slug, traveler.destination_country),
+                statuses,
+                warnings,
+            )
+        else:
+            govuk_rules, govuk_meta = [], {}
+            statuses.append(
+                SourceStatus(
+                    id="govuk",
+                    authority=self.govuk.authority,
+                    source_class=SourceClass.GOVERNMENT_ADVISORY,
+                    status="unavailable",
+                    detail="no_page",
+                )
+            )
+            warnings.append(
+                "The UK government does not publish foreign travel advice for this destination. No replacement facts were invented."
+            )
         rules.extend(govuk_rules)
         self._persist(govuk_meta)
 

@@ -3,7 +3,7 @@ import os
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
-from .destinations import ACTIVITIES, LAUNCH_DESTINATIONS
+from .destinations import ACTIVITIES, ALL_DESTINATIONS, LAUNCH_DESTINATIONS
 from .models import BriefResponse, ExplainRequest, ExplainResponse, TravelerProfile
 from .service import BriefService, explain_enabled
 from .source_registry import SOURCES
@@ -48,7 +48,8 @@ def health():
 @app.get("/v1/destinations")
 def destinations():
     return {
-        "destinations": [item.model_dump() for item in LAUNCH_DESTINATIONS],
+        "destinations": [item.model_dump() for item in ALL_DESTINATIONS],
+        "featured": [item.model_dump() for item in LAUNCH_DESTINATIONS],
         "activities": ACTIVITIES,
         "purposes": ["tourism", "remote_work", "business", "study", "other"],
     }

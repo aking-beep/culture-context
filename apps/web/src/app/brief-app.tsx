@@ -1,17 +1,9 @@
 'use client';
 
 import type { BriefResponse, TravelerProfile } from '@culture-context/domain';
-import { COUNTRIES, countryName, findCountries } from '@/lib/countries';
+import { POPULAR_DESTINATIONS, POPULAR_PASSPORTS, countryByIso, countryName, findCountries, flagEmoji, type WorldCountry } from '@/lib/countries';
 import { downSources, glance, liveAlerts, readingCards, toGuideCards, tripFacts, type GuideCard } from '@/lib/present';
 import { useEffect, useMemo, useRef, useState } from 'react';
-
-const DESTINATIONS = [
-  { iso2: 'JP', slug: 'japan', name: 'Japan', city: 'Tokyo', flag: '🇯🇵', blurb: 'Cities, trains, and temples' },
-  { iso2: 'MX', slug: 'mexico', name: 'Mexico', city: 'Mexico City', flag: '🇲🇽', blurb: 'Food, beaches, and cities' },
-  { iso2: 'FR', slug: 'france', name: 'France', city: 'Paris', flag: '🇫🇷', blurb: 'Cities, countryside, and food' },
-  { iso2: 'TH', slug: 'thailand', name: 'Thailand', city: 'Bangkok', flag: '🇹🇭', blurb: 'Cities, islands, and temples' },
-  { iso2: 'MA', slug: 'morocco', name: 'Morocco', city: 'Marrakesh', flag: '🇲🇦', blurb: 'Cities, markets, and mountains' },
-] as const;
 
 const ACTIVITIES = [
   { id: 'driving', label: 'I may drive a car' },
@@ -31,8 +23,6 @@ const PURPOSES = [
   { id: 'remote_work', label: 'Working from there' },
   { id: 'other', label: 'Something else' },
 ] as const;
-
-const POPULAR_PASSPORTS = ['US', 'GB', 'CA', 'AU', 'IN', 'MX', 'DE', 'BR'] as const;
 
 const STORAGE_BRIEF = 'culture-context:last-brief';
 const STORAGE_PROFILE = 'culture-context:last-profile';
@@ -111,7 +101,7 @@ export function BriefApp() {
     return true;
   });
   const extraCount = cards.filter((card) => card.priority === 'extra').length;
-  const destination = DESTINATIONS.find((item) => item.slug === form.destination_slug);
+  const destination = countryByIso(form.destination_country);
   const missing = brief ? downSources(brief) : [];
   const stepIndex = step === 'where' ? 1 : step === 'who' ? 2 : 3;
 
@@ -208,7 +198,7 @@ export function BriefApp() {
               <>
                 <div className="hero">
                   <h1 ref={headingRef} tabIndex={-1}>Where are you going?</h1>
-                  <p>Tap one country. That is the only choice you need to make on this page.</p>
+                  <p>Type any country in the world. Or tap a popular trip below.</p>
                 </div>
 
                 {saved && (
@@ -222,28 +212,19 @@ export function BriefApp() {
                   </button>
                 )}
 
-                <div className="choices places" role="group" aria-label="Country">
-                  {DESTINATIONS.map((item) => (
-                    <button
-                      type="button"
-                      className="choice place"
-                      key={item.slug}
-                      aria-pressed={form.destination_slug === item.slug}
-                      onClick={() => setForm((current) => ({
-                        ...current,
-                        destination_country: item.iso2,
-                        destination_slug: item.slug,
-                        city: item.city,
-                      }))}
-                    >
-                      <span className="flag" aria-hidden="true">{item.flag}</span>
-                      <span>
-                        <b>{item.name}</b>
-                        <span>{item.blurb}</span>
-                      </span>
-                    </button>
-                  ))}
-                </div>
+                <CountryPicker
+                  value={form.destination_country}
+                  popular={POPULAR_DESTINATIONS}
+                  popularLabel="Popular trips"
+                  searchLabel="Find any country"
+                  searchPlaceholder="Nigeria, Brazil, Italy, Japan…"
+                  onChange={(country) => setForm((current) => ({
+                    ...current,
+                    destination_country: country.iso2,
+                    destination_slug: country.slug,
+                    city: country.capital,
+                  }))}
+                />
 
                 <div className="dock">
                   <button className="primary" type="submit" disabled={!form.destination_slug}>
@@ -261,10 +242,14 @@ export function BriefApp() {
                 </div>
                 <CountryPicker
                   value={form.nationality}
-                  onChange={(iso2) => setForm((current) => ({
+                  popular={POPULAR_PASSPORTS}
+                  popularLabel="Often used passports"
+                  searchLabel="Find any passport country"
+                  searchPlaceholder="Type a country name"
+                  onChange={(country) => setForm((current) => ({
                     ...current,
-                    nationality: iso2,
-                    residence_country: current.sameHome ? iso2 : current.residence_country,
+                    nationality: country.iso2,
+                    residence_country: current.sameHome ? country.iso2 : current.residence_country,
                   }))}
                 />
                 <label className="same">
@@ -284,7 +269,11 @@ export function BriefApp() {
                     <h2 className="subhead">Where do you live now?</h2>
                     <CountryPicker
                       value={form.residence_country}
-                      onChange={(iso2) => setForm({ ...form, residence_country: iso2 })}
+                      popular={POPULAR_PASSPORTS}
+                      popularLabel="Often used countries"
+                      searchLabel="Find the country where you live"
+                      searchPlaceholder="Type a country name"
+                      onChange={(country) => setForm({ ...form, residence_country: country.iso2 })}
                     />
                   </div>
                 )}
@@ -445,34 +434,42 @@ export function BriefApp() {
   );
 }
 
-function CountryPicker({ value, onChange }: { value: string; onChange: (iso2: string) => void }) {
+function CountryPicker({
+  value,
+  onChange,
+  popular,
+  searchLabel,
+  searchPlaceholder,
+  popularLabel,
+}: {
+  value: string;
+  onChange: (country: WorldCountry) => void;
+  popular: readonly string[];
+  popularLabel: string;
+  searchLabel: string;
+  searchPlaceholder: string;
+}) {
   const [query, setQuery] = useState('');
   const matches = findCountries(query);
-  const selected = value ? countryName(value) : '';
-  const popular: string[] = POPULAR_PASSPORTS.filter((iso2) => COUNTRIES.some((country) => country.iso2 === iso2));
-  const showSelected = Boolean(value && !popular.includes(value));
+  const selected = countryByIso(value);
+  const popularCountries = popular.map((iso2) => countryByIso(iso2)).filter((item): item is WorldCountry => !!item);
+  const showSelected = Boolean(selected && !popular.includes(selected.iso2));
+
+  function choose(country: WorldCountry) {
+    onChange(country);
+    setQuery('');
+  }
 
   return (
     <div className="picker">
-      <div className="choices places" role="group" aria-label="Popular passport countries">
-        {showSelected && (
-          <button type="button" className="choice" aria-pressed="true" onClick={() => onChange(value)}>
-            <b>{selected}</b>
-          </button>
-        )}
-        {popular.map((iso2) => (
-          <button type="button" className="choice" key={iso2} aria-pressed={value === iso2} onClick={() => { onChange(iso2); setQuery(''); }}>
-            <b>{countryName(iso2)}</b>
-          </button>
-        ))}
-      </div>
-      <label className="field-label">Find another country
+      <label className="field-label">{searchLabel}
         <input
           className="field"
           value={query}
           onChange={(event) => setQuery(event.target.value)}
-          placeholder="Type a country name"
+          placeholder={searchPlaceholder}
           autoComplete="country-name"
+          autoCapitalize="words"
         />
       </label>
       {query.trim() && (
@@ -480,16 +477,51 @@ function CountryPicker({ value, onChange }: { value: string; onChange: (iso2: st
           {matches.map((country) => (
             <button
               type="button"
-              className="choice"
+              className="choice place"
               key={country.iso2}
               aria-pressed={value === country.iso2}
-              onClick={() => { onChange(country.iso2); setQuery(''); }}
+              onClick={() => choose(country)}
             >
-              <b>{country.name}</b>
+              <span className="flag" aria-hidden="true">{flagEmoji(country.iso2)}</span>
+              <span>
+                <b>{country.name}</b>
+                {country.capital ? <span>{country.capital}</span> : null}
+              </span>
             </button>
           ))}
-          {matches.length === 0 && <p className="hint">No country matches “{query}”.</p>}
+          {matches.length === 0 && <p className="hint">No country matches “{query}”. Try the English name or a 2-letter code.</p>}
         </div>
+      )}
+      {!query.trim() && (
+        <>
+          <h2 className="subhead">{popularLabel}</h2>
+          <div className="choices places" role="group" aria-label={popularLabel}>
+            {showSelected && selected && (
+              <button type="button" className="choice place" aria-pressed="true" onClick={() => choose(selected)}>
+                <span className="flag" aria-hidden="true">{flagEmoji(selected.iso2)}</span>
+                <span>
+                  <b>{selected.name}</b>
+                  {selected.capital ? <span>{selected.capital}</span> : null}
+                </span>
+              </button>
+            )}
+            {popularCountries.map((country) => (
+              <button
+                type="button"
+                className="choice place"
+                key={country.iso2}
+                aria-pressed={value === country.iso2}
+                onClick={() => choose(country)}
+              >
+                <span className="flag" aria-hidden="true">{flagEmoji(country.iso2)}</span>
+                <span>
+                  <b>{country.name}</b>
+                  {country.capital ? <span>{country.capital}</span> : null}
+                </span>
+              </button>
+            ))}
+          </div>
+        </>
       )}
     </div>
   );

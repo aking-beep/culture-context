@@ -1,53 +1,64 @@
-export const COUNTRIES: { iso2: string; name: string }[] = [
-  { iso2: 'US', name: 'United States' },
-  { iso2: 'GB', name: 'United Kingdom' },
-  { iso2: 'CA', name: 'Canada' },
-  { iso2: 'AU', name: 'Australia' },
-  { iso2: 'NZ', name: 'New Zealand' },
-  { iso2: 'IE', name: 'Ireland' },
-  { iso2: 'DE', name: 'Germany' },
-  { iso2: 'FR', name: 'France' },
-  { iso2: 'ES', name: 'Spain' },
-  { iso2: 'IT', name: 'Italy' },
-  { iso2: 'NL', name: 'Netherlands' },
-  { iso2: 'SE', name: 'Sweden' },
-  { iso2: 'NO', name: 'Norway' },
-  { iso2: 'DK', name: 'Denmark' },
-  { iso2: 'JP', name: 'Japan' },
-  { iso2: 'KR', name: 'South Korea' },
-  { iso2: 'CN', name: 'China' },
-  { iso2: 'IN', name: 'India' },
-  { iso2: 'MX', name: 'Mexico' },
-  { iso2: 'BR', name: 'Brazil' },
-  { iso2: 'AR', name: 'Argentina' },
-  { iso2: 'ZA', name: 'South Africa' },
-  { iso2: 'NG', name: 'Nigeria' },
-  { iso2: 'KE', name: 'Kenya' },
-  { iso2: 'EG', name: 'Egypt' },
-  { iso2: 'AE', name: 'United Arab Emirates' },
-  { iso2: 'SA', name: 'Saudi Arabia' },
-  { iso2: 'TR', name: 'Turkey' },
-  { iso2: 'TH', name: 'Thailand' },
-  { iso2: 'VN', name: 'Vietnam' },
-  { iso2: 'PH', name: 'Philippines' },
-  { iso2: 'ID', name: 'Indonesia' },
-  { iso2: 'MY', name: 'Malaysia' },
-  { iso2: 'SG', name: 'Singapore' },
-  { iso2: 'MA', name: 'Morocco' },
-  { iso2: 'PT', name: 'Portugal' },
-  { iso2: 'PL', name: 'Poland' },
-  { iso2: 'CH', name: 'Switzerland' },
-  { iso2: 'AT', name: 'Austria' },
-  { iso2: 'BE', name: 'Belgium' },
-];
+import raw from './world-countries.json';
 
-export function countryName(iso2: string | undefined): string {
-  if (!iso2) return '';
-  return COUNTRIES.find((item) => item.iso2 === iso2.toUpperCase())?.name ?? iso2;
+export type WorldCountry = {
+  iso2: string;
+  iso3: string;
+  name: string;
+  slug: string;
+  govuk_slug: string;
+  capital: string;
+  currency: string;
+  currency_name: string;
+  languages: string[];
+  driving: string;
+  aliases: string[];
+};
+
+export const COUNTRIES: WorldCountry[] = raw as WorldCountry[];
+
+const BY_ISO2 = new Map(COUNTRIES.map((country) => [country.iso2, country]));
+const BY_SLUG = new Map(COUNTRIES.map((country) => [country.slug, country]));
+
+export const POPULAR_DESTINATIONS = ['JP', 'IT', 'ES', 'MX', 'TH', 'US', 'FR', 'AE'];
+export const POPULAR_PASSPORTS = ['US', 'IN', 'NG', 'BR', 'PH', 'MX', 'GB', 'CN'];
+
+export function countryByIso(iso2: string | undefined): WorldCountry | undefined {
+  if (!iso2) return undefined;
+  return BY_ISO2.get(iso2.toUpperCase());
 }
 
-export function findCountries(query: string): { iso2: string; name: string }[] {
+export function countryBySlug(slug: string | undefined): WorldCountry | undefined {
+  if (!slug) return undefined;
+  return BY_SLUG.get(slug);
+}
+
+export function countryName(iso2: string | undefined): string {
+  return countryByIso(iso2)?.name ?? iso2 ?? '';
+}
+
+export function flagEmoji(iso2: string): string {
+  if (iso2.length !== 2 || iso2 === 'XK') return '🏳️';
+  const upper = iso2.toUpperCase();
+  return String.fromCodePoint(...[...upper].map((char) => 127397 + char.charCodeAt(0)));
+}
+
+export function findCountries(query: string): WorldCountry[] {
   const needle = query.trim().toLowerCase();
   if (!needle) return [];
-  return COUNTRIES.filter((country) => country.name.toLowerCase().includes(needle) || country.iso2.toLowerCase() === needle).slice(0, 8);
+  const scored: { country: WorldCountry; score: number }[] = [];
+  for (const country of COUNTRIES) {
+    const hay = [country.name, country.slug, country.iso2, country.iso3, country.capital, ...country.aliases]
+      .join(' ')
+      .toLowerCase();
+    if (!hay.includes(needle) && country.iso2.toLowerCase() !== needle) continue;
+    const name = country.name.toLowerCase();
+    let score = 50;
+    if (name === needle || country.iso2.toLowerCase() === needle || country.slug === needle) score = 0;
+    else if (name.startsWith(needle) || country.aliases.some((alias) => alias.toLowerCase().startsWith(needle))) score = 1;
+    else if (name.includes(needle)) score = 2;
+    else score = 3;
+    scored.push({ country, score });
+  }
+  scored.sort((a, b) => a.score - b.score || a.country.name.localeCompare(b.country.name));
+  return scored.slice(0, 10).map((item) => item.country);
 }

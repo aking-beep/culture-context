@@ -286,5 +286,9 @@ export function liveAlerts(cards: GuideCard[]): GuideCard[] {
 export function downSources(brief: BriefResponse): string[] {
   return brief.source_statuses
     .filter((status) => status.status === 'unavailable' && status.id === 'govuk')
-    .map(() => 'official travel advice');
+    .map((status) => (
+      status.detail === 'no_page'
+        ? 'UK foreign travel advice for this country (it is not published)'
+        : 'official travel advice'
+    ));
 }
