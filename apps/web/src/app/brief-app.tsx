@@ -1,16 +1,16 @@
 'use client';
 
 import type { BriefResponse, TravelerProfile } from '@culture-context/domain';
-import { COUNTRIES, countryName } from '@/lib/countries';
-import { downSources, glance, liveAlerts, toGuideCards, type GuideCard } from '@/lib/present';
-import { useEffect, useMemo, useState } from 'react';
+import { COUNTRIES, countryName, findCountries } from '@/lib/countries';
+import { downSources, glance, liveAlerts, readingCards, toGuideCards, tripFacts, type GuideCard } from '@/lib/present';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 const DESTINATIONS = [
-  { iso2: 'JP', slug: 'japan', name: 'Japan', city: 'Tokyo', blurb: 'Cities, trains, and temples' },
-  { iso2: 'MX', slug: 'mexico', name: 'Mexico', city: 'Mexico City', blurb: 'Food, beaches, and cities' },
-  { iso2: 'FR', slug: 'france', name: 'France', city: 'Paris', blurb: 'Cities, countryside, and food' },
-  { iso2: 'TH', slug: 'thailand', name: 'Thailand', city: 'Bangkok', blurb: 'Cities, islands, and temples' },
-  { iso2: 'MA', slug: 'morocco', name: 'Morocco', city: 'Marrakesh', blurb: 'Cities, markets, and mountains' },
+  { iso2: 'JP', slug: 'japan', name: 'Japan', city: 'Tokyo', flag: '🇯🇵', blurb: 'Cities, trains, and temples' },
+  { iso2: 'MX', slug: 'mexico', name: 'Mexico', city: 'Mexico City', flag: '🇲🇽', blurb: 'Food, beaches, and cities' },
+  { iso2: 'FR', slug: 'france', name: 'France', city: 'Paris', flag: '🇫🇷', blurb: 'Cities, countryside, and food' },
+  { iso2: 'TH', slug: 'thailand', name: 'Thailand', city: 'Bangkok', flag: '🇹🇭', blurb: 'Cities, islands, and temples' },
+  { iso2: 'MA', slug: 'morocco', name: 'Morocco', city: 'Marrakesh', flag: '🇲🇦', blurb: 'Cities, markets, and mountains' },
 ] as const;
 
 const ACTIVITIES = [
@@ -32,8 +32,13 @@ const PURPOSES = [
   { id: 'other', label: 'Something else' },
 ] as const;
 
+const POPULAR_PASSPORTS = ['US', 'GB', 'CA', 'AU', 'IN', 'MX', 'DE', 'BR'] as const;
+
 const STORAGE_BRIEF = 'culture-context:last-brief';
 const STORAGE_PROFILE = 'culture-context:last-profile';
+const STORAGE_TYPE = 'culture-context:large-type';
+
+type Step = 'where' | 'who' | 'what' | 'guide';
 
 type FormState = {
   nationality: string;
@@ -42,21 +47,17 @@ type FormState = {
   destination_country: string;
   destination_slug: string;
   city: string;
-  start_date: string;
-  end_date: string;
   purpose: (typeof PURPOSES)[number]['id'];
   activities: string[];
 };
 
 const INITIAL: FormState = {
-  nationality: 'US',
-  residence_country: 'US',
+  nationality: '',
+  residence_country: '',
   sameHome: true,
-  destination_country: 'JP',
-  destination_slug: 'japan',
-  city: 'Tokyo',
-  start_date: '',
-  end_date: '',
+  destination_country: '',
+  destination_slug: '',
+  city: '',
   purpose: 'tourism',
   activities: [],
 };
@@ -64,36 +65,53 @@ const INITIAL: FormState = {
 export function BriefApp() {
   const [form, setForm] = useState<FormState>(INITIAL);
   const [brief, setBrief] = useState<BriefResponse | null>(null);
-  const [screen, setScreen] = useState<'ask' | 'guide'>('ask');
+  const [step, setStep] = useState<Step>('where');
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
   const [open, setOpen] = useState<Record<string, boolean>>({});
   const [showExtra, setShowExtra] = useState(false);
+  const [largeType, setLargeType] = useState(false);
+  const [saved, setSaved] = useState<{ destination: string } | null>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
-    const savedProfile = localStorage.getItem(STORAGE_PROFILE);
-    const savedBrief = localStorage.getItem(STORAGE_BRIEF);
-    if (savedProfile) {
-      try { setForm({ ...INITIAL, ...JSON.parse(savedProfile) }); } catch { /* ignore */ }
-    }
-    if (savedBrief) {
-      try {
-        setBrief(JSON.parse(savedBrief));
-        setScreen('guide');
-      } catch { /* ignore */ }
+    try {
+      setLargeType(localStorage.getItem(STORAGE_TYPE) === '1');
+      const savedProfile = localStorage.getItem(STORAGE_PROFILE);
+      const savedBrief = localStorage.getItem(STORAGE_BRIEF);
+      if (savedProfile) setForm({ ...INITIAL, ...JSON.parse(savedProfile) });
+      if (savedBrief) {
+        const data = JSON.parse(savedBrief) as BriefResponse;
+        setBrief(data);
+        setSaved({ destination: data.destination_name || 'your last trip' });
+      }
+    } catch {
+      /* ignore broken local data */
     }
   }, []);
 
-  const cards = useMemo(() => (brief ? toGuideCards(brief) : []), [brief]);
+  useEffect(() => {
+    headingRef.current?.focus();
+  }, [step]);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('large-type', largeType);
+    try { localStorage.setItem(STORAGE_TYPE, largeType ? '1' : '0'); } catch { /* ignore */ }
+  }, [largeType]);
+
+  const allCards = useMemo(() => (brief ? toGuideCards(brief) : []), [brief]);
+  const cards = useMemo(() => readingCards(allCards), [allCards]);
+  const facts = useMemo(() => tripFacts(allCards), [allCards]);
   const highlights = glance(cards);
   const alerts = liveAlerts(cards);
   const visible = showExtra ? cards : cards.filter((card) => card.priority !== 'extra');
   const extraCount = cards.filter((card) => card.priority === 'extra').length;
-  const destination = DESTINATIONS.find((item) => item.slug === form.destination_slug)?.name || form.destination_slug;
+  const destination = DESTINATIONS.find((item) => item.slug === form.destination_slug);
   const missing = brief ? downSources(brief) : [];
+  const stepIndex = step === 'where' ? 1 : step === 'who' ? 2 : 3;
 
-  async function onSubmit(event: React.FormEvent) {
-    event.preventDefault();
+  async function loadNotes() {
+    if (!form.destination_slug || !form.nationality) return;
     setPending(true);
     setError(null);
     const payload: TravelerProfile = {
@@ -102,8 +120,6 @@ export function BriefApp() {
       destination_country: form.destination_country,
       destination_slug: form.destination_slug,
       city: form.city || undefined,
-      start_date: form.start_date || undefined,
-      end_date: form.end_date || undefined,
       purpose: form.purpose,
       activities: form.activities,
     };
@@ -116,9 +132,10 @@ export function BriefApp() {
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || 'We could not load your notes.');
       setBrief(data);
-      setScreen('guide');
+      setStep('guide');
       setShowExtra(false);
       setOpen({});
+      setSaved(null);
       localStorage.setItem(STORAGE_BRIEF, JSON.stringify(data));
       localStorage.setItem(STORAGE_PROFILE, JSON.stringify(form));
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -127,6 +144,13 @@ export function BriefApp() {
     } finally {
       setPending(false);
     }
+  }
+
+  function onSubmit(event: React.FormEvent) {
+    event.preventDefault();
+    if (step === 'where' && form.destination_slug) setStep('who');
+    else if (step === 'who' && form.nationality) setStep('what');
+    else if (step === 'what') void loadNotes();
   }
 
   const grouped = new Map<string, GuideCard[]>();
@@ -142,152 +166,208 @@ export function BriefApp() {
       <header className="top">
         <div className="top-inner">
           <div className="brand">Culture Context</div>
-          {screen === 'guide' && (
-            <button className="ghost" type="button" onClick={() => { setScreen('ask'); window.scrollTo({ top: 0 }); }}>
-              Change trip
+          <div className="top-actions">
+            <button
+              className="ghost"
+              type="button"
+              aria-pressed={largeType}
+              onClick={() => setLargeType((value) => !value)}
+            >
+              {largeType ? 'Regular text' : 'Larger text'}
             </button>
-          )}
+            {step === 'guide' && (
+              <button className="ghost" type="button" onClick={() => { setStep('where'); window.scrollTo({ top: 0 }); }}>
+                Change trip
+              </button>
+            )}
+          </div>
         </div>
       </header>
 
       <main id="main" className="shell">
-        {screen === 'ask' && (
+        {step !== 'guide' && (
           <form onSubmit={onSubmit}>
-            <div className="hero">
-              <h1>What should you know before you go?</h1>
-              <p>Answer three short questions. We will turn official travel notes into a simple reading list. We do not guess, and this is not legal advice.</p>
-            </div>
+            <p className="progress" aria-live="polite">Question {stepIndex} of 3</p>
 
-            <section className="step">
-              <h2>1. Where are you going?</h2>
-              <p className="hint">Tap one country. You can add a city if you like.</p>
-              <div className="choices places" role="group" aria-label="Country">
-                {DESTINATIONS.map((item) => (
+            {step === 'where' && (
+              <>
+                <div className="hero">
+                  <h1 ref={headingRef} tabIndex={-1}>Where are you going?</h1>
+                  <p>Tap one country. That is the only choice you need to make on this page.</p>
+                </div>
+
+                {saved && (
                   <button
                     type="button"
-                    className="choice"
-                    key={item.slug}
-                    aria-pressed={form.destination_slug === item.slug}
-                    onClick={() => setForm((current) => ({
-                      ...current,
-                      destination_country: item.iso2,
-                      destination_slug: item.slug,
-                      city: item.city,
-                    }))}
+                    className="resume"
+                    onClick={() => { setStep('guide'); window.scrollTo({ top: 0 }); }}
                   >
-                    <span>
-                      <b>{item.name}</b>
-                      <span>{item.blurb}</span>
-                    </span>
+                    <b>Open your last notes</b>
+                    <span>You already have notes for {saved.destination}.</span>
                   </button>
-                ))}
-              </div>
-              <label className="field-label">City you will visit, if you know it
-                <input className="field" value={form.city} onChange={(event) => setForm({ ...form, city: event.target.value })} autoComplete="address-level2" />
-              </label>
-              <div className="pair">
-                <label className="field-label">First day, optional
-                  <input className="field" type="date" value={form.start_date} onChange={(event) => setForm({ ...form, start_date: event.target.value })} />
-                </label>
-                <label className="field-label">Last day, optional
-                  <input className="field" type="date" value={form.end_date} onChange={(event) => setForm({ ...form, end_date: event.target.value })} />
-                </label>
-              </div>
-            </section>
+                )}
 
-            <section className="step">
-              <h2>2. Where are you from?</h2>
-              <p className="hint">Use the country on your passport. This helps us compare home and destination. It does not decide if you can enter.</p>
-              <label className="field-label">Passport country
-                <select className="field" value={form.nationality} onChange={(event) => setForm({
-                  ...form,
-                  nationality: event.target.value,
-                  residence_country: form.sameHome ? event.target.value : form.residence_country,
-                })}>
-                  {COUNTRIES.map((country) => (
-                    <option key={country.iso2} value={country.iso2}>{country.name}</option>
-                  ))}
-                </select>
-              </label>
-              <label className="same">
-                <input
-                  type="checkbox"
-                  checked={form.sameHome}
-                  onChange={(event) => setForm({
-                    ...form,
-                    sameHome: event.target.checked,
-                    residence_country: event.target.checked ? form.nationality : form.residence_country,
-                  })}
-                />
-                I live in the same country
-              </label>
-              {!form.sameHome && (
-                <label className="field-label">Country where you live now
-                  <select className="field" value={form.residence_country} onChange={(event) => setForm({ ...form, residence_country: event.target.value })}>
-                    {COUNTRIES.map((country) => (
-                      <option key={country.iso2} value={country.iso2}>{country.name}</option>
-                    ))}
-                  </select>
-                </label>
-              )}
-            </section>
-
-            <section className="step">
-              <h2>3. What will you do?</h2>
-              <p className="hint">Tap every line that is true. Skip anything that does not apply.</p>
-              <div className="choices" role="group" aria-label="Trip purpose">
-                {PURPOSES.map((item) => (
-                  <button type="button" className="choice" key={item.id} aria-pressed={form.purpose === item.id} onClick={() => setForm({ ...form, purpose: item.id })}>
-                    <b>{item.label}</b>
-                  </button>
-                ))}
-              </div>
-              <div className="choices" role="group" aria-label="Activities">
-                {ACTIVITIES.map((item) => {
-                  const on = form.activities.includes(item.id);
-                  return (
+                <div className="choices places" role="group" aria-label="Country">
+                  {DESTINATIONS.map((item) => (
                     <button
                       type="button"
-                      className="check"
-                      key={item.id}
-                      aria-pressed={on}
-                      onClick={() => setForm({
-                        ...form,
-                        activities: on ? form.activities.filter((value) => value !== item.id) : [...form.activities, item.id],
-                      })}
+                      className="choice place"
+                      key={item.slug}
+                      aria-pressed={form.destination_slug === item.slug}
+                      onClick={() => setForm((current) => ({
+                        ...current,
+                        destination_country: item.iso2,
+                        destination_slug: item.slug,
+                        city: current.city && current.destination_slug === item.slug ? current.city : item.city,
+                      }))}
                     >
+                      <span className="flag" aria-hidden="true">{item.flag}</span>
+                      <span>
+                        <b>{item.name}</b>
+                        <span>{item.blurb}</span>
+                      </span>
+                    </button>
+                  ))}
+                </div>
+
+                {form.destination_slug && (
+                  <label className="field-label">City, if you know it. You can leave this blank.
+                    <input
+                      className="field"
+                      value={form.city}
+                      onChange={(event) => setForm({ ...form, city: event.target.value })}
+                      autoComplete="address-level2"
+                      placeholder={destination?.city || 'City name'}
+                    />
+                  </label>
+                )}
+
+                <div className="dock">
+                  <button className="primary" type="submit" disabled={!form.destination_slug}>
+                    Next: where are you from?
+                  </button>
+                </div>
+              </>
+            )}
+
+            {step === 'who' && (
+              <>
+                <div className="hero">
+                  <h1 ref={headingRef} tabIndex={-1}>What country is on your passport?</h1>
+                  <p>This helps us compare home and {destination?.name || 'your destination'}. It does not decide if you can enter.</p>
+                </div>
+                <CountryPicker
+                  value={form.nationality}
+                  onChange={(iso2) => setForm((current) => ({
+                    ...current,
+                    nationality: iso2,
+                    residence_country: current.sameHome ? iso2 : current.residence_country,
+                  }))}
+                />
+                <label className="same">
+                  <input
+                    type="checkbox"
+                    checked={form.sameHome}
+                    onChange={(event) => setForm({
+                      ...form,
+                      sameHome: event.target.checked,
+                      residence_country: event.target.checked ? form.nationality : form.residence_country,
+                    })}
+                  />
+                  I live in the same country
+                </label>
+                {!form.sameHome && (
+                  <div className="nested">
+                    <h2 className="subhead">Where do you live now?</h2>
+                    <CountryPicker
+                      value={form.residence_country}
+                      onChange={(iso2) => setForm({ ...form, residence_country: iso2 })}
+                    />
+                  </div>
+                )}
+                <div className="dock">
+                  <button className="ghost wide" type="button" onClick={() => setStep('where')}>Back</button>
+                  <button className="primary" type="submit" disabled={!form.nationality || (!form.sameHome && !form.residence_country)}>
+                    Next: what will you do?
+                  </button>
+                </div>
+              </>
+            )}
+
+            {step === 'what' && !pending && (
+              <>
+                <div className="hero">
+                  <h1 ref={headingRef} tabIndex={-1}>What will you do in {destination?.name || 'this country'}?</h1>
+                  <p>Pick the kind of trip. Then tap anything else that is true. Skip what does not apply.</p>
+                </div>
+                <h2 className="subhead">Kind of trip</h2>
+                <div className="choices" role="group" aria-label="Trip purpose">
+                  {PURPOSES.map((item) => (
+                    <button type="button" className="choice" key={item.id} aria-pressed={form.purpose === item.id} onClick={() => setForm({ ...form, purpose: item.id })}>
                       <b>{item.label}</b>
                     </button>
-                  );
-                })}
+                  ))}
+                </div>
+                <h2 className="subhead">Anything else to look up?</h2>
+                <p className="hint">Optional. Tap every line that is true.</p>
+                <div className="choices" role="group" aria-label="Activities">
+                  {ACTIVITIES.map((item) => {
+                    const on = form.activities.includes(item.id);
+                    return (
+                      <button
+                        type="button"
+                        className="check"
+                        key={item.id}
+                        aria-pressed={on}
+                        onClick={() => setForm({
+                          ...form,
+                          activities: on ? form.activities.filter((value) => value !== item.id) : [...form.activities, item.id],
+                        })}
+                      >
+                        <b>{item.label}</b>
+                      </button>
+                    );
+                  })}
+                </div>
+                <div className="dock">
+                  {error && <div className="banner warn" role="alert"><p>{error}</p></div>}
+                  <button className="ghost wide" type="button" onClick={() => setStep('who')}>Back</button>
+                  <button className="primary" type="submit" disabled={pending}>
+                    {pending ? `Looking up notes for ${destination?.name}…` : `Show my notes for ${destination?.name}`}
+                  </button>
+                </div>
+              </>
+            )}
+            {step === 'what' && pending && (
+              <div className="loading" aria-live="polite">
+                <p>Looking up official notes for {destination?.name}. This can take a few seconds. Please wait.</p>
               </div>
-            </section>
-
-            <div className="dock">
-              {error && <div className="banner warn" role="alert"><p>{error}</p></div>}
-              <button className="primary" type="submit" disabled={pending}>
-                {pending ? `Looking up notes for ${destination}…` : `Show my notes for ${destination}`}
-              </button>
-            </div>
+            )}
           </form>
         )}
 
-        {screen === 'guide' && pending && (
-          <div className="loading" aria-live="polite">
-            <p>Looking up official notes for {destination}. This can take a few seconds.</p>
-          </div>
-        )}
-
-        {screen === 'guide' && brief && !pending && (
+        {step === 'guide' && brief && !pending && (
           <>
             <div className="hero">
-              <h1>Your notes for {brief.destination_name || destination}</h1>
-              <p>
-                Written for someone from {countryName(form.nationality)}
-                {form.city ? `, visiting ${form.city}` : ''}.
-                These are official notes in plain language. They are not a visa decision or legal advice.
+              <h1 ref={headingRef} tabIndex={-1}>Your notes for {brief.destination_name || destination?.name}</h1>
+              <p className="trip-line">
+                {countryName(form.nationality) ? `From ${countryName(form.nationality)}` : 'From your passport country'}
+                {form.city ? ` · visiting ${form.city}` : ''}
+                {` · ${PURPOSES.find((item) => item.id === form.purpose)?.label || 'Trip'}`}
               </p>
+              <p>Short notes from official sources. Easy to read. Not a visa decision or legal advice.</p>
             </div>
+
+            {facts.length > 0 && (
+              <section className="facts" aria-label="Quick facts">
+                {facts.map((fact) => (
+                  <div className="fact" key={fact.label}>
+                    <span>{fact.label}</span>
+                    <b>{fact.value}</b>
+                  </div>
+                ))}
+              </section>
+            )}
 
             {missing.length > 0 && (
               <div className="banner warn" role="status">
@@ -316,7 +396,12 @@ export function BriefApp() {
                 <p className="hint">The few things most people should read first. Tap a line to jump to it.</p>
                 <ol>
                   {highlights.map((item) => (
-                    <li key={item.id}><a href={`#note-${item.id}`}>{item.title}</a></li>
+                    <li key={item.id}>
+                      <a href={`#note-${item.id}`}>
+                        <strong>{item.title}</strong>
+                        <span>{item.blurb}</span>
+                      </a>
+                    </li>
                   ))}
                 </ol>
               </section>
@@ -337,7 +422,7 @@ export function BriefApp() {
             ))}
 
             {extraCount > 0 && !showExtra && (
-              <button className="ghost" type="button" onClick={() => setShowExtra(true)}>
+              <button className="ghost wide" type="button" onClick={() => setShowExtra(true)}>
                 Show {extraCount} extra background notes
               </button>
             )}
@@ -354,17 +439,73 @@ export function BriefApp() {
   );
 }
 
+function CountryPicker({ value, onChange }: { value: string; onChange: (iso2: string) => void }) {
+  const [query, setQuery] = useState('');
+  const matches = findCountries(query);
+  const selected = value ? countryName(value) : '';
+  const popular: string[] = POPULAR_PASSPORTS.filter((iso2) => COUNTRIES.some((country) => country.iso2 === iso2));
+  const showSelected = Boolean(value && !popular.includes(value));
+
+  return (
+    <div className="picker">
+      <div className="choices places" role="group" aria-label="Popular passport countries">
+        {showSelected && (
+          <button type="button" className="choice" aria-pressed="true" onClick={() => onChange(value)}>
+            <b>{selected}</b>
+          </button>
+        )}
+        {popular.map((iso2) => (
+          <button type="button" className="choice" key={iso2} aria-pressed={value === iso2} onClick={() => { onChange(iso2); setQuery(''); }}>
+            <b>{countryName(iso2)}</b>
+          </button>
+        ))}
+      </div>
+      <label className="field-label">Find another country
+        <input
+          className="field"
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+          placeholder="Type a country name"
+          autoComplete="country-name"
+        />
+      </label>
+      {query.trim() && (
+        <div className="choices" role="listbox" aria-label="Country matches">
+          {matches.map((country) => (
+            <button
+              type="button"
+              className="choice"
+              key={country.iso2}
+              aria-pressed={value === country.iso2}
+              onClick={() => { onChange(country.iso2); setQuery(''); }}
+            >
+              <b>{country.name}</b>
+            </button>
+          ))}
+          {matches.length === 0 && <p className="hint">No country matches “{query}”.</p>}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function GuideCardView({ card, expanded, onToggle }: { card: GuideCard; expanded: boolean; onToggle: () => void }) {
-  const long = card.paragraphs.length > 2 || card.preview.length > 280;
-  const body = expanded ? card.paragraphs : card.paragraphs.slice(0, 2);
+  const long = card.paragraphs.length > 1 || (card.paragraphs[0]?.length || 0) > 220;
+  const preview = expanded ? card.paragraphs : card.paragraphs.slice(0, 1);
   const label = card.priority === 'need' ? 'Need to know' : card.priority === 'useful' ? 'Good to know' : 'Background';
   return (
-    <article className={`card ${card.priority}`} id={`note-${card.id}`}>
+    <article className={`card ${card.priority}${expanded ? ' expanded' : ''}`} id={`note-${card.id}`}>
       <span className="badge">{label}</span>
       <h3>{card.title}</h3>
-      {body.map((paragraph, index) => <p key={`${card.id}-${index}`}>{paragraph}</p>)}
+      {preview.map((paragraph, index) => <p key={`${card.id}-${index}`}>{paragraph}</p>)}
+      {long && !expanded && card.paragraphs.length > 1 && (
+        <div className="print-only">
+          {card.paragraphs.slice(1).map((paragraph, index) => <p key={`${card.id}-print-${index}`}>{paragraph}</p>)}
+        </div>
+      )}
       {card.whyYou && <p className="why">{card.whyYou}</p>}
-      <p className="source-line">{card.sourceName} · {card.checked}. {card.sourceKind}</p>
+      <p className="source-line">{card.sourceName} · {card.checked}</p>
+      <p className="source-kind">{card.sourceKind}</p>
       <div className="links">
         {long && (
           <button type="button" onClick={onToggle}>{expanded ? 'Show less' : 'Read more'}</button>

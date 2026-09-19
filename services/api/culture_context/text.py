@@ -33,7 +33,13 @@ def html_to_text(value: str) -> str:
 
 def compact(value: str, limit: int = 900) -> str:
     value = re.sub(r"\s+", " ", value).strip()
-    return value if len(value) <= limit else value[: limit - 1].rstrip() + "…"
+    if len(value) <= limit:
+        return value
+    cut = value[: limit - 1].rstrip()
+    period = max(cut.rfind(". "), cut.rfind("? "), cut.rfind("! "))
+    if period >= int(limit * 0.45):
+        return cut[: period + 1].strip()
+    return cut + "…"
 
 
 def split_headings(html_body: str) -> list[tuple[str, str]]:
@@ -59,13 +65,16 @@ def split_headings(html_body: str) -> list[tuple[str, str]]:
 
 
 def excerpt_around(text: str, needles: tuple[str, ...], limit: int = 420) -> str | None:
+    """Return a readable excerpt that starts on a sentence, never mid-word."""
     lower = text.lower()
     hit = next((n for n in needles if n in lower), None)
     if not hit:
         return None
     idx = lower.find(hit)
-    start = max(0, idx - 80)
-    chunk = text[start : start + limit]
-    if start > 0:
-        chunk = "…" + chunk
-    return compact(chunk, limit)
+    boundary = max(text.rfind(". ", 0, idx), text.rfind("? ", 0, idx), text.rfind("! ", 0, idx))
+    start = 0 if boundary == -1 else boundary + 2
+    if idx - start > 240:
+        start = idx
+        while start > 0 and text[start - 1].isalnum():
+            start -= 1
+    return compact(text[start:].lstrip(), limit)

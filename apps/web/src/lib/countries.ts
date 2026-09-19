@@ -45,3 +45,9 @@ export function countryName(iso2: string | undefined): string {
   if (!iso2) return '';
   return COUNTRIES.find((item) => item.iso2 === iso2.toUpperCase())?.name ?? iso2;
 }
+
+export function findCountries(query: string): { iso2: string; name: string }[] {
+  const needle = query.trim().toLowerCase();
+  if (!needle) return [];
+  return COUNTRIES.filter((country) => country.name.toLowerCase().includes(needle) || country.iso2.toLowerCase() === needle).slice(0, 8);
+}

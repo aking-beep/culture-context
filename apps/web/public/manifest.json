@@ -1,7 +1,7 @@
 {
   "name": "Culture Context",
   "short_name": "Culture",
-  "description": "Sourced travel context with provenance, not a chatbot.",
+  "description": "Plain-language trip notes from official sources. Easy to read. Not legal advice.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#F6F3EA",
