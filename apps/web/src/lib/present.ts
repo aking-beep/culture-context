@@ -108,7 +108,11 @@ function sentences(text: string): string[] {
     .replace(/\s+/g, ' ')
     .split(/(?<=[.!?])\s+/)
     .map(cleanFragment)
-    .filter((part) => part.length > 24 && !NOISE.test(part) && !part.startsWith('…'));
+    .filter((part) => {
+      if (!part || part.startsWith('…') || NOISE.test(part)) return false;
+      if (part.length > 24) return true;
+      return /^(capital|languages?|currency|driving side):/i.test(part);
+    });
   return parts;
 }
 

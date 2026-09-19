@@ -70,6 +70,7 @@ export function BriefApp() {
   const [pending, setPending] = useState(false);
   const [open, setOpen] = useState<Record<string, boolean>>({});
   const [showExtra, setShowExtra] = useState(false);
+  const [showAlerts, setShowAlerts] = useState(false);
   const [largeType, setLargeType] = useState(false);
   const [saved, setSaved] = useState<{ destination: string } | null>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -104,7 +105,11 @@ export function BriefApp() {
   const facts = useMemo(() => tripFacts(allCards), [allCards]);
   const highlights = glance(cards);
   const alerts = liveAlerts(cards);
-  const visible = showExtra ? cards : cards.filter((card) => card.priority !== 'extra');
+  const visible = cards.filter((card) => {
+    if (card.section === 'Right now') return showAlerts || showExtra;
+    if (!showExtra && card.priority === 'extra') return false;
+    return true;
+  });
   const extraCount = cards.filter((card) => card.priority === 'extra').length;
   const destination = DESTINATIONS.find((item) => item.slug === form.destination_slug);
   const missing = brief ? downSources(brief) : [];
@@ -134,6 +139,7 @@ export function BriefApp() {
       setBrief(data);
       setStep('guide');
       setShowExtra(false);
+      setShowAlerts(false);
       setOpen({});
       setSaved(null);
       localStorage.setItem(STORAGE_BRIEF, JSON.stringify(data));
@@ -167,6 +173,15 @@ export function BriefApp() {
         <div className="top-inner">
           <div className="brand">Culture Context</div>
           <div className="top-actions">
+            {step !== 'guide' && step !== 'where' && (
+              <button
+                className="ghost"
+                type="button"
+                onClick={() => setStep(step === 'what' ? 'who' : 'where')}
+              >
+                Back
+              </button>
+            )}
             <button
               className="ghost"
               type="button"
@@ -218,7 +233,7 @@ export function BriefApp() {
                         ...current,
                         destination_country: item.iso2,
                         destination_slug: item.slug,
-                        city: current.city && current.destination_slug === item.slug ? current.city : item.city,
+                        city: item.city,
                       }))}
                     >
                       <span className="flag" aria-hidden="true">{item.flag}</span>
@@ -229,18 +244,6 @@ export function BriefApp() {
                     </button>
                   ))}
                 </div>
-
-                {form.destination_slug && (
-                  <label className="field-label">City, if you know it. You can leave this blank.
-                    <input
-                      className="field"
-                      value={form.city}
-                      onChange={(event) => setForm({ ...form, city: event.target.value })}
-                      autoComplete="address-level2"
-                      placeholder={destination?.city || 'City name'}
-                    />
-                  </label>
-                )}
 
                 <div className="dock">
                   <button className="primary" type="submit" disabled={!form.destination_slug}>
@@ -286,7 +289,6 @@ export function BriefApp() {
                   </div>
                 )}
                 <div className="dock">
-                  <button className="ghost wide" type="button" onClick={() => setStep('where')}>Back</button>
                   <button className="primary" type="submit" disabled={!form.nationality || (!form.sameHome && !form.residence_country)}>
                     Next: what will you do?
                   </button>
@@ -331,7 +333,6 @@ export function BriefApp() {
                 </div>
                 <div className="dock">
                   {error && <div className="banner warn" role="alert"><p>{error}</p></div>}
-                  <button className="ghost wide" type="button" onClick={() => setStep('who')}>Back</button>
                   <button className="primary" type="submit" disabled={pending}>
                     {pending ? `Looking up notes for ${destination?.name}…` : `Show my notes for ${destination?.name}`}
                   </button>
@@ -385,8 +386,13 @@ export function BriefApp() {
               <div className="banner warn" role="status">
                 <p>
                   There {alerts.length === 1 ? 'is a current alert' : `are ${alerts.length} current alerts`} listed for this country.
-                  Read the “Right now” section below, then check local news.
+                  Check local news as well.
                 </p>
+                {!showAlerts && (
+                  <button className="ghost" type="button" onClick={() => setShowAlerts(true)}>
+                    Read the current alerts
+                  </button>
+                )}
               </div>
             )}
 

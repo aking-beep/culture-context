@@ -50,12 +50,19 @@ class Gdacs:
         features = payload.get("features") if isinstance(payload, dict) else None
         events = features if isinstance(features, list) else payload if isinstance(payload, list) else []
         rules: list[RuleRecord] = []
-        for event in events[:2]:
+        for event in events[:8]:
             props = event.get("properties") if isinstance(event, dict) else {}
             if not isinstance(props, dict):
                 props = event if isinstance(event, dict) else {}
             title = str(props.get("name") or props.get("eventtype") or props.get("title") or "GDACS alert")
             description = str(props.get("description") or props.get("htmldescription") or title)
+            where = " ".join(
+                str(props.get(key) or "")
+                for key in ("country", "iso3", "iso2", "affectedcountries", "fromcountry", "tocountry")
+            )
+            haystack = f"{title} {description} {where}".lower()
+            if country_name.lower() not in haystack and iso2.lower() not in haystack:
+                continue
             event_id = str(props.get("eventid") or props.get("eventid", "event"))
             rules.append(
                 RuleRecord(
@@ -70,6 +77,8 @@ class Gdacs:
                     sources=[source],
                 )
             )
+            if len(rules) >= 2:
+                break
         meta = {
             "source_id": "gdacs",
             "url": "https://www.gdacs.org",

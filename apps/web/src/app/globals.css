@@ -53,7 +53,7 @@ a { color: var(--action); }
 }
 .ghost.wide { width: 100%; margin: 8px 0; }
 
-.shell { width: min(740px, calc(100% - 32px)); margin: 0 auto; padding: 20px 0 120px; }
+.shell { width: min(740px, calc(100% - 32px)); margin: 0 auto; padding: 20px 0 48px; }
 .progress {
   margin: 0 0 8px; color: var(--muted); font-weight: 700; font-size: 0.95rem;
 }
@@ -75,6 +75,7 @@ a { color: var(--action); }
   border-radius: var(--radius); padding: 14px 16px; min-height: 64px;
   cursor: pointer;
 }
+.resume { flex-direction: column; align-items: flex-start; gap: 4px; }
 .choice b, .check b, .resume b { display: block; }
 .choice span, .check span, .resume span { color: var(--muted); font-size: 0.95rem; }
 .choice[aria-pressed="true"], .check[aria-pressed="true"] {
@@ -110,12 +111,12 @@ label.field-label { display: grid; gap: 8px; font-weight: 700; margin-top: 14px;
 .primary:hover { background: var(--action-dark); }
 .primary:disabled { opacity: 0.45; cursor: not-allowed; }
 .dock {
-  position: sticky; bottom: 0; padding: 12px 0 18px;
-  background: linear-gradient(to top, var(--bg) 72%, transparent);
+  padding: 20px 0 8px;
 }
 
 .banner {
   border-radius: var(--radius); padding: 14px 16px; margin: 0 0 16px;
+  display: grid; gap: 10px; justify-items: start;
 }
 .banner.warn { background: var(--warn-bg); }
 .banner.ok { background: var(--ok-bg); color: var(--ok); }

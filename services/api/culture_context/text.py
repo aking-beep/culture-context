@@ -65,16 +65,27 @@ def split_headings(html_body: str) -> list[tuple[str, str]]:
 
 
 def excerpt_around(text: str, needles: tuple[str, ...], limit: int = 420) -> str | None:
-    """Return a readable excerpt that starts on a sentence, never mid-word."""
+    """Return a readable excerpt that starts on a full clause, never mid-word."""
     lower = text.lower()
     hit = next((n for n in needles if n in lower), None)
     if not hit:
         return None
     idx = lower.find(hit)
-    boundary = max(text.rfind(". ", 0, idx), text.rfind("? ", 0, idx), text.rfind("! ", 0, idx))
-    start = 0 if boundary == -1 else boundary + 2
-    if idx - start > 240:
-        start = idx
-        while start > 0 and text[start - 1].isalnum():
-            start -= 1
-    return compact(text[start:].lstrip(), limit)
+    window_start = max(0, idx - 180)
+    window = text[window_start : idx + len(hit)]
+    clause = None
+    for pattern in (r"If you['’]?re\b", r"If you\b", r"It is\b", r"You['’]ll\b", r"You will\b"):
+        found = list(re.finditer(pattern, window, re.I))
+        if found:
+            clause = found[-1]
+            break
+    if clause:
+        start = window_start + clause.start()
+    else:
+        boundary = max(text.rfind(". ", 0, idx), text.rfind("? ", 0, idx), text.rfind("! ", 0, idx))
+        start = 0 if boundary == -1 else boundary + 2
+        if idx - start > 120:
+            start = idx
+            while start > 0 and (text[start - 1].isalnum() or text[start - 1] in "'’"):
+                start -= 1
+    return compact(text[start:].lstrip(" ,;:-"), limit)

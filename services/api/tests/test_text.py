@@ -3,13 +3,12 @@ from culture_context.text import compact, excerpt_around
 
 def test_excerpt_starts_at_a_full_sentence():
     text = (
-        "Road travel If you’re planning to drive in Japan, see information on driving abroad. "
+        "port risks Road travel If you’re planning to drive in Japan, see information on driving abroad. "
         "You’ll need the 1949 version of the international driving permit (IDP) plus your UK driving licence."
     )
-    excerpt = excerpt_around(text, ("driving", "licence"))
+    excerpt = excerpt_around(text, ("driving", "licence", "road travel"))
     assert excerpt
-    assert not excerpt.startswith("…")
-    assert excerpt[0].isupper() or excerpt.startswith("You’ll") or excerpt.startswith("You")
+    assert excerpt.startswith("If you’re planning to drive in Japan")
     assert "international driving permit" in excerpt
 
 
