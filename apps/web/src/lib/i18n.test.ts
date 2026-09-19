@@ -5,6 +5,7 @@ import {
   isRtl,
   localeFromBrowser,
   localeFromPassport,
+  localizeLanguageList,
   normalizeLocale,
 } from './locale.ts';
 
@@ -57,7 +58,8 @@ test('browser locale is normalized without inventing a language', () => {
   assert.equal(localeFromBrowser('fr-FR'), 'fr');
 });
 
-test('country labels exist in the passport language', () => {
+test('spoken language names follow the passport language', () => {
+  assert.equal(localizeLanguageList('Italian', 'es'), 'italiano');
+  assert.equal(localizeLanguageList('Japanese', 'es'), 'japonés');
   assert.equal(new Intl.DisplayNames(['es'], { type: 'region' }).of('JP'), 'Japón');
-  assert.equal(new Intl.DisplayNames(['ja'], { type: 'region' }).of('MX'), 'メキシコ');
 });

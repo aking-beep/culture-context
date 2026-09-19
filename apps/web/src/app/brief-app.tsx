@@ -19,6 +19,7 @@ import {
   languageName,
   localeFromBrowser,
   localeFromPassport,
+  localizeLanguageList,
   setMessageOverlay,
   t,
   type MessageKey,
@@ -112,7 +113,7 @@ async function requestTranslations(locale: string, texts: string[]): Promise<str
 export function BriefApp() {
   const [form, setForm] = useState<FormState>(INITIAL);
   const [brief, setBrief] = useState<BriefResponse | null>(null);
-  const [step, setStep] = useState<Step>('where');
+  const [step, setStep] = useState<Step>('who');
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
   const [open, setOpen] = useState<Record<string, boolean>>({});
@@ -123,7 +124,9 @@ export function BriefApp() {
   const [browserLocale, setBrowserLocale] = useState('en');
   const [overlayTick, setOverlayTick] = useState(0);
   const [textMap, setTextMap] = useState<Map<string, string> | null>(null);
+  const [placeMap, setPlaceMap] = useState<Map<string, string> | null>(null);
   const [translating, setTranslating] = useState(false);
+  const [uiReady, setUiReady] = useState(true);
   const headingRef = useRef<HTMLHeadingElement>(null);
 
   const locale = form.nationality ? localeFromPassport(form.nationality) : browserLocale;
@@ -164,19 +167,24 @@ export function BriefApp() {
   }, [locale]);
 
   useEffect(() => {
-    if (isEnglish(locale) || hasUiDictionary(locale)) return;
+    if (isEnglish(locale) || hasUiDictionary(locale)) {
+      setUiReady(true);
+      return;
+    }
     const cacheKey = `culture-context:ui:${locale}`;
     try {
       const cached = sessionStorage.getItem(cacheKey);
       if (cached) {
         setMessageOverlay(locale, JSON.parse(cached) as Partial<Messages>);
         setOverlayTick((value) => value + 1);
+        setUiReady(true);
         return;
       }
     } catch {
       /* ignore */
     }
     let cancelled = false;
+    setUiReady(false);
     const catalog = englishCatalog();
     void requestTranslations(locale, catalog.map(([, value]) => value)).then((translated) => {
       if (cancelled) return;
@@ -188,6 +196,7 @@ export function BriefApp() {
       setMessageOverlay(locale, partial);
       try { sessionStorage.setItem(cacheKey, JSON.stringify(partial)); } catch { /* ignore */ }
       setOverlayTick((value) => value + 1);
+      setUiReady(true);
     });
     return () => { cancelled = true; };
   }, [locale]);
@@ -197,13 +206,14 @@ export function BriefApp() {
   const englishFacts = useMemo(() => tripFacts(allCards), [allCards]);
   const facts = useMemo(() => {
     const localized = localizeFacts(englishFacts, tr);
-    if (!textMap) return localized;
     return localized.map((fact, index) => {
       const original = englishFacts[index]?.value ?? '';
+      const spoken = localizeLanguageList(original, locale);
+      if (spoken !== original) return { ...fact, value: spoken };
       if (fact.value !== original) return fact;
-      return { ...fact, value: textMap.get(original) ?? fact.value };
+      return { ...fact, value: textMap?.get(original) ?? fact.value };
     });
-  }, [englishFacts, tr, textMap]);
+  }, [englishFacts, tr, textMap, locale]);
   const highlights = glance(cards);
   const alerts = liveAlerts(cards);
   const visible = cards.filter((card) => {
@@ -215,7 +225,7 @@ export function BriefApp() {
   const destination = countryByIso(form.destination_country);
   const destinationLabel = displayCountryName(form.destination_country, locale) || destination?.name || '';
   const missing = brief ? downSources(brief) : [];
-  const stepIndex = step === 'where' ? 1 : step === 'who' ? 2 : 3;
+  const stepIndex = step === 'who' ? 1 : step === 'where' ? 2 : 3;
 
   useEffect(() => {
     if (!brief || isEnglish(locale)) {
@@ -254,6 +264,30 @@ export function BriefApp() {
     });
     return () => { cancelled = true; };
   }, [brief, locale]);
+
+  useEffect(() => {
+    if (isEnglish(locale)) {
+      setPlaceMap(null);
+      return;
+    }
+    const places = [...new Set(
+      [...POPULAR_DESTINATIONS, ...POPULAR_PASSPORTS, form.destination_country, form.nationality, form.residence_country]
+        .map((iso2) => countryByIso(iso2)?.capital)
+        .filter((capital): capital is string => Boolean(capital)),
+    )];
+    if (form.city) places.push(form.city);
+    let cancelled = false;
+    void requestTranslations(locale, places).then((translated) => {
+      if (cancelled) return;
+      const map = new Map<string, string>();
+      places.forEach((place, index) => {
+        const next = translated[index];
+        if (next && next !== place) map.set(place, next);
+      });
+      setPlaceMap(map.size ? map : null);
+    });
+    return () => { cancelled = true; };
+  }, [locale, form.destination_country, form.nationality, form.residence_country, form.city]);
 
   async function loadNotes() {
     if (!form.destination_slug || !form.nationality) return;
@@ -294,8 +328,8 @@ export function BriefApp() {
 
   function onSubmit(event: React.FormEvent) {
     event.preventDefault();
-    if (step === 'where' && form.destination_slug) setStep('who');
-    else if (step === 'who' && form.nationality) setStep('what');
+    if (step === 'who' && form.nationality) setStep('where');
+    else if (step === 'where' && form.destination_slug) setStep('what');
     else if (step === 'what') void loadNotes();
   }
 
@@ -319,11 +353,11 @@ export function BriefApp() {
         <div className="top-inner">
           <div className="brand">Culture Context</div>
           <div className="top-actions">
-            {step !== 'guide' && step !== 'where' && (
+            {step !== 'guide' && step !== 'who' && (
               <button
                 className="ghost"
                 type="button"
-                onClick={() => setStep(step === 'what' ? 'who' : 'where')}
+                onClick={() => setStep(step === 'what' ? 'where' : 'who')}
               >
                 {tr('back')}
               </button>
@@ -341,17 +375,21 @@ export function BriefApp() {
       </header>
 
       <main id="main" className="shell">
+        {!uiReady && !isEnglish(locale) && (
+          <div className="banner ok" role="status">
+            <p>{tr('switchingTo', { language: languageName(locale, locale) })}</p>
+          </div>
+        )}
         {step !== 'guide' && (
           <form onSubmit={onSubmit}>
             <p className="progress" aria-live="polite">{tr('questionOf', { n: stepIndex })}</p>
 
-            {step === 'where' && (
+            {step === 'who' && (
               <>
                 <div className="hero">
-                  <h1 ref={headingRef} tabIndex={-1}>{tr('whereTitle')}</h1>
-                  <p>{tr('whereHint')}</p>
+                  <h1 ref={headingRef} tabIndex={-1}>{tr('whoTitle')}</h1>
+                  <p>{tr('whoHint')}</p>
                 </div>
-
                 {saved && (
                   <button
                     type="button"
@@ -359,43 +397,13 @@ export function BriefApp() {
                     onClick={() => { setStep('guide'); window.scrollTo({ top: 0 }); }}
                   >
                     <b>{tr('resumeTitle')}</b>
-                    <span>{tr('resumeHint', { destination: saved.destination })}</span>
+                    <span>{tr('resumeHint', { destination: displayCountryName(form.destination_country, locale) || saved.destination })}</span>
                   </button>
                 )}
-
-                <CountryPicker
-                  value={form.destination_country}
-                  locale={locale}
-                  popular={POPULAR_DESTINATIONS}
-                  popularLabel={tr('popularTrips')}
-                  searchLabel={tr('findAnyCountry')}
-                  searchPlaceholder={tr('countryPlaceholder')}
-                  noMatch={tr}
-                  onChange={(country) => setForm((current) => ({
-                    ...current,
-                    destination_country: country.iso2,
-                    destination_slug: country.slug,
-                    city: country.capital,
-                  }))}
-                />
-
-                <div className="dock">
-                  <button className="primary" type="submit" disabled={!form.destination_slug}>
-                    {tr('nextFrom')}
-                  </button>
-                </div>
-              </>
-            )}
-
-            {step === 'who' && (
-              <>
-                <div className="hero">
-                  <h1 ref={headingRef} tabIndex={-1}>{tr('whoTitle')}</h1>
-                  <p>{tr('whoHint', { destination: destinationLabel || tr('fromPassportFallback') })}</p>
-                </div>
                 <CountryPicker
                   value={form.nationality}
                   locale={locale}
+                  placeMap={placeMap}
                   popular={POPULAR_PASSPORTS}
                   popularLabel={tr('popularPassports')}
                   searchLabel={tr('findPassport')}
@@ -425,6 +433,7 @@ export function BriefApp() {
                     <CountryPicker
                       value={form.residence_country}
                       locale={locale}
+                      placeMap={placeMap}
                       popular={POPULAR_PASSPORTS}
                       popularLabel={tr('popularHome')}
                       searchLabel={tr('findHome')}
@@ -436,6 +445,38 @@ export function BriefApp() {
                 )}
                 <div className="dock">
                   <button className="primary" type="submit" disabled={!form.nationality || (!form.sameHome && !form.residence_country)}>
+                    {tr('nextWhere')}
+                  </button>
+                </div>
+              </>
+            )}
+
+            {step === 'where' && (
+              <>
+                <div className="hero">
+                  <h1 ref={headingRef} tabIndex={-1}>{tr('whereTitle')}</h1>
+                  <p>{tr('whereHint')}</p>
+                </div>
+
+                <CountryPicker
+                  value={form.destination_country}
+                  locale={locale}
+                  placeMap={placeMap}
+                  popular={POPULAR_DESTINATIONS}
+                  popularLabel={tr('popularTrips')}
+                  searchLabel={tr('findAnyCountry')}
+                  searchPlaceholder={tr('countryPlaceholder')}
+                  noMatch={tr}
+                  onChange={(country) => setForm((current) => ({
+                    ...current,
+                    destination_country: country.iso2,
+                    destination_slug: country.slug,
+                    city: country.capital,
+                  }))}
+                />
+
+                <div className="dock">
+                  <button className="primary" type="submit" disabled={!form.destination_slug}>
                     {tr('nextWhat')}
                   </button>
                 </div>
@@ -496,10 +537,10 @@ export function BriefApp() {
         {step === 'guide' && brief && !pending && (
           <>
             <div className="hero">
-              <h1 ref={headingRef} tabIndex={-1}>{tr('notesTitle', { destination: destinationLabel || brief.destination_name })}</h1>
+              <h1 ref={headingRef} tabIndex={-1}>{tr('notesTitle', { destination: destinationLabel || brief.destination_name || '' })}</h1>
               <p className="trip-line">
                 {form.nationality ? tr('fromPassport', { country: displayCountryName(form.nationality, locale) }) : tr('fromPassportFallback')}
-                {form.city ? ` · ${tr('visiting', { city: form.city })}` : ''}
+                {form.city ? ` · ${tr('visiting', { city: placeMap?.get(form.city) || form.city })}` : ''}
                 {` · ${purposeLabel ? tr(purposeLabel.key) : tr('purposeOther')}`}
               </p>
               <p>{tr('notesIntro')}</p>
@@ -509,7 +550,7 @@ export function BriefApp() {
                   country: displayCountryName(form.nationality, locale),
                 })}</p>
               )}
-              <button className="ghost" type="button" onClick={() => { setStep('where'); window.scrollTo({ top: 0 }); }}>
+              <button className="ghost" type="button" onClick={() => { setStep('who'); window.scrollTo({ top: 0 }); }}>
                 {tr('changeTrip')}
               </button>
             </div>
@@ -616,6 +657,7 @@ export function BriefApp() {
 function CountryPicker({
   value,
   locale,
+  placeMap,
   onChange,
   popular,
   searchLabel,
@@ -625,6 +667,7 @@ function CountryPicker({
 }: {
   value: string;
   locale: string;
+  placeMap: Map<string, string> | null;
   onChange: (country: WorldCountry) => void;
   popular: readonly string[];
   popularLabel: string;
@@ -645,6 +688,11 @@ function CountryPicker({
 
   function label(country: WorldCountry) {
     return displayCountryName(country.iso2, locale) || country.name;
+  }
+
+  function capital(country: WorldCountry) {
+    if (!country.capital) return null;
+    return placeMap?.get(country.capital) ?? country.capital;
   }
 
   return (
@@ -672,7 +720,7 @@ function CountryPicker({
               <span className="flag" aria-hidden="true">{flagEmoji(country.iso2)}</span>
               <span>
                 <b>{label(country)}</b>
-                {country.capital ? <span>{country.capital}</span> : null}
+                {capital(country) ? <span>{capital(country)}</span> : null}
               </span>
             </button>
           ))}
@@ -688,7 +736,7 @@ function CountryPicker({
                 <span className="flag" aria-hidden="true">{flagEmoji(selected.iso2)}</span>
                 <span>
                   <b>{label(selected)}</b>
-                  {selected.capital ? <span>{selected.capital}</span> : null}
+                  {capital(selected) ? <span>{capital(selected)}</span> : null}
                 </span>
               </button>
             )}
@@ -703,7 +751,7 @@ function CountryPicker({
                 <span className="flag" aria-hidden="true">{flagEmoji(country.iso2)}</span>
                 <span>
                   <b>{label(country)}</b>
-                  {country.capital ? <span>{country.capital}</span> : null}
+                  {capital(country) ? <span>{capital(country)}</span> : null}
                 </span>
               </button>
             ))}

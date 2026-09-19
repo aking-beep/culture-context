@@ -83,6 +83,38 @@ export function languageName(locale: string, ofLocale = locale): string {
   return locale;
 }
 
+const ENGLISH_LANGUAGE_TO_CODE: Record<string, string> = {
+  english: 'en', spanish: 'es', portuguese: 'pt', french: 'fr', german: 'de',
+  italian: 'it', japanese: 'ja', chinese: 'zh', mandarin: 'zh',
+  'mandarin chinese': 'zh', cantonese: 'zh', arabic: 'ar', hindi: 'hi',
+  korean: 'ko', russian: 'ru', thai: 'th', vietnamese: 'vi', turkish: 'tr',
+  dutch: 'nl', polish: 'pl', ukrainian: 'uk', indonesian: 'id', bengali: 'bn',
+  urdu: 'ur', persian: 'fa', hebrew: 'he', swahili: 'sw', greek: 'el',
+  czech: 'cs', romanian: 'ro', hungarian: 'hu', swedish: 'sv', danish: 'da',
+  finnish: 'fi', norwegian: 'no', malay: 'ms', filipino: 'fil', tagalog: 'fil',
+  tamil: 'ta', sinhala: 'si', amharic: 'am', nepali: 'ne', burmese: 'my',
+  khmer: 'km', lao: 'lo', pashto: 'ps', dari: 'fa',
+};
+
+export function localizeLanguageList(value: string, locale: string): string {
+  if (!value || isEnglish(locale)) return value;
+  return value
+    .split(/\s*(?:,|;|\/|&| and )\s*/i)
+    .map((part) => {
+      const trimmed = part.trim();
+      if (!trimmed) return trimmed;
+      const code = ENGLISH_LANGUAGE_TO_CODE[trimmed.toLowerCase()];
+      if (!code) return trimmed;
+      try {
+        return new Intl.DisplayNames([locale], { type: 'language' }).of(code) || trimmed;
+      } catch {
+        return trimmed;
+      }
+    })
+    .filter(Boolean)
+    .join(', ');
+}
+
 export function passportLocaleEntries(): Array<[string, string]> {
   return Object.entries(PASSPORT_LOCALE);
 }
