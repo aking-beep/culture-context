@@ -59,6 +59,7 @@ a { color: var(--action); }
 }
 .hero h1 { font-size: clamp(1.9rem, 6vw, 2.7rem); line-height: 1.15; margin: 8px 0 10px; letter-spacing: -0.03em; }
 .hero p { margin: 0 0 20px; color: var(--muted); font-size: 1.05rem; max-width: 38rem; }
+.hero .ghost { margin: 0 0 20px; }
 .hero h1:focus { outline: none; }
 .trip-line { color: var(--ink) !important; font-weight: 700; margin-bottom: 8px !important; }
 

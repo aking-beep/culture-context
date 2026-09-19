@@ -178,13 +178,8 @@ export function BriefApp() {
               aria-pressed={largeType}
               onClick={() => setLargeType((value) => !value)}
             >
-              {largeType ? 'Regular text' : 'Larger text'}
+              {largeType ? 'Smaller type' : 'Bigger type'}
             </button>
-            {step === 'guide' && (
-              <button className="ghost" type="button" onClick={() => { setStep('where'); window.scrollTo({ top: 0 }); }}>
-                Change trip
-              </button>
-            )}
           </div>
         </div>
       </header>
@@ -346,6 +341,9 @@ export function BriefApp() {
                 {` · ${PURPOSES.find((item) => item.id === form.purpose)?.label || 'Trip'}`}
               </p>
               <p>Short notes from official sources. Easy to read. Not a visa decision or legal advice.</p>
+              <button className="ghost" type="button" onClick={() => { setStep('where'); window.scrollTo({ top: 0 }); }}>
+                Change trip
+              </button>
             </div>
 
             {facts.length > 0 && (
