@@ -1,8 +1,14 @@
 from .models import BriefItem, RuleRecord, TravelerProfile
 
+
 def relevance(rule: RuleRecord, traveler: TravelerProfile) -> list[str] | None:
     """Return deterministic relevance reasons, or None when the record does not apply."""
     if rule.jurisdiction.upper() not in {traveler.destination_country.upper(), "GLOBAL"}:
+        return None
+
+    if rule.effective_from and traveler.end_date and traveler.end_date < rule.effective_from:
+        return None
+    if rule.effective_to and traveler.start_date and traveler.start_date > rule.effective_to:
         return None
 
     reasons: list[str] = []
@@ -26,11 +32,16 @@ def relevance(rule: RuleRecord, traveler: TravelerProfile) -> list[str] | None:
 
     if not reasons:
         reasons.append("destination")
+    if traveler.city:
+        reasons.append(f"city_stated:{traveler.city}")
     return reasons
+
 
 def to_brief_item(rule: RuleRecord, traveler: TravelerProfile) -> BriefItem | None:
     reasons = relevance(rule, traveler)
     if reasons is None:
+        return None
+    if not rule.sources:
         return None
     return BriefItem(
         id=rule.id,

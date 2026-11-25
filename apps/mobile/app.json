@@ -1,0 +1,15 @@
+{
+  "expo": {
+    "name": "Culture Context",
+    "slug": "culture-context",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "scheme": "culturecontext",
+    "splash": { "backgroundColor": "#F6F3EA" },
+    "ios": { "supportsTablet": false, "bundleIdentifier": "app.culturecontext.mobile" },
+    "android": { "package": "app.culturecontext.mobile" },
+    "extra": { "apiUrl": "http://127.0.0.1:8580" }
+  }
+}

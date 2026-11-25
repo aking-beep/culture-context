@@ -1,0 +1,3539 @@
+[
+  {
+    "iso2": "AF",
+    "iso3": "AFG",
+    "name": "Afghanistan",
+    "slug": "afghanistan",
+    "govuk_slug": "afghanistan",
+    "capital": "Kabul",
+    "currency": "AFN",
+    "currency_name": "Afghan afghani",
+    "languages": [
+      "Pashto",
+      "Dari"
+    ],
+    "driving": "right",
+    "aliases": [
+      "Kabul",
+      "Taliban"
+    ]
+  },
+  {
+    "iso2": "AL",
+    "iso3": "ALB",
+    "name": "Albania",
+    "slug": "albania",
+    "govuk_slug": "albania",
+    "capital": "Tirane",
+    "currency": "ALL",
+    "currency_name": "Albanian lek",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "DZ",
+    "iso3": "DZA",
+    "name": "Algeria",
+    "slug": "algeria",
+    "govuk_slug": "algeria",
+    "capital": "Algiers",
+    "currency": "DZD",
+    "currency_name": "Algerian dinar",
+    "languages": [
+      "Arabic"
+    ],
+    "driving": "right",
+    "aliases": [
+      "Sahel"
+    ]
+  },
+  {
+    "iso2": "AS",
+    "iso3": "ASM",
+    "name": "American Samoa",
+    "slug": "american-samoa",
+    "govuk_slug": "",
+    "capital": "Pago Pago",
+    "currency": "USD",
+    "currency_name": "United States dollar",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "AD",
+    "iso3": "AND",
+    "name": "Andorra",
+    "slug": "andorra",
+    "govuk_slug": "andorra",
+    "capital": "Andorra la Vella",
+    "currency": "EUR",
+    "currency_name": "Euro",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "AO",
+    "iso3": "AGO",
+    "name": "Angola",
+    "slug": "angola",
+    "govuk_slug": "angola",
+    "capital": "Luanda",
+    "currency": "AOA",
+    "currency_name": "Angolan kwanza",
+    "languages": [
+      "Portuguese"
+    ],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "AI",
+    "iso3": "AIA",
+    "name": "Anguilla",
+    "slug": "anguilla",
+    "govuk_slug": "anguilla",
+    "capital": "The Valley",
+    "currency": "XCD",
+    "currency_name": "East Caribbean dollar",
+    "languages": [],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "AQ",
+    "iso3": "ATA",
+    "name": "Antarctica",
+    "slug": "antarctica-british-antarctic-territory",
+    "govuk_slug": "antarctica-british-antarctic-territory",
+    "capital": "",
+    "currency": "",
+    "currency_name": "",
+    "languages": [],
+    "driving": "right",
+    "aliases": [
+      "Antarctica/British Antarctic Territory"
+    ]
+  },
+  {
+    "iso2": "AG",
+    "iso3": "ATG",
+    "name": "Antigua and Barbuda",
+    "slug": "antigua-and-barbuda",
+    "govuk_slug": "antigua-and-barbuda",
+    "capital": "Saint John's",
+    "currency": "XCD",
+    "currency_name": "East Caribbean dollar",
+    "languages": [],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "AR",
+    "iso3": "ARG",
+    "name": "Argentina",
+    "slug": "argentina",
+    "govuk_slug": "argentina",
+    "capital": "Buenos Aires",
+    "currency": "ARS",
+    "currency_name": "Argentine peso",
+    "languages": [
+      "Spanish"
+    ],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "AM",
+    "iso3": "ARM",
+    "name": "Armenia",
+    "slug": "armenia",
+    "govuk_slug": "armenia",
+    "capital": "Yerevan",
+    "currency": "AMD",
+    "currency_name": "Armenian dram",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "AW",
+    "iso3": "ABW",
+    "name": "Aruba",
+    "slug": "aruba",
+    "govuk_slug": "aruba",
+    "capital": "Oranjestad",
+    "currency": "AWG",
+    "currency_name": "Aruban florin",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "AU",
+    "iso3": "AUS",
+    "name": "Australia",
+    "slug": "australia",
+    "govuk_slug": "australia",
+    "capital": "Canberra",
+    "currency": "AUD",
+    "currency_name": "Australian dollar",
+    "languages": [
+      "English"
+    ],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "AT",
+    "iso3": "AUT",
+    "name": "Austria",
+    "slug": "austria",
+    "govuk_slug": "austria",
+    "capital": "Vienna",
+    "currency": "EUR",
+    "currency_name": "Euro",
+    "languages": [
+      "German"
+    ],
+    "driving": "right",
+    "aliases": [
+      "Vienna"
+    ]
+  },
+  {
+    "iso2": "AZ",
+    "iso3": "AZE",
+    "name": "Azerbaijan",
+    "slug": "azerbaijan",
+    "govuk_slug": "azerbaijan",
+    "capital": "Baku",
+    "currency": "AZN",
+    "currency_name": "Azerbaijani manat",
+    "languages": [],
+    "driving": "right",
+    "aliases": [
+      "Baku",
+      "Karabakh",
+      "Nagorno",
+      "Nagorno-Karabakh"
+    ]
+  },
+  {
+    "iso2": "BS",
+    "iso3": "BHS",
+    "name": "Bahamas",
+    "slug": "bahamas",
+    "govuk_slug": "bahamas",
+    "capital": "Nassau",
+    "currency": "BSD",
+    "currency_name": "Bahamian dollar",
+    "languages": [],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "BH",
+    "iso3": "BHR",
+    "name": "Bahrain",
+    "slug": "bahrain",
+    "govuk_slug": "bahrain",
+    "capital": "Manama",
+    "currency": "BHD",
+    "currency_name": "Bahraini dinar",
+    "languages": [
+      "Arabic"
+    ],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "BD",
+    "iso3": "BGD",
+    "name": "Bangladesh",
+    "slug": "bangladesh",
+    "govuk_slug": "bangladesh",
+    "capital": "Dhaka",
+    "currency": "BDT",
+    "currency_name": "Bangladeshi taka",
+    "languages": [
+      "Bengali"
+    ],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "BB",
+    "iso3": "BRB",
+    "name": "Barbados",
+    "slug": "barbados",
+    "govuk_slug": "barbados",
+    "capital": "Bridgetown",
+    "currency": "BBD",
+    "currency_name": "Barbadian dollar",
+    "languages": [],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "BY",
+    "iso3": "BLR",
+    "name": "Belarus",
+    "slug": "belarus",
+    "govuk_slug": "belarus",
+    "capital": "Minsk",
+    "currency": "BYN",
+    "currency_name": "Belarusian ruble",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "BE",
+    "iso3": "BEL",
+    "name": "Belgium",
+    "slug": "belgium",
+    "govuk_slug": "belgium",
+    "capital": "Brussels",
+    "currency": "EUR",
+    "currency_name": "Euro",
+    "languages": [
+      "Dutch",
+      "French"
+    ],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "BZ",
+    "iso3": "BLZ",
+    "name": "Belize",
+    "slug": "belize",
+    "govuk_slug": "belize",
+    "capital": "Belmopan",
+    "currency": "BZD",
+    "currency_name": "Belize dollar",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "BJ",
+    "iso3": "BEN",
+    "name": "Benin",
+    "slug": "benin",
+    "govuk_slug": "benin",
+    "capital": "Porto-Novo",
+    "currency": "XOF",
+    "currency_name": "West African CFA franc",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "BM",
+    "iso3": "BMU",
+    "name": "Bermuda",
+    "slug": "bermuda",
+    "govuk_slug": "bermuda",
+    "capital": "Hamilton",
+    "currency": "BMD",
+    "currency_name": "Bermudian dollar",
+    "languages": [],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "BT",
+    "iso3": "BTN",
+    "name": "Bhutan",
+    "slug": "bhutan",
+    "govuk_slug": "bhutan",
+    "capital": "Thimphu",
+    "currency": "BTN",
+    "currency_name": "Bhutanese ngultrum",
+    "languages": [],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "BO",
+    "iso3": "BOL",
+    "name": "Bolivia",
+    "slug": "bolivia",
+    "govuk_slug": "bolivia",
+    "capital": "La Paz",
+    "currency": "BOB",
+    "currency_name": "Bolivian boliviano",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "BQ",
+    "iso3": "BES",
+    "name": "Bonaire, Sint Eustatius and Saba",
+    "slug": "bonaire-st-eustatius-saba",
+    "govuk_slug": "bonaire-st-eustatius-saba",
+    "capital": "",
+    "currency": "USD",
+    "currency_name": "United States dollar",
+    "languages": [],
+    "driving": "right",
+    "aliases": [
+      "Bonaire/St Eustatius/Saba"
+    ]
+  },
+  {
+    "iso2": "BA",
+    "iso3": "BIH",
+    "name": "Bosnia and Herzegovina",
+    "slug": "bosnia-and-herzegovina",
+    "govuk_slug": "bosnia-and-herzegovina",
+    "capital": "Sarajevo",
+    "currency": "BAM",
+    "currency_name": "Bosnia and Herzegovina convertible mark",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "BW",
+    "iso3": "BWA",
+    "name": "Botswana",
+    "slug": "botswana",
+    "govuk_slug": "botswana",
+    "capital": "Gaborone",
+    "currency": "BWP",
+    "currency_name": "Botswana pula",
+    "languages": [],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "BR",
+    "iso3": "BRA",
+    "name": "Brazil",
+    "slug": "brazil",
+    "govuk_slug": "brazil",
+    "capital": "Brasilia",
+    "currency": "BRL",
+    "currency_name": "Brazilian real",
+    "languages": [
+      "Portuguese"
+    ],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "IO",
+    "iso3": "IOT",
+    "name": "British Indian Ocean Territory",
+    "slug": "british-indian-ocean-territory",
+    "govuk_slug": "british-indian-ocean-territory",
+    "capital": "Diego Garcia",
+    "currency": "",
+    "currency_name": "",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "VG",
+    "iso3": "VGB",
+    "name": "British Virgin Islands",
+    "slug": "british-virgin-islands",
+    "govuk_slug": "british-virgin-islands",
+    "capital": "Road Town",
+    "currency": "USD",
+    "currency_name": "United States dollar",
+    "languages": [],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "BN",
+    "iso3": "BRN",
+    "name": "Brunei",
+    "slug": "brunei",
+    "govuk_slug": "brunei",
+    "capital": "Bandar Seri Begawan",
+    "currency": "BND",
+    "currency_name": "Brunei dollar",
+    "languages": [],
+    "driving": "left",
+    "aliases": [
+      "Borneo"
+    ]
+  },
+  {
+    "iso2": "BG",
+    "iso3": "BGR",
+    "name": "Bulgaria",
+    "slug": "bulgaria",
+    "govuk_slug": "bulgaria",
+    "capital": "Sofia",
+    "currency": "BGN",
+    "currency_name": "Bulgarian lev",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "BF",
+    "iso3": "BFA",
+    "name": "Burkina Faso",
+    "slug": "burkina-faso",
+    "govuk_slug": "burkina-faso",
+    "capital": "Ouagadougou",
+    "currency": "XOF",
+    "currency_name": "West African CFA franc",
+    "languages": [],
+    "driving": "right",
+    "aliases": [
+      "Bukina",
+      "Bukino",
+      "Burkini",
+      "Oagadougou",
+      "Ouagadogou",
+      "Ouagadougou",
+      "Ouagadugou",
+      "Ougadougou",
+      "Sahel"
+    ]
+  },
+  {
+    "iso2": "BI",
+    "iso3": "BDI",
+    "name": "Burundi",
+    "slug": "burundi",
+    "govuk_slug": "burundi",
+    "capital": "Bujumbura",
+    "currency": "BIF",
+    "currency_name": "Burundian franc",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "KH",
+    "iso3": "KHM",
+    "name": "Cambodia",
+    "slug": "cambodia",
+    "govuk_slug": "cambodia",
+    "capital": "Phnom Penh",
+    "currency": "KHR",
+    "currency_name": "Cambodian riel",
+    "languages": [
+      "Khmer"
+    ],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "CM",
+    "iso3": "CMR",
+    "name": "Cameroon",
+    "slug": "cameroon",
+    "govuk_slug": "cameroon",
+    "capital": "Yaounde",
+    "currency": "XAF",
+    "currency_name": "Central African CFA franc",
+    "languages": [
+      "French",
+      "English"
+    ],
+    "driving": "right",
+    "aliases": [
+      "Camaroon",
+      "Camaroun",
+      "Cameroun",
+      "Sahel",
+      "Yaounde",
+      "Yaunde",
+      "Yauonde"
+    ]
+  },
+  {
+    "iso2": "CA",
+    "iso3": "CAN",
+    "name": "Canada",
+    "slug": "canada",
+    "govuk_slug": "canada",
+    "capital": "Ottawa",
+    "currency": "CAD",
+    "currency_name": "Canadian dollar",
+    "languages": [
+      "English",
+      "French"
+    ],
+    "driving": "right",
+    "aliases": [
+      "arctic"
+    ]
+  },
+  {
+    "iso2": "CV",
+    "iso3": "CPV",
+    "name": "Cape Verde",
+    "slug": "cape-verde",
+    "govuk_slug": "cape-verde",
+    "capital": "Praia",
+    "currency": "CVE",
+    "currency_name": "Cape Verdean escudo",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "KY",
+    "iso3": "CYM",
+    "name": "Cayman Islands",
+    "slug": "cayman-islands",
+    "govuk_slug": "cayman-islands",
+    "capital": "George Town",
+    "currency": "KYD",
+    "currency_name": "Cayman Islands dollar",
+    "languages": [],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "CF",
+    "iso3": "CAF",
+    "name": "Central African Republic",
+    "slug": "central-african-republic",
+    "govuk_slug": "central-african-republic",
+    "capital": "Bangui",
+    "currency": "XAF",
+    "currency_name": "Central African CFA franc",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "TD",
+    "iso3": "TCD",
+    "name": "Chad",
+    "slug": "chad",
+    "govuk_slug": "chad",
+    "capital": "N'Djamena",
+    "currency": "XAF",
+    "currency_name": "Central African CFA franc",
+    "languages": [],
+    "driving": "right",
+    "aliases": [
+      "Sahel"
+    ]
+  },
+  {
+    "iso2": "CL",
+    "iso3": "CHL",
+    "name": "Chile",
+    "slug": "chile",
+    "govuk_slug": "chile",
+    "capital": "Santiago",
+    "currency": "CLP",
+    "currency_name": "Chilean peso",
+    "languages": [
+      "Spanish"
+    ],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "CN",
+    "iso3": "CHN",
+    "name": "China",
+    "slug": "china",
+    "govuk_slug": "china",
+    "capital": "Beijing",
+    "currency": "CNY",
+    "currency_name": "Chinese yuan",
+    "languages": [
+      "Mandarin Chinese"
+    ],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "CO",
+    "iso3": "COL",
+    "name": "Colombia",
+    "slug": "colombia",
+    "govuk_slug": "colombia",
+    "capital": "Bogota",
+    "currency": "COP",
+    "currency_name": "Colombian peso",
+    "languages": [
+      "Spanish"
+    ],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "KM",
+    "iso3": "COM",
+    "name": "Comoros",
+    "slug": "comoros",
+    "govuk_slug": "comoros",
+    "capital": "Moroni",
+    "currency": "KMF",
+    "currency_name": "Comorian franc",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "CG",
+    "iso3": "COG",
+    "name": "Congo",
+    "slug": "congo",
+    "govuk_slug": "congo",
+    "capital": "Brazzaville",
+    "currency": "XAF",
+    "currency_name": "Central African CFA franc",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "CK",
+    "iso3": "COK",
+    "name": "Cook Islands",
+    "slug": "cook-islands-tokelau-and-niue",
+    "govuk_slug": "cook-islands-tokelau-and-niue",
+    "capital": "Avarua",
+    "currency": "NZD",
+    "currency_name": "New Zealand dollar",
+    "languages": [],
+    "driving": "left",
+    "aliases": [
+      "Cook Islands, Tokelau and Niue"
+    ]
+  },
+  {
+    "iso2": "CR",
+    "iso3": "CRI",
+    "name": "Costa Rica",
+    "slug": "costa-rica",
+    "govuk_slug": "costa-rica",
+    "capital": "San Jose",
+    "currency": "CRC",
+    "currency_name": "Costa Rican colón",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "HR",
+    "iso3": "HRV",
+    "name": "Croatia",
+    "slug": "croatia",
+    "govuk_slug": "croatia",
+    "capital": "Zagreb",
+    "currency": "EUR",
+    "currency_name": "Euro",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "CU",
+    "iso3": "CUB",
+    "name": "Cuba",
+    "slug": "cuba",
+    "govuk_slug": "cuba",
+    "capital": "Havana",
+    "currency": "CUP",
+    "currency_name": "Cuban peso",
+    "languages": [
+      "Spanish"
+    ],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "CW",
+    "iso3": "CUW",
+    "name": "Curaçao",
+    "slug": "curacao",
+    "govuk_slug": "curacao",
+    "capital": "Willemstad",
+    "currency": "ANG",
+    "currency_name": "Netherlands Antillean guilder",
+    "languages": [],
+    "driving": "right",
+    "aliases": [
+      "Curacao"
+    ]
+  },
+  {
+    "iso2": "CY",
+    "iso3": "CYP",
+    "name": "Cyprus",
+    "slug": "cyprus",
+    "govuk_slug": "cyprus",
+    "capital": "Nicosia",
+    "currency": "EUR",
+    "currency_name": "Euro",
+    "languages": [],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "CZ",
+    "iso3": "CZE",
+    "name": "Czechia",
+    "slug": "czechia",
+    "govuk_slug": "czechia",
+    "capital": "Prague",
+    "currency": "CZK",
+    "currency_name": "Czech koruna",
+    "languages": [
+      "Czech"
+    ],
+    "driving": "right",
+    "aliases": [
+      "Czech Republic"
+    ]
+  },
+  {
+    "iso2": "CI",
+    "iso3": "CIV",
+    "name": "Côte d'Ivoire",
+    "slug": "cote-d-ivoire",
+    "govuk_slug": "cote-d-ivoire",
+    "capital": "Yamoussoukro",
+    "currency": "XOF",
+    "currency_name": "West African CFA franc",
+    "languages": [
+      "French"
+    ],
+    "driving": "right",
+    "aliases": [
+      "Cote d'Ivoire",
+      "Cote dIvoire",
+      "Ivory Coast"
+    ]
+  },
+  {
+    "iso2": "CD",
+    "iso3": "COD",
+    "name": "Democratic Republic of the Congo",
+    "slug": "democratic-republic-of-the-congo",
+    "govuk_slug": "democratic-republic-of-the-congo",
+    "capital": "Kinshasa",
+    "currency": "CDF",
+    "currency_name": "Congolese franc",
+    "languages": [
+      "French"
+    ],
+    "driving": "right",
+    "aliases": [
+      "DR Congo",
+      "DRC"
+    ]
+  },
+  {
+    "iso2": "DK",
+    "iso3": "DNK",
+    "name": "Denmark",
+    "slug": "denmark",
+    "govuk_slug": "denmark",
+    "capital": "Copenhagen",
+    "currency": "DKK",
+    "currency_name": "Danish krone",
+    "languages": [
+      "Danish"
+    ],
+    "driving": "right",
+    "aliases": [
+      "Copenhagen",
+      "Faroe Islands",
+      "Faroes",
+      "Greenland",
+      "arctic"
+    ]
+  },
+  {
+    "iso2": "DJ",
+    "iso3": "DJI",
+    "name": "Djibouti",
+    "slug": "djibouti",
+    "govuk_slug": "djibouti",
+    "capital": "Djibouti",
+    "currency": "DJF",
+    "currency_name": "Djiboutian franc",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "DM",
+    "iso3": "DMA",
+    "name": "Dominica",
+    "slug": "dominica",
+    "govuk_slug": "dominica",
+    "capital": "Roseau",
+    "currency": "XCD",
+    "currency_name": "East Caribbean dollar",
+    "languages": [],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "DO",
+    "iso3": "DOM",
+    "name": "Dominican Republic",
+    "slug": "dominican-republic",
+    "govuk_slug": "dominican-republic",
+    "capital": "Santo Domingo",
+    "currency": "DOP",
+    "currency_name": "Dominican peso",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "EC",
+    "iso3": "ECU",
+    "name": "Ecuador",
+    "slug": "ecuador",
+    "govuk_slug": "ecuador",
+    "capital": "Quito",
+    "currency": "USD",
+    "currency_name": "United States dollar",
+    "languages": [
+      "Spanish"
+    ],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "EG",
+    "iso3": "EGY",
+    "name": "Egypt",
+    "slug": "egypt",
+    "govuk_slug": "egypt",
+    "capital": "Cairo",
+    "currency": "EGP",
+    "currency_name": "Egyptian pound",
+    "languages": [
+      "Arabic"
+    ],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "SV",
+    "iso3": "SLV",
+    "name": "El Salvador",
+    "slug": "el-salvador",
+    "govuk_slug": "el-salvador",
+    "capital": "San Salvador",
+    "currency": "USD",
+    "currency_name": "United States dollar",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "GQ",
+    "iso3": "GNQ",
+    "name": "Equatorial Guinea",
+    "slug": "equatorial-guinea",
+    "govuk_slug": "equatorial-guinea",
+    "capital": "Malabo",
+    "currency": "XAF",
+    "currency_name": "Central African CFA franc",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "ER",
+    "iso3": "ERI",
+    "name": "Eritrea",
+    "slug": "eritrea",
+    "govuk_slug": "eritrea",
+    "capital": "Asmara",
+    "currency": "ERN",
+    "currency_name": "Eritrean nakfa",
+    "languages": [],
+    "driving": "right",
+    "aliases": [
+      "Sahel"
+    ]
+  },
+  {
+    "iso2": "EE",
+    "iso3": "EST",
+    "name": "Estonia",
+    "slug": "estonia",
+    "govuk_slug": "estonia",
+    "capital": "Tallinn",
+    "currency": "EUR",
+    "currency_name": "Euro",
+    "languages": [],
+    "driving": "right",
+    "aliases": [
+      "Talinn",
+      "Tallin",
+      "Tallinn"
+    ]
+  },
+  {
+    "iso2": "SZ",
+    "iso3": "SWZ",
+    "name": "Eswatini",
+    "slug": "eswatini",
+    "govuk_slug": "eswatini",
+    "capital": "Mbabane",
+    "currency": "SZL",
+    "currency_name": "Swazi lilangeni",
+    "languages": [],
+    "driving": "left",
+    "aliases": [
+      "Swaziland"
+    ]
+  },
+  {
+    "iso2": "ET",
+    "iso3": "ETH",
+    "name": "Ethiopia",
+    "slug": "ethiopia",
+    "govuk_slug": "ethiopia",
+    "capital": "Addis Ababa",
+    "currency": "ETB",
+    "currency_name": "Ethiopian birr",
+    "languages": [
+      "Amharic"
+    ],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "FK",
+    "iso3": "FLK",
+    "name": "Falkland Islands",
+    "slug": "falkland-islands",
+    "govuk_slug": "falkland-islands",
+    "capital": "Stanley",
+    "currency": "FKP",
+    "currency_name": "Falkland Islands pound",
+    "languages": [],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "FO",
+    "iso3": "FRO",
+    "name": "Faroe Islands",
+    "slug": "faroe-islands",
+    "govuk_slug": "",
+    "capital": "Tórshavn",
+    "currency": "",
+    "currency_name": "",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "FM",
+    "iso3": "FSM",
+    "name": "Federated States of Micronesia",
+    "slug": "federated-states-of-micronesia",
+    "govuk_slug": "federated-states-of-micronesia",
+    "capital": "Palikir",
+    "currency": "USD",
+    "currency_name": "United States dollar",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "FJ",
+    "iso3": "FJI",
+    "name": "Fiji",
+    "slug": "fiji",
+    "govuk_slug": "fiji",
+    "capital": "Suva",
+    "currency": "FJD",
+    "currency_name": "Fijian dollar",
+    "languages": [
+      "English",
+      "Fijian"
+    ],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "FI",
+    "iso3": "FIN",
+    "name": "Finland",
+    "slug": "finland",
+    "govuk_slug": "finland",
+    "capital": "Helsinki",
+    "currency": "EUR",
+    "currency_name": "Euro",
+    "languages": [
+      "Finnish",
+      "Swedish"
+    ],
+    "driving": "right",
+    "aliases": [
+      "Helsinki",
+      "Lapland",
+      "arctic"
+    ]
+  },
+  {
+    "iso2": "FR",
+    "iso3": "FRA",
+    "name": "France",
+    "slug": "france",
+    "govuk_slug": "france",
+    "capital": "Paris",
+    "currency": "EUR",
+    "currency_name": "Euro",
+    "languages": [
+      "French"
+    ],
+    "driving": "right",
+    "aliases": [
+      "Corsica",
+      "Paris"
+    ]
+  },
+  {
+    "iso2": "GF",
+    "iso3": "GUF",
+    "name": "French Guiana",
+    "slug": "french-guiana",
+    "govuk_slug": "french-guiana",
+    "capital": "Cayenne",
+    "currency": "EUR",
+    "currency_name": "Euro",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "PF",
+    "iso3": "PYF",
+    "name": "French Polynesia",
+    "slug": "french-polynesia",
+    "govuk_slug": "french-polynesia",
+    "capital": "Papeete",
+    "currency": "XPF",
+    "currency_name": "CFP franc",
+    "languages": [],
+    "driving": "right",
+    "aliases": [
+      "Polynesie",
+      "Polynésie",
+      "Polynésie française",
+      "francaise",
+      "française"
+    ]
+  },
+  {
+    "iso2": "GA",
+    "iso3": "GAB",
+    "name": "Gabon",
+    "slug": "gabon",
+    "govuk_slug": "gabon",
+    "capital": "Libreville",
+    "currency": "XAF",
+    "currency_name": "Central African CFA franc",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "GE",
+    "iso3": "GEO",
+    "name": "Georgia",
+    "slug": "georgia",
+    "govuk_slug": "georgia",
+    "capital": "Tbilisi",
+    "currency": "GEL",
+    "currency_name": "Georgian lari",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "DE",
+    "iso3": "DEU",
+    "name": "Germany",
+    "slug": "germany",
+    "govuk_slug": "germany",
+    "capital": "Berlin",
+    "currency": "EUR",
+    "currency_name": "Euro",
+    "languages": [
+      "German"
+    ],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "GH",
+    "iso3": "GHA",
+    "name": "Ghana",
+    "slug": "ghana",
+    "govuk_slug": "ghana",
+    "capital": "Accra",
+    "currency": "GHS",
+    "currency_name": "Ghanaian cedi",
+    "languages": [
+      "English"
+    ],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "GI",
+    "iso3": "GIB",
+    "name": "Gibraltar",
+    "slug": "gibraltar",
+    "govuk_slug": "gibraltar",
+    "capital": "Gibraltar",
+    "currency": "GIP",
+    "currency_name": "Gibraltar pound",
+    "languages": [],
+    "driving": "right",
+    "aliases": [
+      "British Overseas Territory"
+    ]
+  },
+  {
+    "iso2": "GR",
+    "iso3": "GRC",
+    "name": "Greece",
+    "slug": "greece",
+    "govuk_slug": "greece",
+    "capital": "Athens",
+    "currency": "EUR",
+    "currency_name": "Euro",
+    "languages": [
+      "Greek"
+    ],
+    "driving": "right",
+    "aliases": [
+      "Crete",
+      "Heraklion",
+      "Kos",
+      "Lesbos",
+      "Mykonos",
+      "Rhodes",
+      "Santorini",
+      "Skiathos"
+    ]
+  },
+  {
+    "iso2": "GL",
+    "iso3": "GRL",
+    "name": "Greenland",
+    "slug": "greenland",
+    "govuk_slug": "",
+    "capital": "Nuuk",
+    "currency": "DKK",
+    "currency_name": "Danish krone",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "GD",
+    "iso3": "GRD",
+    "name": "Grenada",
+    "slug": "grenada",
+    "govuk_slug": "grenada",
+    "capital": "Saint George's",
+    "currency": "XCD",
+    "currency_name": "East Caribbean dollar",
+    "languages": [],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "GP",
+    "iso3": "GLP",
+    "name": "Guadeloupe",
+    "slug": "guadeloupe",
+    "govuk_slug": "guadeloupe",
+    "capital": "Basse-Terre",
+    "currency": "EUR",
+    "currency_name": "Euro",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "GU",
+    "iso3": "GUM",
+    "name": "Guam",
+    "slug": "guam",
+    "govuk_slug": "",
+    "capital": "Hagåtña",
+    "currency": "USD",
+    "currency_name": "United States dollar",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "GT",
+    "iso3": "GTM",
+    "name": "Guatemala",
+    "slug": "guatemala",
+    "govuk_slug": "guatemala",
+    "capital": "Guatemala City",
+    "currency": "GTQ",
+    "currency_name": "Guatemalan quetzal",
+    "languages": [
+      "Spanish"
+    ],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "GN",
+    "iso3": "GIN",
+    "name": "Guinea",
+    "slug": "guinea",
+    "govuk_slug": "guinea",
+    "capital": "Conakry",
+    "currency": "GNF",
+    "currency_name": "Guinean franc",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "GW",
+    "iso3": "GNB",
+    "name": "Guinea-Bissau",
+    "slug": "guinea-bissau",
+    "govuk_slug": "guinea-bissau",
+    "capital": "Bissau",
+    "currency": "XOF",
+    "currency_name": "West African CFA franc",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "GY",
+    "iso3": "GUY",
+    "name": "Guyana",
+    "slug": "guyana",
+    "govuk_slug": "guyana",
+    "capital": "Georgetown",
+    "currency": "GYD",
+    "currency_name": "Guyanese dollar",
+    "languages": [],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "HT",
+    "iso3": "HTI",
+    "name": "Haiti",
+    "slug": "haiti",
+    "govuk_slug": "haiti",
+    "capital": "Port-au-Prince",
+    "currency": "HTG",
+    "currency_name": "Haitian gourde",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "HN",
+    "iso3": "HND",
+    "name": "Honduras",
+    "slug": "honduras",
+    "govuk_slug": "honduras",
+    "capital": "Tegucigalpa",
+    "currency": "HNL",
+    "currency_name": "Honduran lempira",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "HK",
+    "iso3": "HKG",
+    "name": "Hong Kong",
+    "slug": "hong-kong",
+    "govuk_slug": "hong-kong",
+    "capital": "",
+    "currency": "HKD",
+    "currency_name": "Hong Kong dollar",
+    "languages": [
+      "Cantonese",
+      "English"
+    ],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "HU",
+    "iso3": "HUN",
+    "name": "Hungary",
+    "slug": "hungary",
+    "govuk_slug": "hungary",
+    "capital": "Budapest",
+    "currency": "HUF",
+    "currency_name": "Hungarian forint",
+    "languages": [
+      "Hungarian"
+    ],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "IS",
+    "iso3": "ISL",
+    "name": "Iceland",
+    "slug": "iceland",
+    "govuk_slug": "iceland",
+    "capital": "Reykjavik",
+    "currency": "ISK",
+    "currency_name": "Icelandic króna",
+    "languages": [
+      "Icelandic"
+    ],
+    "driving": "right",
+    "aliases": [
+      "arctic"
+    ]
+  },
+  {
+    "iso2": "IN",
+    "iso3": "IND",
+    "name": "India",
+    "slug": "india",
+    "govuk_slug": "india",
+    "capital": "New Delhi",
+    "currency": "INR",
+    "currency_name": "Indian rupee",
+    "languages": [
+      "Hindi",
+      "English"
+    ],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "ID",
+    "iso3": "IDN",
+    "name": "Indonesia",
+    "slug": "indonesia",
+    "govuk_slug": "indonesia",
+    "capital": "Jakarta",
+    "currency": "IDR",
+    "currency_name": "Indonesian rupiah",
+    "languages": [
+      "Indonesian"
+    ],
+    "driving": "left",
+    "aliases": [
+      "Bali",
+      "Borneo",
+      "Java",
+      "Maluku",
+      "Suluwesi",
+      "Sumatra"
+    ]
+  },
+  {
+    "iso2": "IR",
+    "iso3": "IRN",
+    "name": "Iran",
+    "slug": "iran",
+    "govuk_slug": "iran",
+    "capital": "Tehran",
+    "currency": "IRR",
+    "currency_name": "Iranian rial",
+    "languages": [
+      "Persian"
+    ],
+    "driving": "right",
+    "aliases": [
+      "Teheran",
+      "Teran",
+      "Terhan"
+    ]
+  },
+  {
+    "iso2": "IQ",
+    "iso3": "IRQ",
+    "name": "Iraq",
+    "slug": "iraq",
+    "govuk_slug": "iraq",
+    "capital": "Baghdad",
+    "currency": "IQD",
+    "currency_name": "Iraqi dinar",
+    "languages": [
+      "Arabic",
+      "Kurdish"
+    ],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "IE",
+    "iso3": "IRL",
+    "name": "Ireland",
+    "slug": "ireland",
+    "govuk_slug": "ireland",
+    "capital": "Dublin",
+    "currency": "EUR",
+    "currency_name": "Euro",
+    "languages": [
+      "English",
+      "Irish"
+    ],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "IM",
+    "iso3": "IMN",
+    "name": "Isle of Man",
+    "slug": "isle-of-man",
+    "govuk_slug": "",
+    "capital": "Douglas",
+    "currency": "GBP",
+    "currency_name": "Pound sterling",
+    "languages": [],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "IL",
+    "iso3": "ISR",
+    "name": "Israel",
+    "slug": "israel",
+    "govuk_slug": "israel",
+    "capital": "",
+    "currency": "ILS",
+    "currency_name": "Israeli new shekel",
+    "languages": [
+      "Hebrew",
+      "Arabic"
+    ],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "IT",
+    "iso3": "ITA",
+    "name": "Italy",
+    "slug": "italy",
+    "govuk_slug": "italy",
+    "capital": "Rome",
+    "currency": "EUR",
+    "currency_name": "Euro",
+    "languages": [
+      "Italian"
+    ],
+    "driving": "right",
+    "aliases": [
+      "Milan",
+      "Rome",
+      "Sardinia",
+      "Sicily",
+      "Venice"
+    ]
+  },
+  {
+    "iso2": "JM",
+    "iso3": "JAM",
+    "name": "Jamaica",
+    "slug": "jamaica",
+    "govuk_slug": "jamaica",
+    "capital": "Kingston",
+    "currency": "JMD",
+    "currency_name": "Jamaican dollar",
+    "languages": [],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "JP",
+    "iso3": "JPN",
+    "name": "Japan",
+    "slug": "japan",
+    "govuk_slug": "japan",
+    "capital": "Tokyo",
+    "currency": "JPY",
+    "currency_name": "Japanese yen",
+    "languages": [
+      "Japanese"
+    ],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "JO",
+    "iso3": "JOR",
+    "name": "Jordan",
+    "slug": "jordan",
+    "govuk_slug": "jordan",
+    "capital": "Amman",
+    "currency": "JOD",
+    "currency_name": "Jordanian dinar",
+    "languages": [
+      "Arabic"
+    ],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "KZ",
+    "iso3": "KAZ",
+    "name": "Kazakhstan",
+    "slug": "kazakhstan",
+    "govuk_slug": "kazakhstan",
+    "capital": "Astana",
+    "currency": "KZT",
+    "currency_name": "Kazakhstani tenge",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "KE",
+    "iso3": "KEN",
+    "name": "Kenya",
+    "slug": "kenya",
+    "govuk_slug": "kenya",
+    "capital": "Nairobi",
+    "currency": "KES",
+    "currency_name": "Kenyan shilling",
+    "languages": [
+      "English",
+      "Swahili"
+    ],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "KI",
+    "iso3": "KIR",
+    "name": "Kiribati",
+    "slug": "kiribati",
+    "govuk_slug": "kiribati",
+    "capital": "Tarawa",
+    "currency": "AUD",
+    "currency_name": "Australian dollar",
+    "languages": [],
+    "driving": "left",
+    "aliases": [
+      "Christmas Island",
+      "Kiritimati"
+    ]
+  },
+  {
+    "iso2": "XK",
+    "iso3": "XKX",
+    "name": "Kosovo",
+    "slug": "kosovo",
+    "govuk_slug": "kosovo",
+    "capital": "Pristina",
+    "currency": "EUR",
+    "currency_name": "Euro",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "KW",
+    "iso3": "KWT",
+    "name": "Kuwait",
+    "slug": "kuwait",
+    "govuk_slug": "kuwait",
+    "capital": "Kuwait City",
+    "currency": "KWD",
+    "currency_name": "Kuwaiti dinar",
+    "languages": [
+      "Arabic"
+    ],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "KG",
+    "iso3": "KGZ",
+    "name": "Kyrgyzstan",
+    "slug": "kyrgyzstan",
+    "govuk_slug": "kyrgyzstan",
+    "capital": "Bishkek",
+    "currency": "KGS",
+    "currency_name": "Kyrgyzstani som",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "LA",
+    "iso3": "LAO",
+    "name": "Laos",
+    "slug": "laos",
+    "govuk_slug": "laos",
+    "capital": "Vientiane",
+    "currency": "LAK",
+    "currency_name": "Lao kip",
+    "languages": [
+      "Lao"
+    ],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "LV",
+    "iso3": "LVA",
+    "name": "Latvia",
+    "slug": "latvia",
+    "govuk_slug": "latvia",
+    "capital": "Riga",
+    "currency": "EUR",
+    "currency_name": "Euro",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "LB",
+    "iso3": "LBN",
+    "name": "Lebanon",
+    "slug": "lebanon",
+    "govuk_slug": "lebanon",
+    "capital": "Beirut",
+    "currency": "LBP",
+    "currency_name": "Lebanese pound",
+    "languages": [
+      "Arabic"
+    ],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "LS",
+    "iso3": "LSO",
+    "name": "Lesotho",
+    "slug": "lesotho",
+    "govuk_slug": "lesotho",
+    "capital": "Maseru",
+    "currency": "LSL",
+    "currency_name": "Lesotho loti",
+    "languages": [],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "LR",
+    "iso3": "LBR",
+    "name": "Liberia",
+    "slug": "liberia",
+    "govuk_slug": "liberia",
+    "capital": "Monrovia",
+    "currency": "LRD",
+    "currency_name": "Liberian dollar",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "LY",
+    "iso3": "LBY",
+    "name": "Libya",
+    "slug": "libya",
+    "govuk_slug": "libya",
+    "capital": "Tripoli",
+    "currency": "LYD",
+    "currency_name": "Libyan dinar",
+    "languages": [],
+    "driving": "right",
+    "aliases": [
+      "Sahel"
+    ]
+  },
+  {
+    "iso2": "LI",
+    "iso3": "LIE",
+    "name": "Liechtenstein",
+    "slug": "liechtenstein",
+    "govuk_slug": "liechtenstein",
+    "capital": "Vaduz",
+    "currency": "CHF",
+    "currency_name": "Swiss franc",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "LT",
+    "iso3": "LTU",
+    "name": "Lithuania",
+    "slug": "lithuania",
+    "govuk_slug": "lithuania",
+    "capital": "Vilnius",
+    "currency": "EUR",
+    "currency_name": "Euro",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "LU",
+    "iso3": "LUX",
+    "name": "Luxembourg",
+    "slug": "luxembourg",
+    "govuk_slug": "luxembourg",
+    "capital": "Luxembourg",
+    "currency": "EUR",
+    "currency_name": "Euro",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "MO",
+    "iso3": "MAC",
+    "name": "Macao",
+    "slug": "macao",
+    "govuk_slug": "macao",
+    "capital": "",
+    "currency": "MOP",
+    "currency_name": "Macanese pataca",
+    "languages": [
+      "Cantonese",
+      "Portuguese"
+    ],
+    "driving": "left",
+    "aliases": [
+      "Macau",
+      "SAR"
+    ]
+  },
+  {
+    "iso2": "MG",
+    "iso3": "MDG",
+    "name": "Madagascar",
+    "slug": "madagascar",
+    "govuk_slug": "madagascar",
+    "capital": "Antananarivo",
+    "currency": "MGA",
+    "currency_name": "Malagasy ariary",
+    "languages": [
+      "Malagasy",
+      "French"
+    ],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "MW",
+    "iso3": "MWI",
+    "name": "Malawi",
+    "slug": "malawi",
+    "govuk_slug": "malawi",
+    "capital": "Lilongwe",
+    "currency": "MWK",
+    "currency_name": "Malawian kwacha",
+    "languages": [],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "MY",
+    "iso3": "MYS",
+    "name": "Malaysia",
+    "slug": "malaysia",
+    "govuk_slug": "malaysia",
+    "capital": "Kuala Lumpur",
+    "currency": "MYR",
+    "currency_name": "Malaysian ringgit",
+    "languages": [
+      "Malay"
+    ],
+    "driving": "left",
+    "aliases": [
+      "Borneo"
+    ]
+  },
+  {
+    "iso2": "MV",
+    "iso3": "MDV",
+    "name": "Maldives",
+    "slug": "maldives",
+    "govuk_slug": "maldives",
+    "capital": "Male",
+    "currency": "MVR",
+    "currency_name": "Maldivian rufiyaa",
+    "languages": [],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "ML",
+    "iso3": "MLI",
+    "name": "Mali",
+    "slug": "mali",
+    "govuk_slug": "mali",
+    "capital": "Bamako",
+    "currency": "XOF",
+    "currency_name": "West African CFA franc",
+    "languages": [],
+    "driving": "right",
+    "aliases": [
+      "Bamako",
+      "Sahel"
+    ]
+  },
+  {
+    "iso2": "MT",
+    "iso3": "MLT",
+    "name": "Malta",
+    "slug": "malta",
+    "govuk_slug": "malta",
+    "capital": "Valletta",
+    "currency": "EUR",
+    "currency_name": "Euro",
+    "languages": [],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "MH",
+    "iso3": "MHL",
+    "name": "Marshall Islands",
+    "slug": "marshall-islands",
+    "govuk_slug": "marshall-islands",
+    "capital": "Majuro",
+    "currency": "USD",
+    "currency_name": "United States dollar",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "MQ",
+    "iso3": "MTQ",
+    "name": "Martinique",
+    "slug": "martinique",
+    "govuk_slug": "martinique",
+    "capital": "Fort-de-France",
+    "currency": "EUR",
+    "currency_name": "Euro",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "MR",
+    "iso3": "MRT",
+    "name": "Mauritania",
+    "slug": "mauritania",
+    "govuk_slug": "mauritania",
+    "capital": "Nouakchott",
+    "currency": "MRU",
+    "currency_name": "Mauritanian ouguiya",
+    "languages": [],
+    "driving": "right",
+    "aliases": [
+      "Sahel"
+    ]
+  },
+  {
+    "iso2": "MU",
+    "iso3": "MUS",
+    "name": "Mauritius",
+    "slug": "mauritius",
+    "govuk_slug": "mauritius",
+    "capital": "Port Louis",
+    "currency": "MUR",
+    "currency_name": "Mauritian rupee",
+    "languages": [
+      "English",
+      "French"
+    ],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "YT",
+    "iso3": "MYT",
+    "name": "Mayotte",
+    "slug": "mayotte",
+    "govuk_slug": "mayotte",
+    "capital": "Mamoudzou",
+    "currency": "EUR",
+    "currency_name": "Euro",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "MX",
+    "iso3": "MEX",
+    "name": "Mexico",
+    "slug": "mexico",
+    "govuk_slug": "mexico",
+    "capital": "Mexico City",
+    "currency": "MXN",
+    "currency_name": "Mexican peso",
+    "languages": [
+      "Spanish"
+    ],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "MD",
+    "iso3": "MDA",
+    "name": "Moldova",
+    "slug": "moldova",
+    "govuk_slug": "moldova",
+    "capital": "Chisinau",
+    "currency": "MDL",
+    "currency_name": "Moldovan leu",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "MC",
+    "iso3": "MCO",
+    "name": "Monaco",
+    "slug": "monaco",
+    "govuk_slug": "monaco",
+    "capital": "Monaco",
+    "currency": "EUR",
+    "currency_name": "Euro",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "MN",
+    "iso3": "MNG",
+    "name": "Mongolia",
+    "slug": "mongolia",
+    "govuk_slug": "mongolia",
+    "capital": "Ulaanbaatar",
+    "currency": "MNT",
+    "currency_name": "Mongolian tögrög",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "ME",
+    "iso3": "MNE",
+    "name": "Montenegro",
+    "slug": "montenegro",
+    "govuk_slug": "montenegro",
+    "capital": "Podgorica",
+    "currency": "EUR",
+    "currency_name": "Euro",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "MS",
+    "iso3": "MSR",
+    "name": "Montserrat",
+    "slug": "montserrat",
+    "govuk_slug": "montserrat",
+    "capital": "Plymouth",
+    "currency": "XCD",
+    "currency_name": "East Caribbean dollar",
+    "languages": [],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "MA",
+    "iso3": "MAR",
+    "name": "Morocco",
+    "slug": "morocco",
+    "govuk_slug": "morocco",
+    "capital": "Rabat",
+    "currency": "MAD",
+    "currency_name": "Moroccan dirham",
+    "languages": [
+      "Arabic",
+      "Berber"
+    ],
+    "driving": "right",
+    "aliases": [
+      "Sahel"
+    ]
+  },
+  {
+    "iso2": "MZ",
+    "iso3": "MOZ",
+    "name": "Mozambique",
+    "slug": "mozambique",
+    "govuk_slug": "mozambique",
+    "capital": "Maputo",
+    "currency": "MZN",
+    "currency_name": "Mozambican metical",
+    "languages": [
+      "Portuguese"
+    ],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "MM",
+    "iso3": "MMR",
+    "name": "Myanmar",
+    "slug": "myanmar",
+    "govuk_slug": "myanmar",
+    "capital": "Naypyidaw",
+    "currency": "MMK",
+    "currency_name": "Myanmar kyat",
+    "languages": [
+      "Burmese"
+    ],
+    "driving": "right",
+    "aliases": [
+      "Burma",
+      "Myanmar (Burma)"
+    ]
+  },
+  {
+    "iso2": "NA",
+    "iso3": "NAM",
+    "name": "Namibia",
+    "slug": "namibia",
+    "govuk_slug": "namibia",
+    "capital": "Windhoek",
+    "currency": "NAD",
+    "currency_name": "Namibian dollar",
+    "languages": [],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "NR",
+    "iso3": "NRU",
+    "name": "Nauru",
+    "slug": "nauru",
+    "govuk_slug": "nauru",
+    "capital": "Yaren",
+    "currency": "AUD",
+    "currency_name": "Australian dollar",
+    "languages": [],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "NP",
+    "iso3": "NPL",
+    "name": "Nepal",
+    "slug": "nepal",
+    "govuk_slug": "nepal",
+    "capital": "Kathmandu",
+    "currency": "NPR",
+    "currency_name": "Nepalese rupee",
+    "languages": [
+      "Nepali"
+    ],
+    "driving": "left",
+    "aliases": [
+      "Kathmandu",
+      "Katmandu",
+      "Pokara",
+      "Pokhara"
+    ]
+  },
+  {
+    "iso2": "NL",
+    "iso3": "NLD",
+    "name": "Netherlands",
+    "slug": "netherlands",
+    "govuk_slug": "netherlands",
+    "capital": "Amsterdam",
+    "currency": "EUR",
+    "currency_name": "Euro",
+    "languages": [
+      "Dutch"
+    ],
+    "driving": "right",
+    "aliases": [
+      "Amsterdam",
+      "Holland"
+    ]
+  },
+  {
+    "iso2": "NC",
+    "iso3": "NCL",
+    "name": "New Caledonia",
+    "slug": "new-caledonia",
+    "govuk_slug": "new-caledonia",
+    "capital": "Nouméa",
+    "currency": "XPF",
+    "currency_name": "CFP franc",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "NZ",
+    "iso3": "NZL",
+    "name": "New Zealand",
+    "slug": "new-zealand",
+    "govuk_slug": "new-zealand",
+    "capital": "Wellington",
+    "currency": "NZD",
+    "currency_name": "New Zealand dollar",
+    "languages": [
+      "English",
+      "Māori"
+    ],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "NI",
+    "iso3": "NIC",
+    "name": "Nicaragua",
+    "slug": "nicaragua",
+    "govuk_slug": "nicaragua",
+    "capital": "Managua",
+    "currency": "NIO",
+    "currency_name": "Nicaraguan córdoba",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "NE",
+    "iso3": "NER",
+    "name": "Niger",
+    "slug": "niger",
+    "govuk_slug": "niger",
+    "capital": "Niamey",
+    "currency": "XOF",
+    "currency_name": "West African CFA franc",
+    "languages": [],
+    "driving": "right",
+    "aliases": [
+      "Sahel"
+    ]
+  },
+  {
+    "iso2": "NG",
+    "iso3": "NGA",
+    "name": "Nigeria",
+    "slug": "nigeria",
+    "govuk_slug": "nigeria",
+    "capital": "Abuja",
+    "currency": "NGN",
+    "currency_name": "Nigerian naira",
+    "languages": [
+      "English"
+    ],
+    "driving": "right",
+    "aliases": [
+      "Sahel"
+    ]
+  },
+  {
+    "iso2": "KP",
+    "iso3": "PRK",
+    "name": "North Korea",
+    "slug": "north-korea",
+    "govuk_slug": "north-korea",
+    "capital": "Pyongyang",
+    "currency": "KPW",
+    "currency_name": "North Korean won",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "MK",
+    "iso3": "MKD",
+    "name": "North Macedonia",
+    "slug": "north-macedonia",
+    "govuk_slug": "north-macedonia",
+    "capital": "Skopje",
+    "currency": "MKD",
+    "currency_name": "Macedonian denar",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "MP",
+    "iso3": "MNP",
+    "name": "Northern Mariana Islands",
+    "slug": "northern-mariana-islands",
+    "govuk_slug": "",
+    "capital": "Saipan",
+    "currency": "USD",
+    "currency_name": "United States dollar",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "NO",
+    "iso3": "NOR",
+    "name": "Norway",
+    "slug": "norway",
+    "govuk_slug": "norway",
+    "capital": "Oslo",
+    "currency": "NOK",
+    "currency_name": "Norwegian krone",
+    "languages": [
+      "Norwegian"
+    ],
+    "driving": "right",
+    "aliases": [
+      "Oslo",
+      "Scandinavia",
+      "arctic"
+    ]
+  },
+  {
+    "iso2": "OM",
+    "iso3": "OMN",
+    "name": "Oman",
+    "slug": "oman",
+    "govuk_slug": "oman",
+    "capital": "Muscat",
+    "currency": "OMR",
+    "currency_name": "Omani rial",
+    "languages": [
+      "Arabic"
+    ],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "PK",
+    "iso3": "PAK",
+    "name": "Pakistan",
+    "slug": "pakistan",
+    "govuk_slug": "pakistan",
+    "capital": "Islamabad",
+    "currency": "PKR",
+    "currency_name": "Pakistani rupee",
+    "languages": [
+      "Urdu",
+      "English"
+    ],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "PW",
+    "iso3": "PLW",
+    "name": "Palau",
+    "slug": "palau",
+    "govuk_slug": "palau",
+    "capital": "Koror",
+    "currency": "USD",
+    "currency_name": "United States dollar",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "PS",
+    "iso3": "PSE",
+    "name": "Palestine",
+    "slug": "palestine",
+    "govuk_slug": "palestine",
+    "capital": "",
+    "currency": "ILS",
+    "currency_name": "Israeli new shekel",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "PA",
+    "iso3": "PAN",
+    "name": "Panama",
+    "slug": "panama",
+    "govuk_slug": "panama",
+    "capital": "Panama City",
+    "currency": "PAB",
+    "currency_name": "Panamanian balboa",
+    "languages": [],
+    "driving": "right",
+    "aliases": [
+      "Panama Canal",
+      "Panama City"
+    ]
+  },
+  {
+    "iso2": "PG",
+    "iso3": "PNG",
+    "name": "Papua New Guinea",
+    "slug": "papua-new-guinea",
+    "govuk_slug": "papua-new-guinea",
+    "capital": "Port Moresby",
+    "currency": "PGK",
+    "currency_name": "Papua New Guinean kina",
+    "languages": [
+      "English",
+      "Tok Pisin"
+    ],
+    "driving": "left",
+    "aliases": [
+      "PNG"
+    ]
+  },
+  {
+    "iso2": "PY",
+    "iso3": "PRY",
+    "name": "Paraguay",
+    "slug": "paraguay",
+    "govuk_slug": "paraguay",
+    "capital": "Asuncion",
+    "currency": "PYG",
+    "currency_name": "Paraguayan guaraní",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "PE",
+    "iso3": "PER",
+    "name": "Peru",
+    "slug": "peru",
+    "govuk_slug": "peru",
+    "capital": "Lima",
+    "currency": "PEN",
+    "currency_name": "Peruvian sol",
+    "languages": [
+      "Spanish"
+    ],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "PH",
+    "iso3": "PHL",
+    "name": "Philippines",
+    "slug": "philippines",
+    "govuk_slug": "philippines",
+    "capital": "Manila",
+    "currency": "PHP",
+    "currency_name": "Philippine peso",
+    "languages": [
+      "Filipino",
+      "English"
+    ],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "PN",
+    "iso3": "PCN",
+    "name": "Pitcairn Islands",
+    "slug": "pitcairn-island",
+    "govuk_slug": "pitcairn-island",
+    "capital": "Adamstown",
+    "currency": "NZD",
+    "currency_name": "New Zealand dollar",
+    "languages": [],
+    "driving": "left",
+    "aliases": [
+      "Pitcairn Island"
+    ]
+  },
+  {
+    "iso2": "PL",
+    "iso3": "POL",
+    "name": "Poland",
+    "slug": "poland",
+    "govuk_slug": "poland",
+    "capital": "Warsaw",
+    "currency": "PLN",
+    "currency_name": "Polish złoty",
+    "languages": [
+      "Polish"
+    ],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "PT",
+    "iso3": "PRT",
+    "name": "Portugal",
+    "slug": "portugal",
+    "govuk_slug": "portugal",
+    "capital": "Lisbon",
+    "currency": "EUR",
+    "currency_name": "Euro",
+    "languages": [
+      "Portuguese"
+    ],
+    "driving": "right",
+    "aliases": [
+      "Azores",
+      "Madeira"
+    ]
+  },
+  {
+    "iso2": "PR",
+    "iso3": "PRI",
+    "name": "Puerto Rico",
+    "slug": "puerto-rico",
+    "govuk_slug": "",
+    "capital": "San Juan",
+    "currency": "USD",
+    "currency_name": "United States dollar",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "QA",
+    "iso3": "QAT",
+    "name": "Qatar",
+    "slug": "qatar",
+    "govuk_slug": "qatar",
+    "capital": "Doha",
+    "currency": "QAR",
+    "currency_name": "Qatari riyal",
+    "languages": [
+      "Arabic"
+    ],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "RO",
+    "iso3": "ROU",
+    "name": "Romania",
+    "slug": "romania",
+    "govuk_slug": "romania",
+    "capital": "Bucharest",
+    "currency": "RON",
+    "currency_name": "Romanian leu",
+    "languages": [
+      "Romanian"
+    ],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "RU",
+    "iso3": "RUS",
+    "name": "Russia",
+    "slug": "russia",
+    "govuk_slug": "russia",
+    "capital": "Moscow",
+    "currency": "RUB",
+    "currency_name": "Russian ruble",
+    "languages": [
+      "Russian"
+    ],
+    "driving": "right",
+    "aliases": [
+      "Russian Federation",
+      "arctic"
+    ]
+  },
+  {
+    "iso2": "RW",
+    "iso3": "RWA",
+    "name": "Rwanda",
+    "slug": "rwanda",
+    "govuk_slug": "rwanda",
+    "capital": "Kigali",
+    "currency": "RWF",
+    "currency_name": "Rwandan franc",
+    "languages": [
+      "Kinyarwanda",
+      "English",
+      "French"
+    ],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "RE",
+    "iso3": "REU",
+    "name": "Réunion",
+    "slug": "reunion",
+    "govuk_slug": "reunion",
+    "capital": "Saint-Denis",
+    "currency": "EUR",
+    "currency_name": "Euro",
+    "languages": [],
+    "driving": "right",
+    "aliases": [
+      "Reunion"
+    ]
+  },
+  {
+    "iso2": "BL",
+    "iso3": "BLM",
+    "name": "Saint Barthélemy",
+    "slug": "saint-barthelemy",
+    "govuk_slug": "",
+    "capital": "Gustavia",
+    "currency": "",
+    "currency_name": "",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "SH",
+    "iso3": "SHN",
+    "name": "Saint Helena, Ascension and Tristan da Cunha",
+    "slug": "st-helena-ascension-and-tristan-da-cunha",
+    "govuk_slug": "st-helena-ascension-and-tristan-da-cunha",
+    "capital": "Jamestown",
+    "currency": "SHP",
+    "currency_name": "Saint Helena pound",
+    "languages": [],
+    "driving": "left",
+    "aliases": [
+      "St Helena, Ascension and Tristan da Cunha"
+    ]
+  },
+  {
+    "iso2": "MF",
+    "iso3": "MAF",
+    "name": "Saint Martin",
+    "slug": "st-martin-and-st-barthelemy",
+    "govuk_slug": "st-martin-and-st-barthelemy",
+    "capital": "Marigot",
+    "currency": "EUR",
+    "currency_name": "Euro",
+    "languages": [],
+    "driving": "right",
+    "aliases": [
+      "Saint Barts",
+      "St Barthelemy",
+      "St Barts",
+      "St Martin and St Barthélemy"
+    ]
+  },
+  {
+    "iso2": "PM",
+    "iso3": "SPM",
+    "name": "Saint Pierre and Miquelon",
+    "slug": "st-pierre-and-miquelon",
+    "govuk_slug": "st-pierre-and-miquelon",
+    "capital": "Saint-Pierre",
+    "currency": "EUR",
+    "currency_name": "Euro",
+    "languages": [],
+    "driving": "right",
+    "aliases": [
+      "St Pierre & Miquelon"
+    ]
+  },
+  {
+    "iso2": "WS",
+    "iso3": "WSM",
+    "name": "Samoa",
+    "slug": "samoa",
+    "govuk_slug": "samoa",
+    "capital": "Apia",
+    "currency": "WST",
+    "currency_name": "Samoan tala",
+    "languages": [
+      "Samoan",
+      "English"
+    ],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "SM",
+    "iso3": "SMR",
+    "name": "San Marino",
+    "slug": "san-marino",
+    "govuk_slug": "san-marino",
+    "capital": "San Marino",
+    "currency": "EUR",
+    "currency_name": "Euro",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "SA",
+    "iso3": "SAU",
+    "name": "Saudi Arabia",
+    "slug": "saudi-arabia",
+    "govuk_slug": "saudi-arabia",
+    "capital": "Riyadh",
+    "currency": "SAR",
+    "currency_name": "Saudi riyal",
+    "languages": [
+      "Arabic"
+    ],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "SN",
+    "iso3": "SEN",
+    "name": "Senegal",
+    "slug": "senegal",
+    "govuk_slug": "senegal",
+    "capital": "Dakar",
+    "currency": "XOF",
+    "currency_name": "West African CFA franc",
+    "languages": [
+      "French"
+    ],
+    "driving": "right",
+    "aliases": [
+      "Sahel"
+    ]
+  },
+  {
+    "iso2": "RS",
+    "iso3": "SRB",
+    "name": "Serbia",
+    "slug": "serbia",
+    "govuk_slug": "serbia",
+    "capital": "Belgrade",
+    "currency": "RSD",
+    "currency_name": "Serbian dinar",
+    "languages": [],
+    "driving": "right",
+    "aliases": [
+      "Belgrade"
+    ]
+  },
+  {
+    "iso2": "SC",
+    "iso3": "SYC",
+    "name": "Seychelles",
+    "slug": "seychelles",
+    "govuk_slug": "seychelles",
+    "capital": "Victoria",
+    "currency": "SCR",
+    "currency_name": "Seychellois rupee",
+    "languages": [],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "SL",
+    "iso3": "SLE",
+    "name": "Sierra Leone",
+    "slug": "sierra-leone",
+    "govuk_slug": "sierra-leone",
+    "capital": "Freetown",
+    "currency": "SLE",
+    "currency_name": "Sierra Leonean leone",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "SG",
+    "iso3": "SGP",
+    "name": "Singapore",
+    "slug": "singapore",
+    "govuk_slug": "singapore",
+    "capital": "Singapore",
+    "currency": "SGD",
+    "currency_name": "Singapore dollar",
+    "languages": [
+      "English",
+      "Malay",
+      "Mandarin"
+    ],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "SX",
+    "iso3": "SXM",
+    "name": "Sint Maarten",
+    "slug": "st-maarten",
+    "govuk_slug": "st-maarten",
+    "capital": "Philipsburg",
+    "currency": "ANG",
+    "currency_name": "Netherlands Antillean guilder",
+    "languages": [],
+    "driving": "right",
+    "aliases": [
+      "Saint Maarten",
+      "St Maarten"
+    ]
+  },
+  {
+    "iso2": "SK",
+    "iso3": "SVK",
+    "name": "Slovakia",
+    "slug": "slovakia",
+    "govuk_slug": "slovakia",
+    "capital": "Bratislava",
+    "currency": "EUR",
+    "currency_name": "Euro",
+    "languages": [],
+    "driving": "right",
+    "aliases": [
+      "Slovak"
+    ]
+  },
+  {
+    "iso2": "SI",
+    "iso3": "SVN",
+    "name": "Slovenia",
+    "slug": "slovenia",
+    "govuk_slug": "slovenia",
+    "capital": "Ljubljana",
+    "currency": "EUR",
+    "currency_name": "Euro",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "SB",
+    "iso3": "SLB",
+    "name": "Solomon Islands",
+    "slug": "solomon-islands",
+    "govuk_slug": "solomon-islands",
+    "capital": "Honiara",
+    "currency": "SBD",
+    "currency_name": "Solomon Islands dollar",
+    "languages": [],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "SO",
+    "iso3": "SOM",
+    "name": "Somalia",
+    "slug": "somalia",
+    "govuk_slug": "somalia",
+    "capital": "Mogadishu",
+    "currency": "SOS",
+    "currency_name": "Somali shilling",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "ZA",
+    "iso3": "ZAF",
+    "name": "South Africa",
+    "slug": "south-africa",
+    "govuk_slug": "south-africa",
+    "capital": "Pretoria",
+    "currency": "ZAR",
+    "currency_name": "South African rand",
+    "languages": [
+      "English",
+      "Zulu",
+      "Afrikaans"
+    ],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "GS",
+    "iso3": "SGS",
+    "name": "South Georgia and the South Sandwich Islands",
+    "slug": "south-georgia-and-south-sandwich-islands",
+    "govuk_slug": "south-georgia-and-south-sandwich-islands",
+    "capital": "King Edward Point",
+    "currency": "",
+    "currency_name": "",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "KR",
+    "iso3": "KOR",
+    "name": "South Korea",
+    "slug": "south-korea",
+    "govuk_slug": "south-korea",
+    "capital": "Seoul",
+    "currency": "KRW",
+    "currency_name": "South Korean won",
+    "languages": [
+      "Korean"
+    ],
+    "driving": "right",
+    "aliases": [
+      "Korea",
+      "Republic of Korea"
+    ]
+  },
+  {
+    "iso2": "SS",
+    "iso3": "SSD",
+    "name": "South Sudan",
+    "slug": "south-sudan",
+    "govuk_slug": "south-sudan",
+    "capital": "Juba",
+    "currency": "SSP",
+    "currency_name": "South Sudanese pound",
+    "languages": [],
+    "driving": "right",
+    "aliases": [
+      "Sahel"
+    ]
+  },
+  {
+    "iso2": "ES",
+    "iso3": "ESP",
+    "name": "Spain",
+    "slug": "spain",
+    "govuk_slug": "spain",
+    "capital": "Madrid",
+    "currency": "EUR",
+    "currency_name": "Euro",
+    "languages": [
+      "Spanish"
+    ],
+    "driving": "right",
+    "aliases": [
+      "Barcelona",
+      "Benidorm",
+      "Canaries",
+      "Canary Islands",
+      "Fuerteventura",
+      "Gran Canaria",
+      "Ibiza",
+      "Lanzarote",
+      "Majorca",
+      "Mallorca",
+      "Menorca",
+      "Minorca",
+      "Tenerife"
+    ]
+  },
+  {
+    "iso2": "LK",
+    "iso3": "LKA",
+    "name": "Sri Lanka",
+    "slug": "sri-lanka",
+    "govuk_slug": "sri-lanka",
+    "capital": "Colombo",
+    "currency": "LKR",
+    "currency_name": "Sri Lankan rupee",
+    "languages": [
+      "Sinhala",
+      "Tamil"
+    ],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "KN",
+    "iso3": "KNA",
+    "name": "St Kitts and Nevis",
+    "slug": "st-kitts-and-nevis",
+    "govuk_slug": "st-kitts-and-nevis",
+    "capital": "Basseterre",
+    "currency": "XCD",
+    "currency_name": "East Caribbean dollar",
+    "languages": [],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "LC",
+    "iso3": "LCA",
+    "name": "St Lucia",
+    "slug": "st-lucia",
+    "govuk_slug": "st-lucia",
+    "capital": "Castries",
+    "currency": "XCD",
+    "currency_name": "East Caribbean dollar",
+    "languages": [],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "VC",
+    "iso3": "VCT",
+    "name": "St Vincent and the Grenadines",
+    "slug": "st-vincent-and-the-grenadines",
+    "govuk_slug": "st-vincent-and-the-grenadines",
+    "capital": "Kingstown",
+    "currency": "XCD",
+    "currency_name": "East Caribbean dollar",
+    "languages": [],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "SD",
+    "iso3": "SDN",
+    "name": "Sudan",
+    "slug": "sudan",
+    "govuk_slug": "sudan",
+    "capital": "Khartoum",
+    "currency": "SDG",
+    "currency_name": "Sudanese pound",
+    "languages": [],
+    "driving": "right",
+    "aliases": [
+      "Sahel"
+    ]
+  },
+  {
+    "iso2": "SR",
+    "iso3": "SUR",
+    "name": "Suriname",
+    "slug": "suriname",
+    "govuk_slug": "suriname",
+    "capital": "Paramaribo",
+    "currency": "SRD",
+    "currency_name": "Surinamese dollar",
+    "languages": [],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "SE",
+    "iso3": "SWE",
+    "name": "Sweden",
+    "slug": "sweden",
+    "govuk_slug": "sweden",
+    "capital": "Stockholm",
+    "currency": "SEK",
+    "currency_name": "Swedish krona",
+    "languages": [
+      "Swedish"
+    ],
+    "driving": "right",
+    "aliases": [
+      "Arctic",
+      "Gothenburg",
+      "Stockholm"
+    ]
+  },
+  {
+    "iso2": "CH",
+    "iso3": "CHE",
+    "name": "Switzerland",
+    "slug": "switzerland",
+    "govuk_slug": "switzerland",
+    "capital": "Bern",
+    "currency": "CHF",
+    "currency_name": "Swiss franc",
+    "languages": [
+      "German",
+      "French",
+      "Italian"
+    ],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "SY",
+    "iso3": "SYR",
+    "name": "Syria",
+    "slug": "syria",
+    "govuk_slug": "syria",
+    "capital": "Damascus",
+    "currency": "SYP",
+    "currency_name": "Syrian pound",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "ST",
+    "iso3": "STP",
+    "name": "São Tomé and Principe",
+    "slug": "sao-tome-and-principe",
+    "govuk_slug": "sao-tome-and-principe",
+    "capital": "Sao Tome",
+    "currency": "STN",
+    "currency_name": "São Tomé and Príncipe dobra",
+    "languages": [],
+    "driving": "right",
+    "aliases": [
+      "Sao Tome & Principe",
+      "Sao Tome and Principe"
+    ]
+  },
+  {
+    "iso2": "TW",
+    "iso3": "TWN",
+    "name": "Taiwan",
+    "slug": "taiwan",
+    "govuk_slug": "taiwan",
+    "capital": "Taipei",
+    "currency": "TWD",
+    "currency_name": "New Taiwan dollar",
+    "languages": [
+      "Mandarin Chinese"
+    ],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "TJ",
+    "iso3": "TJK",
+    "name": "Tajikistan",
+    "slug": "tajikistan",
+    "govuk_slug": "tajikistan",
+    "capital": "Dushanbe",
+    "currency": "TJS",
+    "currency_name": "Tajikistani somoni",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "TZ",
+    "iso3": "TZA",
+    "name": "Tanzania",
+    "slug": "tanzania",
+    "govuk_slug": "tanzania",
+    "capital": "Dodoma",
+    "currency": "TZS",
+    "currency_name": "Tanzanian shilling",
+    "languages": [
+      "Swahili",
+      "English"
+    ],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "TH",
+    "iso3": "THA",
+    "name": "Thailand",
+    "slug": "thailand",
+    "govuk_slug": "thailand",
+    "capital": "Bangkok",
+    "currency": "THB",
+    "currency_name": "Thai baht",
+    "languages": [
+      "Thai"
+    ],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "GM",
+    "iso3": "GMB",
+    "name": "The Gambia",
+    "slug": "the-gambia",
+    "govuk_slug": "the-gambia",
+    "capital": "Banjul",
+    "currency": "GMD",
+    "currency_name": "Gambian dalasi",
+    "languages": [],
+    "driving": "right",
+    "aliases": [
+      "Sahel"
+    ]
+  },
+  {
+    "iso2": "TL",
+    "iso3": "TLS",
+    "name": "Timor-Leste",
+    "slug": "timor-leste",
+    "govuk_slug": "timor-leste",
+    "capital": "Dili",
+    "currency": "USD",
+    "currency_name": "United States dollar",
+    "languages": [],
+    "driving": "left",
+    "aliases": [
+      "East Timor"
+    ]
+  },
+  {
+    "iso2": "TG",
+    "iso3": "TGO",
+    "name": "Togo",
+    "slug": "togo",
+    "govuk_slug": "togo",
+    "capital": "Lome",
+    "currency": "XOF",
+    "currency_name": "West African CFA franc",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "TO",
+    "iso3": "TON",
+    "name": "Tonga",
+    "slug": "tonga",
+    "govuk_slug": "tonga",
+    "capital": "Nuku'alofa",
+    "currency": "TOP",
+    "currency_name": "Tongan paʻanga",
+    "languages": [],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "TT",
+    "iso3": "TTO",
+    "name": "Trinidad and Tobago",
+    "slug": "trinidad-and-tobago",
+    "govuk_slug": "trinidad-and-tobago",
+    "capital": "Port-of-Spain",
+    "currency": "TTD",
+    "currency_name": "Trinidad and Tobago dollar",
+    "languages": [],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "TN",
+    "iso3": "TUN",
+    "name": "Tunisia",
+    "slug": "tunisia",
+    "govuk_slug": "tunisia",
+    "capital": "Tunis",
+    "currency": "TND",
+    "currency_name": "Tunisian dinar",
+    "languages": [
+      "Arabic"
+    ],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "TR",
+    "iso3": "TUR",
+    "name": "Turkey",
+    "slug": "turkey",
+    "govuk_slug": "turkey",
+    "capital": "Ankara",
+    "currency": "TRY",
+    "currency_name": "Turkish lira",
+    "languages": [
+      "Turkish"
+    ],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "TM",
+    "iso3": "TKM",
+    "name": "Turkmenistan",
+    "slug": "turkmenistan",
+    "govuk_slug": "turkmenistan",
+    "capital": "Ashgabat",
+    "currency": "TMT",
+    "currency_name": "Turkmenistan manat",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "TC",
+    "iso3": "TCA",
+    "name": "Turks and Caicos Islands",
+    "slug": "turks-and-caicos-islands",
+    "govuk_slug": "turks-and-caicos-islands",
+    "capital": "Cockburn Town",
+    "currency": "USD",
+    "currency_name": "United States dollar",
+    "languages": [],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "TV",
+    "iso3": "TUV",
+    "name": "Tuvalu",
+    "slug": "tuvalu",
+    "govuk_slug": "tuvalu",
+    "capital": "Funafuti",
+    "currency": "AUD",
+    "currency_name": "Australian dollar",
+    "languages": [],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "UG",
+    "iso3": "UGA",
+    "name": "Uganda",
+    "slug": "uganda",
+    "govuk_slug": "uganda",
+    "capital": "Kampala",
+    "currency": "UGX",
+    "currency_name": "Ugandan shilling",
+    "languages": [
+      "English",
+      "Swahili"
+    ],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "UA",
+    "iso3": "UKR",
+    "name": "Ukraine",
+    "slug": "ukraine",
+    "govuk_slug": "ukraine",
+    "capital": "Kiev",
+    "currency": "UAH",
+    "currency_name": "Ukrainian hryvnia",
+    "languages": [
+      "Ukrainian"
+    ],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "AE",
+    "iso3": "ARE",
+    "name": "United Arab Emirates",
+    "slug": "united-arab-emirates",
+    "govuk_slug": "united-arab-emirates",
+    "capital": "Abu Dhabi",
+    "currency": "AED",
+    "currency_name": "UAE dirham",
+    "languages": [
+      "Arabic"
+    ],
+    "driving": "right",
+    "aliases": [
+      "Abu Dhabi",
+      "Dubai",
+      "UAE"
+    ]
+  },
+  {
+    "iso2": "GB",
+    "iso3": "GBR",
+    "name": "United Kingdom",
+    "slug": "united-kingdom",
+    "govuk_slug": "",
+    "capital": "London",
+    "currency": "GBP",
+    "currency_name": "Pound sterling",
+    "languages": [
+      "English"
+    ],
+    "driving": "left",
+    "aliases": [
+      "Britain",
+      "England",
+      "Great Britain",
+      "Scotland",
+      "UK",
+      "Wales"
+    ]
+  },
+  {
+    "iso2": "US",
+    "iso3": "USA",
+    "name": "United States",
+    "slug": "usa",
+    "govuk_slug": "usa",
+    "capital": "Washington D.C.",
+    "currency": "USD",
+    "currency_name": "United States dollar",
+    "languages": [
+      "English"
+    ],
+    "driving": "right",
+    "aliases": [
+      "America",
+      "American Samoa",
+      "Arctic",
+      "Florida",
+      "Guam",
+      "Hawaii",
+      "Orlando",
+      "Puerto Rico",
+      "US Virgin Islands",
+      "USA",
+      "United States of America"
+    ]
+  },
+  {
+    "iso2": "UY",
+    "iso3": "URY",
+    "name": "Uruguay",
+    "slug": "uruguay",
+    "govuk_slug": "uruguay",
+    "capital": "Montevideo",
+    "currency": "UYU",
+    "currency_name": "Uruguayan peso",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "VI",
+    "iso3": "VIR",
+    "name": "US Virgin Islands",
+    "slug": "us-virgin-islands",
+    "govuk_slug": "",
+    "capital": "Charlotte Amalie",
+    "currency": "USD",
+    "currency_name": "United States dollar",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "UZ",
+    "iso3": "UZB",
+    "name": "Uzbekistan",
+    "slug": "uzbekistan",
+    "govuk_slug": "uzbekistan",
+    "capital": "Tashkent",
+    "currency": "UZS",
+    "currency_name": "Uzbekistani som",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "VU",
+    "iso3": "VUT",
+    "name": "Vanuatu",
+    "slug": "vanuatu",
+    "govuk_slug": "vanuatu",
+    "capital": "Port-Vila",
+    "currency": "VUV",
+    "currency_name": "Vanuatu vatu",
+    "languages": [],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "VA",
+    "iso3": "VAT",
+    "name": "Vatican City",
+    "slug": "vatican-city",
+    "govuk_slug": "",
+    "capital": "Vatican City",
+    "currency": "EUR",
+    "currency_name": "Euro",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "VE",
+    "iso3": "VEN",
+    "name": "Venezuela",
+    "slug": "venezuela",
+    "govuk_slug": "venezuela",
+    "capital": "Caracas",
+    "currency": "VES",
+    "currency_name": "Venezuelan bolívar",
+    "languages": [
+      "Spanish"
+    ],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "VN",
+    "iso3": "VNM",
+    "name": "Vietnam",
+    "slug": "vietnam",
+    "govuk_slug": "vietnam",
+    "capital": "Hanoi",
+    "currency": "VND",
+    "currency_name": "Vietnamese đồng",
+    "languages": [
+      "Vietnamese"
+    ],
+    "driving": "right",
+    "aliases": [
+      "Viet Nam"
+    ]
+  },
+  {
+    "iso2": "WF",
+    "iso3": "WLF",
+    "name": "Wallis and Futuna",
+    "slug": "wallis-and-futuna",
+    "govuk_slug": "wallis-and-futuna",
+    "capital": "Mata-Utu",
+    "currency": "XPF",
+    "currency_name": "CFP franc",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "EH",
+    "iso3": "ESH",
+    "name": "Western Sahara",
+    "slug": "western-sahara",
+    "govuk_slug": "western-sahara",
+    "capital": "Laayoune",
+    "currency": "MAD",
+    "currency_name": "Moroccan dirham",
+    "languages": [],
+    "driving": "right",
+    "aliases": [
+      "Sahel"
+    ]
+  },
+  {
+    "iso2": "YE",
+    "iso3": "YEM",
+    "name": "Yemen",
+    "slug": "yemen",
+    "govuk_slug": "yemen",
+    "capital": "Sana'a",
+    "currency": "YER",
+    "currency_name": "Yemeni rial",
+    "languages": [],
+    "driving": "right",
+    "aliases": []
+  },
+  {
+    "iso2": "ZM",
+    "iso3": "ZMB",
+    "name": "Zambia",
+    "slug": "zambia",
+    "govuk_slug": "zambia",
+    "capital": "Lusaka",
+    "currency": "ZMW",
+    "currency_name": "Zambian kwacha",
+    "languages": [],
+    "driving": "left",
+    "aliases": []
+  },
+  {
+    "iso2": "ZW",
+    "iso3": "ZWE",
+    "name": "Zimbabwe",
+    "slug": "zimbabwe",
+    "govuk_slug": "zimbabwe",
+    "capital": "Harare",
+    "currency": "ZWG",
+    "currency_name": "Zimbabwe gold",
+    "languages": [],
+    "driving": "left",
+    "aliases": []
+  }
+]
